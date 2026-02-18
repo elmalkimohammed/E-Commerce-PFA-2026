@@ -11,7 +11,7 @@ function RegisterForm( { onSwitch } ) {
             <form method="post">
                 <div className="newemailSection">
                     <label htmlFor="newEmail">Email</label>
-                    <input type="text" id="newEmail" placeholder="username@email.com" />
+                    <input type="email" id="newEmail" placeholder="username@email.com" />
                 </div>
                 <div className="newpasswSection">
                     <label htmlFor="newPassw">Mot de pass</label>

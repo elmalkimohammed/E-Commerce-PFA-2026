@@ -10,7 +10,7 @@ function LoginForm( { onSwitch } ) {
             <form method="post">
                 <div className="emailSection">
                     <label htmlFor="email">Email</label>
-                    <input type="text" id="email" placeholder="username@email.com" />
+                    <input type="email" id="email" placeholder="username@email.com" />
                 </div>
                 <div className="passwordSection">
                     <label htmlFor="password">Mot de pass</label>
