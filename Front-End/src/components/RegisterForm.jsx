@@ -2,12 +2,12 @@ import "./styles/RegisterForm.css"
 
 function RegisterForm( { onSwitch } ) {
     return(
-        <div className="registerSection">
+        <div className="containerBox">
             <div className="header">
                 <h1>Créer un compte</h1>
                 <p>Rejoignez TechStore aujourd'hui</p>
             </div>
-            <span onClick={ () => onSwitch("login") }>← Retour à la connexion</span>
+            <span style={{ color: "#2b6cb0", cursor: "pointer" }} onClick={ () => onSwitch("login") }>← Retour à la connexion</span>
             <form method="post">
                 <div className="newemailSection">
                     <label htmlFor="newEmail">Email</label>
@@ -24,7 +24,7 @@ function RegisterForm( { onSwitch } ) {
                 <input type="submit" value="Créer mon compte" />
             </form>
             <div className="footer">
-                <p>Vous avez déjà un compte? <span onClick={ () => onSwitch("login") }>Se connecter</span></p>
+                <p>Vous avez déjà un compte? <span style={{ cursor: "pointer" }} onClick={ () => onSwitch("login") }>Se connecter</span></p>
             </div>
         </div>
     )
