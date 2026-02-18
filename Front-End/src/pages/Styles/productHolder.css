@@ -1,0 +1,22 @@
+.product-holder {
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--surface);
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.product-holder h1{
+    padding-bottom: 24px;
+    color: var(--nav-bg);
+}
+.product-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 26px;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}

@@ -1,0 +1,45 @@
+.features-bar {
+  background: var(--surface);
+  padding: 34px 24px 48px;
+}
+
+.features-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: left;
+  padding: 12px 10px;
+}
+
+.feature-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 28px;
+}
+
+.feature-text h4 {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.feature-text p {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+
