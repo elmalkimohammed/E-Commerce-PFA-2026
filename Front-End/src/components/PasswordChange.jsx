@@ -1,4 +1,4 @@
-import "./styles/ChangePasswForm.css"
+import "./styles/globalAuthForm.css"
 
 function PasswordChange( { onSwitch } ) {
     return(

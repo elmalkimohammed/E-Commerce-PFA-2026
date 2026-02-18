@@ -1,4 +1,4 @@
-import "./styles/RegisterForm.css"
+import "./styles/globalAuthForm.css"
 
 function RegisterForm( { onSwitch } ) {
     return(

@@ -1,14 +1,10 @@
-import RegisterForm from './components/RegisterForm'
-import LoginForm from './components/LoginForm'
-import PasswordChange from './components/PasswordChange'
+import AuthPage from './pages/AuthPage'
 
 function App() {
 
   return (
     <>
-      <PasswordChange/>
-      <RegisterForm/>
-      <LoginForm/>
+      <AuthPage/>
     </>
   )
 }

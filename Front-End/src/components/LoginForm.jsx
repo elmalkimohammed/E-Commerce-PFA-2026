@@ -1,4 +1,4 @@
-import "./styles/LoginForm.css"
+import "./styles/globalAuthForm.css"
 
 function LoginForm( { onSwitch } ) {
     return(
