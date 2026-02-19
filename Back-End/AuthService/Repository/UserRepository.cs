@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Data.SqlClient;
 namespace AuthService.Repository
 {
-    public class userRepository
+    public class userRepository : IUserRepository
     {
         // Connection String for SQL Server Database
         private readonly String _connectionString;
