@@ -12,7 +12,7 @@ namespace AuthService.Repository
             this._connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        // The Method Responsable For Getting The Email
+        // The Method Responsable For Getting The User's Infos Through Their Email
         public async Task<User> GetThroughEmail(String email)
         {
             // Open The Database Connection
