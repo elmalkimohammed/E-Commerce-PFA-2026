@@ -1,3 +1,6 @@
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,6 +13,27 @@ builder.Services.AddOpenApi();
 builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowReact", policy => policy.WithOrigins("http://localhost:5173/").AllowAnyHeader().AllowAnyMethod());
+    }
+);
+
+// Register The JwtGenerator Class As A Service
+builder.Services.AddAuthentication("Bearer")
+.AddJwtBearer(
+    "Bearer",
+    options =>
+    {
+        var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+        var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]! ) ;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
     }
 );
 
