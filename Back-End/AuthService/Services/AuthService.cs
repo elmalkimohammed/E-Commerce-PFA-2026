@@ -1,5 +1,6 @@
 ﻿using AuthService.DTOs;
 using AuthService.Helpers;
+using AuthService.Models;
 using AuthService.Repository;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -41,9 +42,28 @@ namespace AuthService.Services
         }
 
         // The Method That Handles The Register Process
-        public Task RegisterProcess(RegisterRequest request)
+        public async Task RegisterProcess(RegisterRequest request)
         {
-            throw new NotImplementedException();
+            // Verify If The User Already Exists
+            var existingUser = await this._userRepository.GetThroughEmail(request.Email) ;
+            if ( existingUser != null)
+            {
+                throw new Exception("User Already Exists");
+            }
+
+            // Hashing The Given Password
+            var hashedPassword = PasswordHasher.HashPassword(request.Password) ;
+
+            // Creating A New User Entity And Saving It To The Database
+            var newUser = new User
+            {
+                UserId = Guid.NewGuid(),
+                Email = request.Email,
+                PasswordHash = hashedPassword,
+                Role = "Customer",
+                CreatedAt = DateTime.UtcNow
+            };
+            await this._userRepository.CreateUser(newUser);
         }
 
         // The Method That Handles The Email Existence Verification Process
