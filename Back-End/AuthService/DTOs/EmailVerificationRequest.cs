@@ -2,12 +2,10 @@
 
 namespace AuthService.DTOs
 {
-    public class LoginRequest
+    public class EmailVerificationRequest
     {
         [Required]
         [EmailAddress]
         public String Email { get; set; }
-        [Required]
-        public String Password { get; set; }
     }
 }
