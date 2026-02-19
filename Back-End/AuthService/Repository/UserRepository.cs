@@ -41,5 +41,24 @@ namespace AuthService.Repository
                 CreatedAt = reader.GetDateTime(4)
             };
         }
+
+        // Method Responsable For Adding A New User To The Database
+        public async Task CreateUser(User user)
+        {
+            // Open The Database Connection
+            using var connection = new SqlConnection(this._connectionString);
+            await connection.OpenAsync();
+
+            // Sql Command To Insert The New User Into The Database
+            var cmd = new SqlCommand("INSERT INTO Users (UserId, Email, PasswordHash, Role, CreatedAt) VALUES (@userid, @email, @passwordhash, @role, @createdat)", connection);
+            cmd.Parameters.AddWithValue("@userid", user.UserId);
+            cmd.Parameters.AddWithValue("@email", user.Email);
+            cmd.Parameters.AddWithValue("@passwordhash", user.PasswordHash);
+            cmd.Parameters.AddWithValue("@role", user.Role);
+            cmd.Parameters.AddWithValue("@createdat", user.CreatedAt);
+
+            // Executing The Sql Command
+            await cmd.ExecuteNonQueryAsync();
+        }
     }
 }
