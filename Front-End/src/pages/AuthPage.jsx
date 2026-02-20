@@ -1,6 +1,7 @@
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 import PasswordChange from "../components/PasswordChange";
+import NewPassword from "../components/NewPassword"
 
 import "./styles/AuthPage.css"
 
@@ -13,6 +14,7 @@ function AuthPage() {
             { currentForm == "login" && <LoginForm onSwitch={setCurrentForm}/> }
             { currentForm == "register" && <RegisterForm onSwitch={setCurrentForm}/> }
             { currentForm == "passwChange" && <PasswordChange onSwitch={setCurrentForm}/> }
+            { currentForm == "newPassword" && <NewPassword onSwitch={setCurrentForm}/> }
         </div>
     )
 }

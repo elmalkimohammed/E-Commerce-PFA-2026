@@ -66,7 +66,7 @@ namespace AuthService.Controllers
         // Verifying Email EndPoint
         [HttpGet("forgot-password/verify-email")]
         [AllowAnonymous] /* Authorize Non-Authentified Users */
-        public async Task<IActionResult> VerifyEmail(EmailVerificationRequest request)
+        public async Task<IActionResult> VerifyEmail([FromQuery] EmailVerificationRequest request)
         {
             // Validating the incoming request
             if (!ModelState.IsValid)
