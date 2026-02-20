@@ -23,7 +23,7 @@ namespace AuthService.Helpers
             var secretKey = JwtSettings["SecretKey"];
             var issuer = JwtSettings["Issuer"];
             var audience = JwtSettings["Audience"];
-            var expiryMinutes = int.Parse(JwtSettings["Audience"]!);
+            var expiryMinutes = int.Parse(JwtSettings["ExpiryMinutes"]!);
 
             var key = new SymmetricSecurityKey
             (
