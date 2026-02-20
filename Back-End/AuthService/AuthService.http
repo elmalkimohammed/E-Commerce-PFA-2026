@@ -1,6 +1,14 @@
-@AuthService_HostAddress = http://localhost:5181
+@AuthService_HostAddress = http://localhost:5181/api/auth
 
-GET {{AuthService_HostAddress}}/weatherforecast/
+GET {{AuthService_HostAddress}}/login/
 Accept: application/json
 
 ###
+### Login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "testuser@gmail.com",
+  "password": "Test@1234"
+}

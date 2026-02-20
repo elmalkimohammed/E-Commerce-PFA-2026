@@ -1,3 +1,5 @@
+using AuthService.Repository;
+using AuthService.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -36,6 +38,10 @@ builder.Services.AddAuthentication("Bearer")
         };
     }
 );
+
+// Inject Our Multiples Dependencies
+builder.Services.AddScoped<IAuthService, AuthService.Services.AuthService>();
+builder.Services.AddScoped<IUserRepository, userRepository>();
 
 var app = builder.Build();
 
