@@ -10,13 +10,12 @@ function RegisterForm( { onSwitch } ) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
-    const navigate = useNavigate()
 
     const regsiterSubmit = async (e) => {
         try {
             e.preventDefault()
             await axios.post( `${authAPI}/register`, { email , password , confirmPassword } )
-            navigate("/Authentication")
+            onSwitch("login")
         } catch (error) {
             alert( error.response?.data || "Registration Failed" )
         }
