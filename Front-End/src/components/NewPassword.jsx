@@ -19,7 +19,7 @@ function NewPassword( { onSwitch } ) {
             sessionStorage.removeItem("tempToken_forNewPassword")
             onSwitch("login")
         } catch (error) {
-            alert( error.response?.data || "Something's Wrong......2" )
+            alert( error.response?.data || "Something's Wrong......" )
         }
     }
 

@@ -16,7 +16,7 @@ function PasswordChange( { onSwitch } ) {
             sessionStorage.setItem("tempToken_forNewPassword", tempToken.data.resetToken)
             onSwitch("newPassword")
         } catch (error) {
-            alert( error.response?.data || "Something's Wrong....1" )
+            alert( error.response?.data || "Something's Wrong......" )
         }
     }
 
