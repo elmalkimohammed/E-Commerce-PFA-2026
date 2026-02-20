@@ -1,2 +1,2 @@
 /* Endpoint Of The Authentication Micro-Service API */
-export const authAPI = "http://localhost:5181/api/auth" ;
+export const authAPI = "https://localhost:7214/api/auth" ;
