@@ -1,3 +1,4 @@
+using AuthService.Helpers;
 using AuthService.Repository;
 using AuthService.Services;
 using Microsoft.IdentityModel.Tokens;
@@ -42,6 +43,7 @@ builder.Services.AddAuthentication("Bearer")
 // Inject Our Multiples Dependencies
 builder.Services.AddScoped<IAuthService, AuthService.Services.AuthService>();
 builder.Services.AddScoped<IUserRepository, userRepository>();
+builder.Services.AddScoped<JwtGenerator>();
 
 var app = builder.Build();
 
