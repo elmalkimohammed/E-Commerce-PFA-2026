@@ -45,6 +45,9 @@ builder.Services.AddScoped<IAuthService, AuthService.Services.AuthService>();
 builder.Services.AddScoped<IUserRepository, userRepository>();
 builder.Services.AddScoped<JwtGenerator>();
 
+// Register The Kafka Producer Service As A Singleton Since We Only Need One Instance To Produce Messages To Kafka Topics
+builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
