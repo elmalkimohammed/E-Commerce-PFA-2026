@@ -67,9 +67,17 @@ namespace AuthService.Services
         }
 
         // The Method That Handles The Email Existence Verification Process
-        public Task VerifyEmailExistence(EmailVerificationRequest request)
+        public async Task<bool> VerifyEmailExistence(EmailVerificationRequest request)
         {
-            throw new NotImplementedException();
+            // Verify If The Email Actually Exists In The Database
+            var verifiedEmail = await this._userRepository.GetThroughEmail(request.Email) ;
+            if ( verifiedEmail == null)
+            {
+                return false;
+            }
+
+            // Returning True If The Email Exists
+            return true;
         }
 
         // The Method That Handles Updating The Old Password According To The Given New Password

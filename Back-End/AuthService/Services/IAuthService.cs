@@ -6,7 +6,7 @@ namespace AuthService.Services
     {
         Task RegisterProcess(RegisterRequest request);
         Task<String> LoginProcess(LoginRequest request);
-        Task VerifyEmailExistence(EmailVerificationRequest request);
+        Task<bool> VerifyEmailExistence(EmailVerificationRequest request);
         Task UpdateOldPassword(PasswordChangeRequest request);
     }
 }
