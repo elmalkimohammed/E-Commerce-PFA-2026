@@ -8,6 +8,9 @@ namespace AuthService.Services
 {
     public class AuthService : IAuthService
     {
+        // In-Memory Tokens Store
+        private static readonly Dictionary<String, (Guid UserId, DateTime Expiry)> _resetToken = new();
+
         // Dependency Injection For The User Repository And JWT Generator
         private readonly IUserRepository _userRepository;
         private readonly JwtGenerator _jwtGenerator;
@@ -67,23 +70,45 @@ namespace AuthService.Services
         }
 
         // The Method That Handles The Email Existence Verification Process
-        public async Task<bool> VerifyEmailExistence(EmailVerificationRequest request)
+        public async Task<String> VerifyEmailExistence(EmailVerificationRequest request)
         {
             // Verify If The Email Actually Exists In The Database
             var verifiedEmail = await this._userRepository.GetThroughEmail(request.Email) ;
             if ( verifiedEmail == null)
             {
-                return false;
+                throw new Exception("Email Not Found");
             }
 
-            // Returning True If The Email Exists
-            return true;
+            // Generate A Token And Store It In-Memory For 15 Minutes
+            var resetToken = Guid.NewGuid().ToString() ;
+            _resetToken[resetToken] = ( verifiedEmail.UserId, DateTime.UtcNow.AddMinutes(15) );
+
+            // Returning The Temporary Token If The Email Exists
+            return resetToken;
         }
 
         // The Method That Handles Updating The Old Password According To The Given New Password
-        public Task UpdateOldPassword(PasswordChangeRequest request)
+        public async Task UpdateOldPassword(PasswordChangeRequest request)
         {
-            throw new NotImplementedException();
+            // Validating The Token Existence And Expiry
+            if ( !_resetToken.TryGetValue(request.resetToken, out var entry))
+            {
+                throw new Exception("Invalid Token");
+            }
+            if ( entry.Expiry < DateTime.UtcNow)
+            {
+                _resetToken.Remove(request.resetToken);
+                throw new Exception("Token Expired");
+            }
+
+            // Hashing The Given New Password
+            var hashedPassword = PasswordHasher.HashPassword(request.NewPassword) ;
+
+            // Updating The User's Password In The Database
+            await this._userRepository.UpdateForgottenPassword(entry.UserId, hashedPassword);
+
+            // Removing The Used Token From The In-Memory Store
+            _resetToken.Remove(request.resetToken);
         }
     }
 }

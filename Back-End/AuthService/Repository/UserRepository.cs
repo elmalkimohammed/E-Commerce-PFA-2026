@@ -71,7 +71,7 @@ namespace AuthService.Repository
             // Sql Command To Update The Old Password According To The Given UserId
             var cmd = new SqlCommand("UPDATE Users SET PasswordHash = @password WHERE UserId = @userId", connection);
             cmd.Parameters.AddWithValue("@password", newPassword);
-            cmd.Parameters.AddWithValue("userId", userId);
+            cmd.Parameters.AddWithValue("@userId", userId);
 
             // Executing The Sql Command
             await cmd.ExecuteNonQueryAsync();
