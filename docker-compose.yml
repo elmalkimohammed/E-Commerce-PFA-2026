@@ -1,4 +1,5 @@
 services:
+  #___Infrastructure___
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
     ports:
@@ -6,6 +7,8 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - ecommerce-network
 
   kafka:
     image: confluentinc/cp-kafka:7.4.0
@@ -20,6 +23,8 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - ecommerce-network
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     ports:
@@ -29,6 +34,8 @@ services:
     environment:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    networks:
+      - ecommerce-network
   #___Databases___
   AuthServiceDB:
     image: mysql:8.0
@@ -37,8 +44,41 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: "AuthService"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     volumes:
       - AuthServiceDB-data:/var/lib/mysql
+    networks:
+      - ecommerce-network
+  #___Micro-Services___
+  AuthServiceAPI:
+    build: 
+      context: ./Back-End/AuthService
+      dockerfile: dockerfile
+    image: authservice-api:latest
+    container_name: authservice-api 
+    ports:
+      - "5001:5181"
+      #- "5002:7214"
+    depends_on:
+      AuthServiceDB:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=http://+:5181
+        - ConnectionStrings__DefaultConnection=Server=AuthServiceDB;Port=3306;Database=AuthService;User=root;Password=admin;
+        - Kafka__BootstrapServers=kafka:29092
+    networks:
+        - ecommerce-network
 volumes:
   AuthServiceDB-data: 
     driver: local
+networks:
+  ecommerce-network:
+    driver: bridge
