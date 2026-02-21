@@ -1,4 +1,5 @@
 ﻿using AuthService.DTOs;
+using AuthService.Events;
 using AuthService.Helpers;
 using AuthService.Models;
 using AuthService.Repository;
@@ -14,10 +15,15 @@ namespace AuthService.Services
         // Dependency Injection For The User Repository And JWT Generator
         private readonly IUserRepository _userRepository;
         private readonly JwtGenerator _jwtGenerator;
-        public AuthService(IUserRepository userRepository, JwtGenerator jwtGenerator)
+
+        // Injecting The Kafka Producer Service For The Event Publishing
+        private readonly IKafkaProducerService _kafkaProducerService;
+
+        public AuthService(IUserRepository userRepository, JwtGenerator jwtGenerator, IKafkaProducerService kafkaProducerService)
         {
             this._userRepository = userRepository;
             this._jwtGenerator = jwtGenerator;
+            this._kafkaProducerService = kafkaProducerService;
         }
 
         // The Method That Handles The Login Process
@@ -67,6 +73,15 @@ namespace AuthService.Services
                 CreatedAt = DateTime.UtcNow
             };
             await this._userRepository.CreateUser(newUser);
+
+            // Creating An Event Object To Be Published To Kafka Sending Only The Id, As It's The Only Needed Info For The Other Service (UserProfileService)
+            var userEvent = new UserRegisteredEvent
+            {
+                UserId = newUser.UserId
+            };
+
+            // Publishing The User Getting Registered As An Event To Kafka
+            await this._kafkaProducerService.AsyncPublish("user-registered", userEvent);
         }
 
         // The Method That Handles The Email Existence Verification Process
