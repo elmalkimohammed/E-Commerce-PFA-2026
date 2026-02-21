@@ -29,3 +29,16 @@ services:
     environment:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+  #___Databases___
+  AuthServiceDB:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: "AuthService"
+    volumes:
+      - AuthServiceDB-data:/var/lib/mysql
+volumes:
+  AuthServiceDB-data: 
+    driver: local
