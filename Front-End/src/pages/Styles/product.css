@@ -96,3 +96,47 @@
 .product-badge.sale {
   background: #e53935;
 }
+
+/* Responsive ProductCard */
+@media (max-width: 768px) {
+  .product-image {
+    height: 160px;
+  }
+
+  .product-image i {
+    font-size: 52px;
+  }
+
+  .product-info {
+    padding: 14px 14px 12px;
+    gap: 10px;
+  }
+
+  .product-text h3 {
+    font-size: 15px;
+  }
+
+  .product-desc {
+    font-size: 12px;
+  }
+
+  .product-card button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-image {
+    height: 140px;
+  }
+
+  .product-image i {
+    font-size: 44px;
+  }
+
+  .product-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+  }
+}

@@ -9,6 +9,10 @@
   padding: 18px 28px;
   color: white;
 }
+a {
+  text-decoration: none; /* Removes the underline from all links */
+  color: inherit; /* Inherits the text color from the parent element */
+}
 
 .brand {
   color: var(--accent);
@@ -60,4 +64,78 @@
   line-height: 16px;
   min-width: 18px;
   text-align: center;
+}
+
+/* Bouton hamburger (caché sur desktop) */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .top-nav {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    order: 2;
+    margin-left: auto;
+  }
+
+  .brand {
+    order: 1;
+    font-size: 16px;
+  }
+
+  .user-icons {
+    order: 3;
+  }
+
+  .redirect {
+    order: 4;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    flex-direction: column;
+    gap: 0;
+    transition: max-height 0.3s ease;
+  }
+
+  .redirect.open {
+    max-height: 240px;
+    padding-top: 8px;
+  }
+
+  .redirect p {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .redirect p:last-child {
+    border-bottom: none;
+  }
+
+  .user-icons i {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-nav {
+    padding: 10px 12px;
+  }
+
+  .brand {
+    font-size: 15px;
+  }
 }

@@ -23,7 +23,25 @@
   --border: #e7edf6;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
+  overflow-x: hidden;
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive base */
+@media (max-width: 480px) {
+  body {
+    font-size: 15px;
+  }
+}
+

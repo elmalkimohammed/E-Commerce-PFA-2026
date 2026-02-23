@@ -1,5 +1,19 @@
+.top-section-wrapper {
+  position: relative;
+  height: 70vh;
+}
+
+.top-section-swiper {
+  height: 100%;
+}
+
+.top-section-swiper .swiper-slide {
+  height: 100%;
+}
+
 .top-section {
-    height: 70vh;
+    height: 100%;
+    min-height: 70vh;
     background: linear-gradient(90deg, var(--hero-from) 0%, var(--hero-to) 100%);
     display: flex;
     flex-direction: column;
@@ -26,4 +40,76 @@
 
 .top-section-desc {
   opacity: 0.92;
+}
+
+/* Swiper pagination & navigation */
+.top-section-swiper .swiper-pagination-bullet {
+  background: white;
+  opacity: 0.6;
+}
+.top-section-swiper .swiper-pagination-bullet-active {
+  opacity: 1;
+  transform: scale(1.2);
+}
+.top-section-swiper .swiper-button-prev,
+.top-section-swiper .swiper-button-next {
+  color: white;
+}
+.top-section-swiper .swiper-button-prev::after,
+.top-section-swiper .swiper-button-next::after {
+  font-size: 28px;
+}
+
+/* Responsive TopSection */
+@media (max-width: 768px) {
+  .top-section-wrapper {
+    height: 55vh;
+    min-height: 320px;
+  }
+
+  .top-section {
+    min-height: 55vh;
+    padding: 0 20px;
+    gap: 14px;
+  }
+
+  .top-section-promo {
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+  }
+
+  .top-section-desc {
+    font-size: 14px;
+  }
+
+  .top-section button {
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+
+  .top-section-swiper .swiper-button-prev::after,
+  .top-section-swiper .swiper-button-next::after {
+    font-size: 22px;
+  }
+
+  .top-section-swiper .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-section-wrapper {
+    height: 50vh;
+    min-height: 280px;
+  }
+
+  .top-section {
+    min-height: 50vh;
+    gap: 12px;
+  }
+
+  .top-section-swiper .swiper-button-prev,
+  .top-section-swiper .swiper-button-next {
+    display: none;
+  }
 }
