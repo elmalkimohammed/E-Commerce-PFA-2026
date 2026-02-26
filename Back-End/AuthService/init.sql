@@ -1,0 +1,7 @@
+CREATE TABLE Users (
+    UserId CHAR(36) PRIMARY KEY,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    PasswordHash TEXT NOT NULL,
+    Role VARCHAR(50) NOT NULL,
+    CreatedAt DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

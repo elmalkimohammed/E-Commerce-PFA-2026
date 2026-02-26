@@ -52,6 +52,7 @@ services:
       start_period: 30s
     volumes:
       - AuthServiceDB-data:/var/lib/mysql
+      - /Back-End/AuthService/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - ecommerce-network
   #___Micro-Services___
