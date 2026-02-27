@@ -1,15 +1,24 @@
 import { useState, useEffect, useRef } from "react";
 import { X, ImagePlus } from "lucide-react";
+import AttributesEditor from "./AttributesEditor";
 
 const CATEGORIES = ["Electronics", "Clothing", "Home & Garden", "Books", "Sports", "Toys", "Food", "Other"];
+
+// Convert { key: value } dict → [{ key, value }] array for the editor
+const dictToArray = (dict) =>
+  dict ? Object.entries(dict).map(([key, value]) => ({ key, value: String(value) })) : [];
+
+// Convert [{ key, value }] array → { key: value } dict for the API
+const arrayToDict = (arr) =>
+  Object.fromEntries(arr.filter((a) => a.key.trim()).map((a) => [a.key.trim(), a.value]));
 
 export default function EditProductModal({ product, onSave, onClose }) {
   const [form, setForm] = useState({ ...product });
   const [images, setImages] = useState(product.images || []);
+  const [attributes, setAttributes] = useState(dictToArray(product.attributes));
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef();
 
-  // Close on Escape key
   useEffect(() => {
     const handleKey = (e) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handleKey);
@@ -24,18 +33,12 @@ export default function EditProductModal({ product, onSave, onClose }) {
 
   const handleImageAdd = (e) => {
     const files = Array.from(e.target.files);
-    const previews = files.map((file) => ({
-      file,
-      url: URL.createObjectURL(file),
-      name: file.name,
-    }));
+    const previews = files.map((file) => ({ file, url: URL.createObjectURL(file), name: file.name }));
     setImages((prev) => [...prev, ...previews]);
     fileInputRef.current.value = "";
   };
 
-  const removeImage = (index) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
-  };
+  const removeImage = (index) => setImages((prev) => prev.filter((_, i) => i !== index));
 
   const validate = () => {
     const newErrors = {};
@@ -50,7 +53,7 @@ export default function EditProductModal({ product, onSave, onClose }) {
     e.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return; }
-    onSave({ ...form, images });
+    onSave({ ...form, images, attributes: arrayToDict(attributes) });
   };
 
   return (
@@ -97,7 +100,8 @@ export default function EditProductModal({ product, onSave, onClose }) {
             </div>
           </div>
 
-          {/* Images */}
+          <AttributesEditor attributes={attributes} onChange={setAttributes} />
+
           <div className="form-group">
             <label>Product Images</label>
             <div className="image-upload-area" onClick={() => fileInputRef.current.click()}>
@@ -111,9 +115,7 @@ export default function EditProductModal({ product, onSave, onClose }) {
                 {images.map((img, i) => (
                   <div key={i} className="image-preview">
                     <img src={img.url} alt={img.name} />
-                    <button type="button" className="remove-image" onClick={() => removeImage(i)}>
-                      <X size={12} />
-                    </button>
+                    <button type="button" className="remove-image" onClick={() => removeImage(i)}><X size={12} /></button>
                   </div>
                 ))}
               </div>

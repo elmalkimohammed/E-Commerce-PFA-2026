@@ -42,7 +42,6 @@ body {
 }
 
 .portal-header {
-  text-align: center;
   background: var(--navy);
   border-radius: var(--radius);
   padding: 32px 36px;
@@ -538,4 +537,84 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+/* ── Attributes Editor ──────────────────────────────────── */
+.attributes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.attribute-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.attr-input {
+  flex: 1;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  font-family: var(--font);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.attr-input:focus {
+  border-color: var(--accent);
+  background: #fff;
+}
+
+.attr-sep {
+  font-weight: 600;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.attr-remove {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--danger-dim);
+  border: 1px solid rgba(224, 82, 82, 0.15);
+  color: var(--danger);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.attr-remove:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+.attr-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px dashed var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: all 0.15s;
+  align-self: flex-start;
+}
+
+.attr-add-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent-hover);
+  background: var(--accent-dim);
 }

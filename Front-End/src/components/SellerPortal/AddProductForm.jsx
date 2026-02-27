@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { ImagePlus, X } from "lucide-react";
+import AttributesEditor from "./AttributesEditor";
 
 const CATEGORIES = ["Electronics", "Clothing", "Home & Garden", "Books", "Sports", "Toys", "Food", "Other"];
 
@@ -8,6 +9,7 @@ const emptyForm = { name: "", category: "", description: "", price: "", stock: "
 export default function AddProductForm({ onAddProduct }) {
   const [form, setForm] = useState(emptyForm);
   const [images, setImages] = useState([]);
+  const [attributes, setAttributes] = useState([]);
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef();
 
@@ -19,18 +21,12 @@ export default function AddProductForm({ onAddProduct }) {
 
   const handleImageAdd = (e) => {
     const files = Array.from(e.target.files);
-    const previews = files.map((file) => ({
-      file,
-      url: URL.createObjectURL(file),
-      name: file.name,
-    }));
+    const previews = files.map((file) => ({ file, url: URL.createObjectURL(file), name: file.name }));
     setImages((prev) => [...prev, ...previews]);
     fileInputRef.current.value = "";
   };
 
-  const removeImage = (index) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
-  };
+  const removeImage = (index) => setImages((prev) => prev.filter((_, i) => i !== index));
 
   const validate = () => {
     const newErrors = {};
@@ -41,13 +37,18 @@ export default function AddProductForm({ onAddProduct }) {
     return newErrors;
   };
 
+  // Convert [{key, value}] array → { key: value } dict for the API
+  const buildAttributesDict = () =>
+    Object.fromEntries(attributes.filter((a) => a.key.trim()).map((a) => [a.key.trim(), a.value]));
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return; }
-    onAddProduct({ ...form, images });
+    onAddProduct({ ...form, images, attributes: buildAttributesDict() });
     setForm(emptyForm);
     setImages([]);
+    setAttributes([]);
     setErrors({});
   };
 
@@ -88,6 +89,8 @@ export default function AddProductForm({ onAddProduct }) {
             {errors.stock && <span className="field-error">{errors.stock}</span>}
           </div>
         </div>
+
+        <AttributesEditor attributes={attributes} onChange={setAttributes} />
 
         <div className="form-group">
           <label>Product Images</label>
