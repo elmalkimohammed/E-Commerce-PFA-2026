@@ -37,12 +37,63 @@ namespace TicketProductApi.Mapper
             model.Attributes = obj.Attributes;
             model.Category = obj.Category;
             model.UserId = obj.UserId;
+            model.Id_Image = obj.Id_Image;
             model.Image = obj.Image;
             model.Mimetype = obj.Mimetype;
-            obj.Filename = obj.Filename;
+            model.Filename = obj.Filename;
             return model;
 
 
         }
+        public static List<GetDtoResponse> ProductsToGetDtoList(List<ProductAndImage> products)
+        {
+            List<GetDtoResponse> response = new List<GetDtoResponse>();
+            foreach (var product in products)
+            {
+                GetDtoResponse dto = new GetDtoResponse
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    Stock = product.Stock,
+                    Attributes = product.Attributes,
+                    Category = product.Category,
+                    UserId = product.UserId,
+                    Id_Image = product.Id_Image,
+                    Image = product.Image,
+                    Mimetype = product.Mimetype,
+                    Filename = product.Filename
+                };
+                response.Add(dto);
+            }
+            return response;
+        }
+        public static Product PostDtoToProduct(PostDtoRequest obj)
+        {
+            Product product = new Product();
+            product.Name = obj.Name;
+            product.Description = obj.Description;
+            product.Price = obj.Price;
+            product.Stock = obj.Stock;
+            product.Attributes = obj.Attributes;
+            product.Category = obj.Category;
+            product.UserId = obj.UserId;
+            return product;
+        }
+        public static Product PutDtoToProduct(PutDtoRequest obj)
+        {
+            Product product = new Product();
+            product.Id = obj.Id;
+            product.Name = obj.Name;
+            product.Description = obj.Description;
+            product.Price = obj.Price;
+            product.Stock = obj.Stock;
+            product.Attributes = obj.Attributes;
+            product.Category = obj.Category;
+            product.UserId = obj.UserId;
+            return product;
+        }
+
     }
 }

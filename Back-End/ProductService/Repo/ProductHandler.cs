@@ -85,7 +85,10 @@ namespace TicketProductApi.Repo
             cmd.Parameters.AddWithValue("@id", id);
             MySqlDataReader rd = cmd.ExecuteReader();
             ProductAndImage product = new ProductAndImage();
-            rd.Read();
+            if (!rd.Read())
+            {
+                return null!;
+            }
             product.Id = rd.GetInt32("Id");
             product.Name = rd.GetString("Name");
             product.Description = rd.GetString("Description");
@@ -115,18 +118,18 @@ namespace TicketProductApi.Repo
             cmd.Parameters.AddWithValue("@Description", product.Description);
             cmd.Parameters.AddWithValue("@Price", product.Price);
             cmd.Parameters.AddWithValue("@Stock", product.Stock);
-            cmd.Parameters.AddWithValue("@Attributes",product.Attributes);
+            cmd.Parameters.AddWithValue("@Attributes", JsonSerializer.Serialize(product.Attributes));
             cmd.Parameters.AddWithValue("@Category", product.Category);
             cmd.Parameters.AddWithValue("@UserId", product.UserId);
             cmd.ExecuteNonQuery();
         }
-        public void AddImage(ProductImage image,int id)
+        public void AddImage(ProductImage image)
         {
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
             string Sql = "INSERT INTO productsImage (Product_Id, Image, Mimetype, Filename) VALUES (@Product_Id, @Image, @Mimetype, @Filename)";
             using MySqlCommand cmd = new MySqlCommand(Sql, coon);
-            cmd.Parameters.AddWithValue("@Product_Id", id);
+            cmd.Parameters.AddWithValue("@Product_Id", image.Product_Id);
             cmd.Parameters.AddWithValue("@Image", image.Image);
             cmd.Parameters.AddWithValue("@Mimetype", image.Mimetype);
             cmd.Parameters.AddWithValue("@Filename", image.Filename);
@@ -137,7 +140,7 @@ namespace TicketProductApi.Repo
         {
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
-            string Sql = "DELETE FROM product WHERE Id = @Id";
+            string Sql = "DELETE FROM product WHERE Id = @Id ";
             using MySqlCommand cmd = new MySqlCommand(Sql, coon);
             cmd.Parameters.AddWithValue("@Id", id);
             cmd.ExecuteNonQuery();
@@ -154,7 +157,7 @@ namespace TicketProductApi.Repo
             cmd.ExecuteNonQuery();
             coon.Close();
         }
-        public void UpdateProduct(ProductAndImage product) 
+        public void UpdateProductAndImage(ProductAndImage product) 
         { 
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
@@ -178,7 +181,23 @@ namespace TicketProductApi.Repo
             cmdImage.ExecuteNonQuery();
             coon.Close();
         }
-        public void UpdateImage(ProductImage image, int productId)
+        public void  UpdateProduct(Product product)
+        {
+            using MySqlConnection coon = new MySqlConnection(connection);
+            coon.Open();
+            string sql = "UPDATE product SET Name = @Name, Description = @Description, Price = @Price, Stock = @Stock, Attributes = @Attributes, Category = @Category, UserId = @UserId WHERE Id = @Id";
+            using MySqlCommand cmd = new MySqlCommand(sql, coon);
+            cmd.Parameters.AddWithValue("@Name", product.Name);
+            cmd.Parameters.AddWithValue("@Description", product.Description);
+            cmd.Parameters.AddWithValue("@Price", product.Price);
+            cmd.Parameters.AddWithValue("@Stock", product.Stock);
+            cmd.Parameters.AddWithValue("@Attributes", JsonSerializer.Serialize(product.Attributes));
+            cmd.Parameters.AddWithValue("@Category", product.Category);
+            cmd.Parameters.AddWithValue("@UserId", product.UserId);
+            cmd.Parameters.AddWithValue("@Id", product.Id);
+            cmd.ExecuteNonQuery();
+        }
+        public void UpdateImage(ProductImage image)
         {
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
@@ -187,7 +206,7 @@ namespace TicketProductApi.Repo
             cmd.Parameters.AddWithValue("@Image", image.Image);
             cmd.Parameters.AddWithValue("@Mimetype", image.Mimetype);
             cmd.Parameters.AddWithValue("@Filename", image.Filename);
-            cmd.Parameters.AddWithValue("@ProductId", productId);
+            cmd.Parameters.AddWithValue("@ProductId", image.Product_Id);
             cmd.ExecuteNonQuery();
             coon.Close();
         }

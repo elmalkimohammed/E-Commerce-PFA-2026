@@ -19,7 +19,7 @@ namespace TicketProductApi.Dto
         public Dictionary<string, object> Attributes { get; set; } = new();
         public string Category { get; set; } = null!;
         public Guid UserId { get; set; }
-        public
+        
 
     }
 }
