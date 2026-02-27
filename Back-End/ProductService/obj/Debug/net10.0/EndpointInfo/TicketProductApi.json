@@ -207,38 +207,6 @@
           }
         }
       }
-    },
-    "/TechStore/ProductService/UpdateImage": {
-      "put": {
-        "tags": [
-          "Product"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PutImageDtoRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PutImageDtoRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/PutImageDtoRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
     }
   },
   "components": {
@@ -282,6 +250,12 @@
           "userId": {
             "type": "string",
             "format": "uuid"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostImageDtoRequest"
+            }
           }
         }
       },
@@ -350,37 +324,6 @@
           "userId": {
             "type": "string",
             "format": "uuid"
-          }
-        }
-      },
-      "PutImageDtoRequest": {
-        "type": "object",
-        "properties": {
-          "id_Image": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
-          },
-          "product_Id": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
-          },
-          "image": {
-            "type": "string",
-            "format": "byte"
-          },
-          "mimetype": {
-            "type": "string"
-          },
-          "filename": {
-            "type": "string"
           }
         }
       }

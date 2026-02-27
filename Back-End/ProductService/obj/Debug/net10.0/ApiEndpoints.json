@@ -114,21 +114,5 @@
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": []
-  },
-  {
-    "ContainingType": "TicketProductApi.Controllers.ProductController",
-    "Method": "UpdateImage",
-    "RelativePath": "TechStore/ProductService/UpdateImage",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "obj",
-        "Type": "TicketProductApi.Dto.PutImageDtoRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
   }
 ]

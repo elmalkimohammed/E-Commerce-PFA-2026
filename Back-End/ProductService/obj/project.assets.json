@@ -134,11 +134,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\OneDrive\\Documents\\4eme annee 1 semestre\\pfa\\ProductApi\\E-Commerce-PFA-2026\\Back-End\\ProductService\\TicketProductApi.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\TicketProductApi\\TicketProductApi\\TicketProductApi.csproj",
       "projectName": "TicketProductApi",
-      "projectPath": "C:\\Users\\Admin\\OneDrive\\Documents\\4eme annee 1 semestre\\pfa\\ProductApi\\E-Commerce-PFA-2026\\Back-End\\ProductService\\TicketProductApi.csproj",
+      "projectPath": "C:\\Users\\Admin\\source\\repos\\TicketProductApi\\TicketProductApi\\TicketProductApi.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\OneDrive\\Documents\\4eme annee 1 semestre\\pfa\\ProductApi\\E-Commerce-PFA-2026\\Back-End\\ProductService\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\source\\repos\\TicketProductApi\\TicketProductApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

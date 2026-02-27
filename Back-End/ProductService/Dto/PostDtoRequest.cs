@@ -20,6 +20,7 @@ namespace TicketProductApi.Dto
         public string Category { get; set; } = null!;
         public Guid UserId { get; set; }
         
+        public List<PostImageDtoRequest> Images { get; set; } = new();
 
     }
 }

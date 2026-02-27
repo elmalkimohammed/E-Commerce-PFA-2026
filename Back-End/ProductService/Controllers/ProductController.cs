@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using TicketProductApi.Dto;
@@ -63,23 +63,25 @@ namespace TicketProductApi.Controllers
             }
         }
         [HttpPost]
-        public IActionResult addProduct(PostDtoRequest obj)
-        {
-            if (!ModelState.IsValid)
+            public IActionResult addProduct(PostDtoRequest obj)
             {
-                return BadRequest();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                ProductAndImage product = ProductMapper.PostDtoToProductAndImage(obj);
+                try
+                {
+                    _productHandler.AddProductWithImages(product);
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    // TEMP: return full error so we can debug
+                    return BadRequest(ex.ToString());
+                }
             }
-            Product product = ProductMapper.PostDtoToProduct(obj);
-            try
-            {
-                _productHandler.AddProduct(product);
-                return Ok();
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
         [HttpDelete("{id}")]
         public IActionResult DeleteProduct(int id)
         {
@@ -144,23 +146,6 @@ namespace TicketProductApi.Controllers
                 return NotFound();
             }
         }
-        [HttpPut("UpdateImage")]
-        public IActionResult UpdateImage(PutImageDtoRequest obj)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-            ProductImage image = ProductImageMapper.PutImageToProductImage(obj);
-            try
-            {
-                _productHandler.UpdateImage(image);
-                return Ok();
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
+        
     }
 }

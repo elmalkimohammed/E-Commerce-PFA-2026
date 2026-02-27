@@ -1,30 +1,31 @@
-﻿using TicketProductApi.Dto;
+using TicketProductApi.Dto;
 using TicketProductApi.Model;
 
 namespace TicketProductApi.Mapper
 {
     public static class ProductMapper
     {
-        public static ProductAndImage ModelImageToModelAndImage(Product Pro, ProductImage Img)
+        public static ProductAndImage ModelImageToModelAndImage(ProductAndImage pro)
         {
-
             return new ProductAndImage
             {
-                Id = Pro.Id,
-                Name = Pro.Name,
-                Description = Pro.Description,
-                Price = Pro.Price,
-                Stock = Pro.Stock,
-                Attributes = Pro.Attributes,
-                Category = Pro.Category,
-                UserId = Pro.UserId,
-                Id_Image = Img.Id_Image,
-                Product_Id = Img.Product_Id,
-                Image = Img.Image,
-                Mimetype = Img.Mimetype,
-                Filename = Img.Filename,
+                Id = pro.Id,
+                Name = pro.Name,
+                Description = pro.Description,
+                Price = pro.Price,
+                Stock = pro.Stock,
+                Attributes = pro.Attributes,
+                Category = pro.Category,
+                UserId = pro.UserId,
+                Images = pro.Images?.Select(img => new ProductImage
+                {
+                    Id_Image = img.Id_Image,
+                    Product_Id = img.Product_Id,
+                    Image = img.Image,
+                    Mimetype = img.Mimetype,
+                    Filename = img.Filename
+                }).ToList() ?? new List<ProductImage>()
             };
-
         }
         public static GetDtoResponse ProductAndImageToDto(ProductAndImage obj)
         {
@@ -37,49 +38,59 @@ namespace TicketProductApi.Mapper
             model.Attributes = obj.Attributes;
             model.Category = obj.Category;
             model.UserId = obj.UserId;
-            model.Id_Image = obj.Id_Image;
-            model.Image = obj.Image;
-            model.Mimetype = obj.Mimetype;
-            model.Filename = obj.Filename;
+            model.Images = obj.Images.Select(img => new GetImageDtoResponse
+            {
+                Id_Image = img.Id_Image,
+                Product_Id = img.Product_Id,
+                Image = img.Image,
+                Mimetype = img.Mimetype,
+                Filename = img.Filename
+            }).ToList();
             return model;
 
 
         }
         public static List<GetDtoResponse> ProductsToGetDtoList(List<ProductAndImage> products)
         {
-            List<GetDtoResponse> response = new List<GetDtoResponse>();
-            foreach (var product in products)
+            return products.Select(p => new GetDtoResponse
             {
-                GetDtoResponse dto = new GetDtoResponse
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Price = p.Price,
+                Stock = p.Stock,
+                Attributes = p.Attributes,
+                Category = p.Category,
+                UserId = p.UserId,
+                Images = p.Images.Select(img => new GetImageDtoResponse
                 {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Description = product.Description,
-                    Price = product.Price,
-                    Stock = product.Stock,
-                    Attributes = product.Attributes,
-                    Category = product.Category,
-                    UserId = product.UserId,
-                    Id_Image = product.Id_Image,
-                    Image = product.Image,
-                    Mimetype = product.Mimetype,
-                    Filename = product.Filename
-                };
-                response.Add(dto);
-            }
-            return response;
+                    Id_Image = img.Id_Image,
+                    Product_Id = img.Product_Id,
+                    Image = img.Image,
+                    Mimetype = img.Mimetype,
+                    Filename = img.Filename
+                }).ToList()
+            }).ToList();
         }
-        public static Product PostDtoToProduct(PostDtoRequest obj)
+        public static ProductAndImage PostDtoToProductAndImage(PostDtoRequest obj)
         {
-            Product product = new Product();
-            product.Name = obj.Name;
-            product.Description = obj.Description;
-            product.Price = obj.Price;
-            product.Stock = obj.Stock;
-            product.Attributes = obj.Attributes;
-            product.Category = obj.Category;
-            product.UserId = obj.UserId;
-            return product;
+            return new ProductAndImage
+            {
+                Name = obj.Name,
+                Description = obj.Description,
+                Price = obj.Price,
+                Stock = obj.Stock,
+                Attributes = obj.Attributes,
+                Category = obj.Category,
+                UserId = obj.UserId,
+                Images = obj.Images?.Select(img => new ProductImage
+                {
+                    // Product_Id will be set after inserting the product
+                    Image = img.Image,
+                    Mimetype = img.Mimetype,
+                    Filename = img.Filename
+                }).ToList() ?? new List<ProductImage>()
+            };
         }
         public static Product PutDtoToProduct(PutDtoRequest obj)
         {
