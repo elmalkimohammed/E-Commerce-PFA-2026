@@ -1,0 +1,33 @@
+@AuthService_HostAddress = http://localhost:5181/api/auth
+
+### Register
+POST {{AuthService_HostAddress}}/register
+Content-Type: application/json
+
+{
+  "email": "elmalki256@gmail.com",
+  "password": "stargazer123",
+  "confirmPassword": "stargazer123"
+}
+
+### Login
+POST {{AuthService_HostAddress}}/login
+Content-Type: application/json
+
+{
+  "email": "elmalki256@gmail.com",
+  "password": "stargazer123"
+}
+
+### Verifying An Email's Existance
+GET {{AuthService_HostAddress}}/forgot-password/verify-email?email=mohammedelmalki241@gmail.com
+Accept: application/json
+
+### Updating A Password
+POST {{AuthService_HostAddress}}/forgot-password/reset
+Content-Type: application/json
+
+{
+  "resetToken": "9a664127-b8f2-44a8-9bdd-a72c4c94a739",
+  "newPassword": "stargazer963"
+}

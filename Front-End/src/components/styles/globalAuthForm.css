@@ -1,0 +1,72 @@
+/* Global Infos */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+.containerBox {
+    border-radius: 12px;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    align-items: center;
+    overflow: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+/* Top Section */
+.header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 20px;
+    width: 100%;
+    background: linear-gradient(135deg, #2d3748 0%, #1a365d 100%);
+    color: #ffffff;
+}
+/* Middle Section */
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 2em;
+}
+form div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    align-items: flex-start;
+}
+form div input {
+    padding: 10px;
+    width: 100%;
+    border-radius: 12px;
+    border: #e2e8f0 solid 2px;
+}
+form input[type="submit"] {
+    background-color: rgb(72, 187, 120);
+    border-style: none;
+    border-radius: 12px;
+    padding: 10px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+}
+/* Bottom Section */
+.footer {
+    background-color: #f8f9fa;
+    color: #718096;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
+.footer span {
+    color: #2b6cb0;
+}
+.footer span:hover {
+    text-decoration: underline;
+}

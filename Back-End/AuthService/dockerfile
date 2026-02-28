@@ -1,0 +1,30 @@
+# -----Building Stage-----
+
+    # Pulling The Base Image For Building 
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+    # Set The Current Working Directory Inside The Container
+WORKDIR /src
+    # Copy The '.csproj' Into The Container And Restore The Dependencies
+COPY [ "./AuthService.csproj",  "." ]
+RUN dotnet restore
+    # Copy Everything Else To The Working Directory And Build
+COPY . .
+RUN dotnet publish -c Release -o /app/publish
+
+# -----Runtime Stage-----
+
+    # Pulling The Base Image For Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+    # Set The Current Working Directory Inside The Container
+WORKDIR /app
+    # Copy All The Published Files From The Building Stage
+COPY --from=build /app/publish .
+    # Expose The Port Of The .NET Server
+        # HTTPS
+EXPOSE 7214
+        # HTTP
+EXPOSE 5181
+    # Set Environement Variables
+ENV ASPNETCORE_ENVIRONMENT=Production
+    # Define The Entry Point
+ENTRYPOINT [ "dotnet", "AuthService.dll" ]
