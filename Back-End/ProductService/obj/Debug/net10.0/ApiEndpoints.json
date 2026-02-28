@@ -1,0 +1,134 @@
+[
+  {
+    "ContainingType": "TicketProductApi.Controllers.ProductController",
+    "Method": "GetAllProducts",
+    "RelativePath": "TechStore/ProductService",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TicketProductApi.Controllers.ProductController",
+    "Method": "addProduct",
+    "RelativePath": "TechStore/ProductService",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "obj",
+        "Type": "TicketProductApi.Dto.PostDtoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TicketProductApi.Controllers.ProductController",
+    "Method": "UpdateProduct",
+    "RelativePath": "TechStore/ProductService",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "obj",
+        "Type": "TicketProductApi.Dto.PutDtoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TicketProductApi.Controllers.ProductController",
+    "Method": "GetProduct",
+    "RelativePath": "TechStore/ProductService/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TicketProductApi.Controllers.ProductController",
+    "Method": "DeleteProduct",
+    "RelativePath": "TechStore/ProductService/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TicketProductApi.Controllers.ProductController",
+    "Method": "AddImage",
+    "RelativePath": "TechStore/ProductService/AddImage",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "obj",
+        "Type": "TicketProductApi.Dto.PostImageDtoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TicketProductApi.Controllers.ProductController",
+    "Method": "DeleteImage",
+    "RelativePath": "TechStore/ProductService/DeleteImage/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TicketProductApi.Controllers.ProductController",
+    "Method": "Get5Products",
+    "RelativePath": "TechStore/ProductService/Latest",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TicketProductApi.Controllers.ProductController",
+    "Method": "UpdateImage",
+    "RelativePath": "TechStore/ProductService/UpdateImage",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "obj",
+        "Type": "TicketProductApi.Dto.PutImageDtoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
