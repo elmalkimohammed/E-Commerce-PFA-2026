@@ -3,6 +3,8 @@ import Analytics from "../components/SellerPortal/Analytics";
 import ProductTable from "../components/SellerPortal/ProductTable";
 import AddProductForm from "../components/SellerPortal/AddProductForm";
 import EditProductModal from "../components/SellerPortal/EditProductModal";
+import TopNav from "../Components/navbarComponent/TopNav";
+
 import "./styles/SellerPortal.css";
 
 // Mock data — replace with API calls later
@@ -34,6 +36,8 @@ export default function SellerPortal() {
   };
 
   return (
+    <>
+    <TopNav/>
     <div className="seller-portal">
       <div className="portal-header">
         <h1 className="portal-title">Seller Portal</h1>
@@ -58,5 +62,6 @@ export default function SellerPortal() {
         />
       )}
     </div>
+    </>
   );
 }
