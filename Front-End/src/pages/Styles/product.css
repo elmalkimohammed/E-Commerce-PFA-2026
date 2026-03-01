@@ -1,0 +1,142 @@
+.product-card
+{
+    background-color: var(--surface);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.product-image{
+    position: relative;
+    background: linear-gradient(135deg, #4f7ef7 0%, #7a46c4 100%);
+    width:100%;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.product-image i {
+  font-size: 64px;
+  color: rgba(255,255,255,0.95);
+}
+.product-info{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px 18px 16px;
+}
+
+.product-text h3 {
+  font-size: 16px;
+  margin-bottom: 6px;
+  text-align: left;
+}
+
+.product-desc {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: left;
+}
+
+.product-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.product-price {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.price {
+  font-weight: 800;
+  color: var(--text);
+}
+
+.old-price {
+  font-size: 13px;
+  color: #98a6bd;
+  text-decoration: line-through;
+}
+
+.product-card button {
+  padding: 8px 14px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.product-card button:hover {
+  background: var(--primary-hover);
+}
+
+.product-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  color: white;
+  font-weight: 700;
+}
+
+.product-badge.new {
+  background: var(--accent);
+}
+
+.product-badge.sale {
+  background: #e53935;
+}
+
+/* Responsive ProductCard */
+@media (max-width: 768px) {
+  .product-image {
+    height: 160px;
+  }
+
+  .product-image i {
+    font-size: 52px;
+  }
+
+  .product-info {
+    padding: 14px 14px 12px;
+    gap: 10px;
+  }
+
+  .product-text h3 {
+    font-size: 15px;
+  }
+
+  .product-desc {
+    font-size: 12px;
+  }
+
+  .product-card button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-image {
+    height: 140px;
+  }
+
+  .product-image i {
+    font-size: 44px;
+  }
+
+  .product-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+  }
+}
