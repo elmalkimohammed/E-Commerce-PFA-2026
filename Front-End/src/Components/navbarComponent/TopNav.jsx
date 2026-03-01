@@ -32,7 +32,7 @@ function TopNav() {
         <i className="bi bi-search" aria-hidden></i>
         <i className="bi bi-person" aria-hidden onClick={ () => { navigate("/Authentication") } }></i>
         <span className="cart-icon">
-          <i className="bi bi-cart" aria-hidden></i>
+          <i className="bi bi-cart" aria-hidden onClick={ () => { navigate("/CartPage") } } ></i>
           <span className="cart-badge">3</span>
         </span>
       </div>

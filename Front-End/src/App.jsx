@@ -4,6 +4,7 @@ import Acceuil from "./pages/Acceuil";
 import AuthPage from './pages/AuthPage.jsx'
 import SellerPortal from './pages/SellerPortal'
 import ProfilePage from './pages/ProfilePage';
+import CartPage from "./pages/CartPage.jsx";
 
 function NotFound() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/Authentication" element={<AuthPage/>} />
         <Route path="/SellerPortal" element={ <SellerPortal/> }/>
         <Route path="/ProfilePage" element={ <ProfilePage/> }/>
+        <Route path="/CartPage" element={ <CartPage/> }/>
       </Routes>
     </BrowserRouter>
   );
