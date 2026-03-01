@@ -52,9 +52,28 @@ services:
       start_period: 30s
     volumes:
       - AuthServiceDB-data:/var/lib/mysql
-      - /Back-End/AuthService/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./Back-End/AuthService/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - ecommerce-network
+  ProductServiceDB:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: ProductsDb
+      MYSQL_ROOT_PASSWORD: admin
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - ProductServiceDB-data:/var/lib/mysql
+      - ./Back-End/ProductService/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ecommerce-network
+
   #___Micro-Services___
   AuthServiceAPI:
     build: 
@@ -77,8 +96,30 @@ services:
         - Kafka__BootstrapServers=kafka:29092
     networks:
         - ecommerce-network
+  ProductServiceAPI:
+    build:
+      context: ./Back-End/ProductService
+      dockerfile: dockerfile
+    image: productservice-api:latest
+    container_name: productservice-api
+    ports:
+      - "5002:5252"
+    depends_on:
+      ProductServiceDB:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=http://+:5252
+        - ConnectionStrings__DefaultConnection=Server=ProductServiceDB;Port=3306;Database=ProductsDb;User=root;Password=admin;
+        - Kafka__BootstrapServers=kafka:29092
+    networks:
+      - ecommerce-network
 volumes:
   AuthServiceDB-data: 
+    driver: local
+  ProductServiceDB-data:
     driver: local
 networks:
   ecommerce-network:
