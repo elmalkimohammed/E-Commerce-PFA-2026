@@ -1,0 +1,44 @@
+.prodBoxContainer {
+    display: flex;
+    gap: 2em;
+    border: black 1px solid;
+    padding: 20px;
+    border-radius: 20px;
+}
+.leftSide {
+    display: flex;
+}
+.stockControl {
+    border: 1px black solid;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    gap: 1em;
+}
+.description h1 {
+    text-align: left;
+}
+.rightSide {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+.stockControl button {
+    background-color: rgb(72, 187, 120);
+    padding: 10px;
+    border-style: none;
+    border-radius: 5px;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.stockControl {
+    display: flex;
+    align-items: center;
+}

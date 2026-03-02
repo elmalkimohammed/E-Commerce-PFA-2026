@@ -2,7 +2,7 @@
 
 function CommandDesc() {
     return(
-        <>
+        <div>
             <h1>Resumé</h1>
             <div className="headerRes">
                 <p>Des questions ? Contactez notre support !</p>
@@ -20,7 +20,7 @@ function CommandDesc() {
                 <button>PASSER LA COMMANDE</button>
                 <span>← Continuer mes achats</span>
             </div>
-        </>
+        </div>
     )
 }
 
