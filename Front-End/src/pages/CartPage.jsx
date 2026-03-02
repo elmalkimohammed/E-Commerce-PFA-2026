@@ -37,8 +37,11 @@ function CartPage() {
             <div className="entireContainer">
                 <h1>Votre pannier</h1>
                 <div className="cartContainer">
+                    <div className="cartItems" style={ { display: "flex", flexDirection: "column", gap: "1em" } }>
                         <ProductBox productMimeType={product.mimetype} productImage={product.image} productDescription={ product.description } productName={product.name} productPrice={product.price} productMaxStock={product.stock}/>
-                        <CommandDesc/>
+                        <ProductBox productMimeType={product.mimetype} productImage={product.image} productDescription={ product.description } productName={product.name} productPrice={product.price} productMaxStock={product.stock}/>
+                    </div>
+                    <CommandDesc/>
                 </div>
             </div>
         </>

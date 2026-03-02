@@ -1,24 +1,32 @@
+import { useNavigate } from "react-router-dom"
 
+import "../styles/CommandDesc.css"
 
 function CommandDesc() {
+
+    const navigate = useNavigate()
+
     return(
-        <div>
+        <div className="cmdDescContainer" style={ { height: "fit-content" } }>
             <h1>Resumé</h1>
+            <hr />
             <div className="headerRes">
                 <p>Des questions ? Contactez notre support !</p>
                 <p>Livraison estimée : 3-5 jours ouvrés</p>
-                <div className="delivery">
-                    <p>Livraison</p>
-                    <p>Gratuite</p>
-                </div>
             </div>
+            <hr />
+            <div className="delivery">
+                <p>Livraison</p>
+                <p>Gratuite</p>
+            </div>
+            <hr />
             <div className="footerRes">
                 <div className="totalPrice">
                     <p>Total</p>
-                    <span></span>
+                    <span>1</span>
                 </div>
-                <button>PASSER LA COMMANDE</button>
-                <span>← Continuer mes achats</span>
+                <button >PASSER LA COMMANDE</button>
+                <span style={ { textAlign: "center", cursor: "pointer", color: "#143a63" } } onClick={ () => { navigate("/") } } >← Continuer mes achats</span>
             </div>
         </div>
     )

@@ -5,7 +5,7 @@ function ProductBox( { productMimeType , productImage , productName , productDes
     const imgSrc = `data:${ productMimeType };base64,${ productImage }`
 
     return(
-        <div className="prodBoxContainer">
+        <div className="prodBoxContainer" style={ { height: "fit-content" } }>
             <div className="leftSide">
                 <div className="imageProd">
                     <img src={ imgSrc } alt="Product's Image" />

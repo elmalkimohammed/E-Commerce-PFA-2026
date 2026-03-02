@@ -1,0 +1,30 @@
+.cmdDescContainer {
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    border: black 1px solid;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+.footerRes {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+.totalPrice , .delivery {
+    display: flex;
+    justify-content: space-between;
+}
+.footerRes button {
+    width: fit-content;
+    align-self: center;
+    padding:10px;
+    background-color: rgb(72, 187, 120);
+    border-style: none;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
