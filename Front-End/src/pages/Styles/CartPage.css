@@ -1,9 +1,10 @@
 .entireContainer {
+    margin-top: 5em;
+    margin-bottom: 5em;
     height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     gap: 5em;
 }
 .cartContainer {

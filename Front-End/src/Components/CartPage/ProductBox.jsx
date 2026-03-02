@@ -22,7 +22,7 @@ function ProductBox( { productMimeType , productImage , productName , productDes
                     <p>2</p>
                     <button className="add">+</button>
                 </div>
-                <button>Retirer</button>
+                <button style={ { background: "transparent", borderStyle: "none", border: "1px solid black", fontWeight: "bolder", width: "fit-content", alignSelf: "flex-end", padding: "10px", borderRadius: "5px", color: "#143a63", cursor: "pointer" } }>Retirer</button>
             </div>
         </div>
     )

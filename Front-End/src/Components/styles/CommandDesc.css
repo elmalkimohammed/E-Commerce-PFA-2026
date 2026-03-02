@@ -1,9 +1,9 @@
 .cmdDescContainer {
     background-color: #f8f9fa;
+    position: sticky;
     display: flex;
     flex-direction: column;
     gap: 2em;
-    border: black 1px solid;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -17,7 +17,11 @@
     display: flex;
     justify-content: space-between;
 }
-.footerRes button {
+.buttons {
+    display: flex;
+    gap: 1em;
+}
+.cmdDescContainer button {
     width: fit-content;
     align-self: center;
     padding:10px;

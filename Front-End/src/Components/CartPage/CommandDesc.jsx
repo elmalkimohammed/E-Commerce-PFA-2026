@@ -25,7 +25,10 @@ function CommandDesc() {
                     <p>Total</p>
                     <span>1</span>
                 </div>
-                <button >PASSER LA COMMANDE</button>
+                <div className="buttons">
+                    <button>Nettoyer Le Pannier</button>
+                    <button >PASSER LA COMMANDE</button>
+                </div>
                 <span style={ { textAlign: "center", cursor: "pointer", color: "#143a63" } } onClick={ () => { navigate("/") } } >← Continuer mes achats</span>
             </div>
         </div>

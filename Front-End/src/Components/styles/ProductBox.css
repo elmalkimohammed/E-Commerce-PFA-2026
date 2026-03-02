@@ -2,13 +2,13 @@
     background-color: #f8f9fa;
     display: flex;
     gap: 2em;
-    border: black 1px solid;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 .leftSide {
     display: flex;
+    gap: 1em;
 }
 .stockControl {
     border: 1px black solid;
@@ -17,8 +17,26 @@
     display: flex;
     gap: 1em;
 }
+.description {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
 .description h1 {
     text-align: left;
+}
+.description h2 {
+    color: rgb(171, 171, 171);
+    font-size: large;
+}
+.description h3 {
+    color: rgb(72, 187, 120);
+}
+.description h1 , .description h3 {
+    font-size:larger;
+}
+.imageProd {
+    background-color: aqua;
 }
 .rightSide {
     text-align: right;
