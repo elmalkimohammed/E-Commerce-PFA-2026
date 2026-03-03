@@ -1,30 +1,30 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+# -----Building Stage-----
 
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
-USER $APP_UID
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
-
-# This stage is used to build the service project
+# Pulling The Base Image For Building 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
-ARG BUILD_CONFIGURATION=Release
+# Set The Current Working Directory Inside The Container
 WORKDIR /src
-COPY ["CartService.csproj", "."]
-RUN dotnet restore "./CartService.csproj"
+# Copy The '.csproj' Into The Container And Restore The Dependencies
+COPY [ "./CartService.csproj",  "." ]
+RUN dotnet restore
+# Copy Everything Else To The Working Directory And Build
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "./CartService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet publish -c Release -o /app/publish
 
-# This stage is used to publish the service project to be copied to the final stage
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./CartService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# -----Runtime Stage-----
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM base AS final
+# Pulling The Base Image For Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+# Set The Current Working Directory Inside The Container
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "CartService.dll"]
+# Copy All The Published Files From The Building Stage
+COPY --from=build /app/publish .
+# Expose The Port Of The .NET Server
+    # HTTPS
+EXPOSE 7153  
+    # HTTP
+EXPOSE 5279 
+# Set Environement Variables
+ENV ASPNETCORE_ENVIRONMENT=Production
+# Define The Entry Point
+ENTRYPOINT [ "dotnet", "CartService.dll" ] 
