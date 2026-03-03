@@ -17,8 +17,7 @@ function LoginForm( { onSwitch } ) {
             e.preventDefault()
             const token = await axios.post( `${authAPI}/login`, { email , password } )
             localStorage.setItem("generatedJWT_Token", token)
-            navigate("/Authentication") // The Route Will Be Changed When The Actual Home Page Is Made
-            console.log("hi")
+            navigate("/")
         } catch (error) {
             alert( error.response?.data || "Login Failed" )
         }
