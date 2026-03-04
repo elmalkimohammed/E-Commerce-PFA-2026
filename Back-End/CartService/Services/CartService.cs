@@ -46,7 +46,14 @@ namespace CartService.Services
 
         public async Task DeleteItem_FromCart(Guid userId, int productId)
         {
-            throw new NotImplementedException();
+            // Gathering The Cart for the user And If The Cart is null, exit
+            var cart = await this._cartRepository.GetUserCart_ThroughID(userId);
+            if ( cart == null)
+            {
+                return;
+            }
+            // Calling The Cart Repository To Remove The Item From The Cart
+            await this._cartRepository.RemoveItem_FromCart(cart.CartId, productId);
         }
 
         public async Task EditStock_FromCart(Guid userId, UpdateStockRequest req)
