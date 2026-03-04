@@ -125,7 +125,14 @@ namespace CartService.Repository
         // Clean The Entire Cart
         public async Task RemoveAll_FromCart(Guid cartId)
         {
-            return Ok();
+            // Initializing The Database Connection
+            using var conn = new MySqlConnection(this._connString);
+            await conn.OpenAsync();
+            // MySql Querry Against The Sql Injection Attack To Remove All Items From A Cart
+            var cmdClearCart = new MySqlCommand("DELETE FROM CartItems WHERE CartId = @cartId", conn);
+            cmdClearCart.Parameters.AddWithValue("@cartId", cartId.ToString());
+            // Executing The MySql Querry
+            await cmdClearCart.ExecuteNonQueryAsync();
         }
     }
 }
