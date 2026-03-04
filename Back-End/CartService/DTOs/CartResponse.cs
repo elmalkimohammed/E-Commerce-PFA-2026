@@ -2,7 +2,7 @@
 {
     public class CartResponse
     {
-        public class CartResponse
+        public class AllCartResponse    
         {
             public Guid CartId { get; set; }
             public Guid UserId { get; set; }
