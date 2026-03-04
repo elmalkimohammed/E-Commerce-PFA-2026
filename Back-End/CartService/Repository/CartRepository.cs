@@ -98,7 +98,14 @@ namespace CartService.Repository
         // Change The Quantity Of The Selected Cart Product
         public async Task UpdateStock_ForCartItem(Guid cartId , UpdateStockRequest req)
         {
-            return Ok();
+            // Initializing The Database Connection
+            using var conn = new MySqlConnection(this._connString);
+            await conn.OpenAsync();
+            // MySql Querry Against The Sql Injection Attack To Update The Stock Of A Product In
+            var cmdUpdateStock = new MySqlCommand("UPDATE CartItems SET Quantity = @stock WHERE CartId = @cartId AND ProductId = productId", conn);
+            cmdUpdateStock.Parameters.AddWithValue("@stock", req.Stock);
+            cmdUpdateStock.Parameters.AddWithValue("@cartId", cartId);
+            cmdUpdateStock.Parameters.AddWithValue("@productId", req.ProductId);
         }
         // Getting Rid Of A Product From The Cart
         public async Task RemoveItem_FromCart(Guid cartId , int productId)
