@@ -4,7 +4,7 @@ namespace CartService.Services
 {
     public interface ICartService
     {
-        Task<CartResponse> GetUser_Cart(Guid userId);   
+        Task<CartResponse.AllCartResponse> GetUser_Cart(Guid userId);   
         Task AddItem_ToCart(Guid userId, AddToCartRequest req);
         Task EditStock_FromCart(Guid userId, UpdateStockRequest req);
         Task DeleteItem_FromCart(Guid userId, int productId);
