@@ -1,5 +1,9 @@
 using CartService.Repository;
 using CartService.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using static Mysqlx.Expect.Open.Types.Condition.Types;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +14,24 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 // Dependency Injection For The Cart Repository And The Product Client
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer
+(options =>
+    {
+        var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+        var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(secretKey)
+        };
+    }
+);
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddHttpClient<IProductClient, ProductClient>();
 builder.Services.AddScoped<ICartService, CartService.Services.CartService>();
