@@ -54,7 +54,7 @@ namespace CartService.Repository
                         ProductId = Convert.ToInt32(itemsReader["ProductId"]),
                         Stock = Convert.ToInt32(itemsReader["Quantity"])
                     }
-                )
+                );
             }
             // Return The Entire Cart
             return cart;
@@ -68,7 +68,7 @@ namespace CartService.Repository
                 CartId = Guid.NewGuid(),
                 UserId = userId,
                 CreatedAt = DateTime.UtcNow
-            }
+            };
             // Opening The Connection To The Database
             using var conn = new MySqlConnection(this._connString);
             await conn.OpenAsync();
@@ -103,7 +103,15 @@ namespace CartService.Repository
         // Getting Rid Of A Product From The Cart
         public async Task RemoveItem_FromCart(Guid cartId , int productId)
         {
-            return Ok();
+            // Initializing The Database Connection
+            using var conn = new MySqlConnection(this._connString);
+            await conn.OpenAsync();
+            // MySql Querry Against The Sql Injection Attack To Remove An Item From A Cart
+            var cmdRemoveItem = new MySqlCommand("DELETE FROM CartItems WHERE CartId = @cartId AND ProductId = @productId", conn);
+            cmdRemoveItem.Parameters.AddWithValue("@cartId", cartId.ToString());
+            cmdRemoveItem.Parameters.AddWithValue("@productId", productId);
+            // Executing The MySql Querry
+            await cmdRemoveItem.ExecuteNonQueryAsync();
         }
         // Clean The Entire Cart
         public async Task RemoveAll_FromCart(Guid cartId)
