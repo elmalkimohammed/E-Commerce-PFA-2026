@@ -60,7 +60,7 @@ namespace CartService.Repository
             return cart;
         }
         // Create A Cart For The User
-        public async Task CreateCart_ForUser(Guid userId)
+        public async Task<Cart> CreateCart_ForUser(Guid userId)
         {
             // Initializing The Cart Variable
             var newCart = new Cart
@@ -79,6 +79,8 @@ namespace CartService.Repository
             cmdNewCart.Parameters.AddWithValue("@createdAt", newCart.CreatedAt);
             // Executing The MySql Querry
             cmdNewCart.ExecuteNonQueryAsync();
+            // Return The Created Cart
+            return newCart;
         }
         // Add A Product To The Cart
         public async Task AddItem_ForCart(Guid cartId , AddToCartRequest req)

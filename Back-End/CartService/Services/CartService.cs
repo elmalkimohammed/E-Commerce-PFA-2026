@@ -13,7 +13,23 @@ namespace CartService.Services
         }
         public async Task AddItem_ToCart(Guid userId, AddToCartRequest req)
         {
-            throw new NotImplementedException();
+            // Gathering The Cart for the user, if it doesn't exist, create a new cart for them
+            var cart = await this._cartRepository.GetUserCart_ThroughID(userId) ?? await this._cartRepository.CreateCart_ForUser(userId);
+            // Checking If The Item already exists in the cart And If it does, update the stock, otherwise add a new item to the cart
+            var existingItem = cart.Items.FirstOrDefault( i => i.ProductId == req.ProductId );
+            if ( existingItem != null)
+            {
+                // Mapping To UpdateStockRequest DTO And Calling The Cart Repository To Update The Stock For The Existing Item
+                UpdateStockRequest newUpdReq = new UpdateStockRequest
+                {
+                    ProductId = req.ProductId,
+                    Stock = existingItem.Stock + req.Stock
+                };
+                await this._cartRepository.UpdateStock_ForCartItem(cart.CartId, newUpdReq );
+            } else
+            {
+                await this._cartRepository.AddItem_ForCart(cart.CartId, req);
+            }
         }
 
         public async Task ClearAll_OfCart(Guid userId)
@@ -40,7 +56,7 @@ namespace CartService.Services
             {
                 await this._cartRepository.CreateCart_ForUser(userId);
             }
-            // Map the cart to the CartResponse DTO
+            // Map the cart to the CartResponse DTO And Return it
             return new CartResponse.AllCartResponse
             {
                 CartId = cart.CartId,
