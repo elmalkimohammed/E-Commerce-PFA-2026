@@ -106,6 +106,8 @@ namespace CartService.Repository
             cmdUpdateStock.Parameters.AddWithValue("@stock", req.Stock);
             cmdUpdateStock.Parameters.AddWithValue("@cartId", cartId);
             cmdUpdateStock.Parameters.AddWithValue("@productId", req.ProductId);
+            // Executing The MySql Querry
+            await cmdUpdateStock.ExecuteNonQueryAsync();
         }
         // Getting Rid Of A Product From The Cart
         public async Task RemoveItem_FromCart(Guid cartId , int productId)
