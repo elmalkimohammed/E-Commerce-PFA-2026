@@ -81,22 +81,32 @@ namespace CartService.Repository
             cmdNewCart.ExecuteNonQueryAsync();
         }
         // Add A Product To The Cart
-        public async Task AddItem_ForCart(Guid userId , AddToCartRequest req)
+        public async Task AddItem_ForCart(Guid cartId , AddToCartRequest req)
         {
-            return Ok();
+            // Initializing The Database Connection
+            using var conn = new MySqlConnection(this._connString);
+            await conn.OpenAsync();
+            // MySql Querry Against The Sql Injection Attack To Add An Item To A Cart
+            var cmdNewItem = new MySqlCommand("INSERT INTO CartItems (CartItemId, CartId, ProductId, Quantity) VALUES (@cartItemId, @cartId, @productId, @quantity)", conn);
+            cmdNewItem.Parameters.AddWithValue("@cartItemId", Guid.NewGuid().ToString());
+            cmdNewItem.Parameters.AddWithValue("cartId", cartId.ToString());
+            cmdNewItem.Parameters.AddWithValue("productId", req.ProductId);
+            cmdNewItem.Parameters.AddWithValue("quantity", req.Stock);
+            // Executing The MySql Querry
+            await cmdNewItem.ExecuteNonQueryAsync();
         }
         // Change The Quantity Of The Selected Cart Product
-        public async Task UpdateStock_ForCartItem(Guid userId , UpdateStockRequest req)
+        public async Task UpdateStock_ForCartItem(Guid cartId , UpdateStockRequest req)
         {
             return Ok();
         }
         // Getting Rid Of A Product From The Cart
-        public async Task RemoveItem_FromCart(Guid userId , int productId)
+        public async Task RemoveItem_FromCart(Guid cartId , int productId)
         {
             return Ok();
         }
         // Clean The Entire Cart
-        public async Task RemoveAll_FromCart(Guid userId)
+        public async Task RemoveAll_FromCart(Guid cartId)
         {
             return Ok();
         }
