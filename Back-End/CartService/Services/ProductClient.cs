@@ -1,0 +1,18 @@
+﻿
+namespace CartService.Services
+{
+    public class ProductClient : IProductClient
+    {
+        private readonly HttpClient _httpClient;
+        public ProductClient(HttpClient httpclient)
+        {
+            this._httpClient = httpclient;
+        }
+        public async Task<bool> ProductExistance_Verification(int productId)
+        {
+            // Sending A Get Request To The Product Service To Verify The Existance Of The Product
+            var response = await this._httpClient.GetAsync($"http://localhost:5002/TechStore/ProductService/{productId}");
+            return response.IsSuccessStatusCode;
+        }
+    }
+}
