@@ -34,7 +34,14 @@ namespace CartService.Services
 
         public async Task ClearAll_OfCart(Guid userId)
         {
-            throw new NotImplementedException();
+            // Gathering The Cart for the user
+            var cart = await this._cartRepository.GetUserCart_ThroughID(userId);
+            if ( cart == null)
+            {
+                return;
+            }
+            // Calling The Cart Repository To Clear All Items From The Cart
+            await this._cartRepository.RemoveAll_FromCart(cart.CartId);
         }
 
         public async Task DeleteItem_FromCart(Guid userId, int productId)
