@@ -2,7 +2,7 @@
 @AuthService_HostAddress = http://localhost:5001/api/auth
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWRhMzhhZi0yNWUwLTQ1NjEtYjFhNC01YTE0MTM3NDcyNjgiLCJlbWFpbCI6ImVsbWFsa2lAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQ3VzdG9tZXIiLCJqdGkiOiJhMjcyZmIzOS1iM2Y0LTRlYjEtYjM1OC00NmUwMWYxOTIyYWYiLCJleHAiOjE3NzI2Nzg1MjMsImlzcyI6IkF1dGhTZXJ2aWNlIiwiYXVkIjoiRWNvbW1lcmNlVXNlcnMifQ.cnqarPrIrEHckCw5GfxGhUcvCpPwzlNG3ABe8mRmjiU
 
-### Login to get JWT Token
+### Login to get JWT Token - Done
 POST {{AuthService_HostAddress}}/login
 Content-Type: application/json
 
@@ -11,39 +11,39 @@ Content-Type: application/json
   "password": "123"
 }
 
-### Get User Cart
+### Get User Cart - Done
 GET {{CartService_HostAddress}}/getCart
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-### Add Item to Cart
+### Add Item to Cart - Half Done ( Can Add Non-Existing Products )
 POST {{CartService_HostAddress}}/addToCart
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "productId": 2,
+    "productId": 7,
     "productName": "Sample Product",
-    "stock": 2,
+    "stock": 5,
     "price": 29.99
 }
 
-### Update Item Quantity
-PUT {{CartService_HostAddress}}/api/cart/updateStock
+### Update Item Quantity - Done
+PUT {{CartService_HostAddress}}/updateStock
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "productId": 2,
-    "stock": 5
+    "productId": 3,
+    "stock": 20
 }
 
-### Delete Item from Cart (replace 1 with actual productId)
-DELETE {{CartService_HostAddress}}/api/cart/deleteItem/1
+### Delete Item from Cart - Done
+DELETE {{CartService_HostAddress}}/deleteItem/1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-### Clear Entire Cart
-POST {{CartService_HostAddress}}/api/cart/clearCart
+### Clear Entire Cart - Done
+POST {{CartService_HostAddress}}/clearCart
 Authorization: Bearer {{token}}
 Content-Type: application/json
