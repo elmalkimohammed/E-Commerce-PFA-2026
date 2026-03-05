@@ -10,9 +10,11 @@ namespace CartService.Repository
     {
         // Connection String For The Database
         private readonly String _connString;
-        public CartRepository(IConfiguration conf)
+        private readonly IProductClient _productClient;
+        public CartRepository(IConfiguration conf, IProductClient productClient)
         {
             this._connString = conf.GetConnectionString("DefaultConnection");
+            _productClient = productClient;
         }
         // Get The Entire Cart Through The UserId
         public async Task<Cart> GetUserCart_ThroughID(Guid userId)

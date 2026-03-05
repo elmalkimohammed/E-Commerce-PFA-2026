@@ -1,6 +1,6 @@
 @CartService_HostAddress = http://localhost:5003/api/cart
 @AuthService_HostAddress = http://localhost:5001/api/auth
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWRhMzhhZi0yNWUwLTQ1NjEtYjFhNC01YTE0MTM3NDcyNjgiLCJlbWFpbCI6ImVsbWFsa2lAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQ3VzdG9tZXIiLCJqdGkiOiJhMjcyZmIzOS1iM2Y0LTRlYjEtYjM1OC00NmUwMWYxOTIyYWYiLCJleHAiOjE3NzI2Nzg1MjMsImlzcyI6IkF1dGhTZXJ2aWNlIiwiYXVkIjoiRWNvbW1lcmNlVXNlcnMifQ.cnqarPrIrEHckCw5GfxGhUcvCpPwzlNG3ABe8mRmjiU
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWRhMzhhZi0yNWUwLTQ1NjEtYjFhNC01YTE0MTM3NDcyNjgiLCJlbWFpbCI6ImVsbWFsa2lAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQ3VzdG9tZXIiLCJqdGkiOiJlZjMzMjVlYS1mMWRmLTRjZTItYWM2OS0zNDFkN2VjODA2NGIiLCJleHAiOjE3NzI2ODI1NjEsImlzcyI6IkF1dGhTZXJ2aWNlIiwiYXVkIjoiRWNvbW1lcmNlVXNlcnMifQ.aF68ewpcf4Ao_Mi_cxS5EMH8V5T0GbbhHQNfRcUz7bI
 
 ### Login to get JWT Token - Done
 POST {{AuthService_HostAddress}}/login
@@ -16,26 +16,24 @@ GET {{CartService_HostAddress}}/getCart
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-### Add Item to Cart - Half Done ( Can Add Non-Existing Products )
+### Add Item to Cart - Done ( But Doesn't Show An Error Message When I Try To Add An Invalid Product )
 POST {{CartService_HostAddress}}/addToCart
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "productId": 7,
-    "productName": "Sample Product",
-    "stock": 5,
-    "price": 29.99
+    "productId": 80,
+    "stock": 5
 }
 
-### Update Item Quantity - Done
+### Update Item Quantity - Half_Done ( Issue Is I Can Update Above The Max )
 PUT {{CartService_HostAddress}}/updateStock
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "productId": 3,
-    "stock": 20
+    "productId": 6,
+    "stock": 2000
 }
 
 ### Delete Item from Cart - Done

@@ -11,7 +11,7 @@ namespace CartService.Services
         public async Task<bool> ProductExistance_Verification(int productId)
         {
             // Sending A Get Request To The Product Service To Verify The Existance Of The Product
-            var response = await this._httpClient.GetAsync($"http://localhost:5002/TechStore/ProductService/{productId}");
+            var response = await this._httpClient.GetAsync($"http://productservice-api:5252/TechStore/ProductService/{productId}");
             return response.IsSuccessStatusCode;
         }
     }

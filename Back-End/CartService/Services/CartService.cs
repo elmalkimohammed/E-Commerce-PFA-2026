@@ -13,6 +13,12 @@ namespace CartService.Services
         }
         public async Task AddItem_ToCart(Guid userId, AddToCartRequest req)
         {
+            // Check If The Product Exists In The Database
+            var dbExistenceTest = await this._productClient.ProductExistance_Verification(req.ProductId);
+            if (!dbExistenceTest)
+            {
+                throw new Exception("The Product Doesn't Exist In The Database");
+            }
             // Gathering The Cart for the user, if it doesn't exist, create a new cart for them
             var cart = await this._cartRepository.GetUserCart_ThroughID(userId) ?? await this._cartRepository.CreateCart_ForUser(userId);
             // Checking If The Item already exists in the cart And If it does, update the stock, otherwise add a new item to the cart
