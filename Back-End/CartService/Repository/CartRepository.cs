@@ -104,9 +104,9 @@ namespace CartService.Repository
             using var conn = new MySqlConnection(this._connString);
             await conn.OpenAsync();
             // MySql Querry Against The Sql Injection Attack To Update The Stock Of A Product In
-            var cmdUpdateStock = new MySqlCommand("UPDATE CartItems SET Quantity = @stock WHERE CartId = @cartId AND ProductId = productId", conn);
+            var cmdUpdateStock = new MySqlCommand("UPDATE CartItems SET Quantity = @stock WHERE CartId = @cartId AND ProductId = @productId", conn);
             cmdUpdateStock.Parameters.AddWithValue("@stock", req.Stock);
-            cmdUpdateStock.Parameters.AddWithValue("@cartId", cartId);
+            cmdUpdateStock.Parameters.AddWithValue("@cartId", cartId.ToString());
             cmdUpdateStock.Parameters.AddWithValue("@productId", req.ProductId);
             // Executing The MySql Querry
             await cmdUpdateStock.ExecuteNonQueryAsync();
