@@ -50,8 +50,8 @@ namespace CartService.Repository
                 (
                     new CartItem
                     {
-                        CartItemId = Guid.Parse(itemsReader["CartItemsId"].ToString()),
-                        CartId = Guid.Parse(itemsReader["CartItemsId"].ToString()),
+                        CartItemId = Guid.Parse(itemsReader["CartItemId"].ToString()),
+                        CartId = Guid.Parse(itemsReader["CartId"].ToString()),
                         ProductId = Convert.ToInt32(itemsReader["ProductId"]),
                         Stock = Convert.ToInt32(itemsReader["Quantity"])
                     }
