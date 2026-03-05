@@ -74,8 +74,8 @@ namespace CartService.Repository
             await conn.OpenAsync();
             // The MySql Querry Against The Sql Injection Attack For Inserting The New Cart Into The Database
             var cmdNewCart = new MySqlCommand("INSERT INTO Carts (CartId, UserId, CreatedAt) VALUES (@cartId, @userId, @createdAt)", conn);
-            cmdNewCart.Parameters.AddWithValue("@userId", newCart.CartId);
-            cmdNewCart.Parameters.AddWithValue("@cartId", newCart.UserId);
+            cmdNewCart.Parameters.AddWithValue("@userId", newCart.UserId);
+            cmdNewCart.Parameters.AddWithValue("@cartId", newCart.CartId);
             cmdNewCart.Parameters.AddWithValue("@createdAt", newCart.CreatedAt);
             // Executing The MySql Querry
             cmdNewCart.ExecuteNonQueryAsync();

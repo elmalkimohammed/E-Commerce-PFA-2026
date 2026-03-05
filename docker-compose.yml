@@ -150,7 +150,7 @@ services:
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
         - ASPNETCORE_URLS=http://+:5279
-        - ConnectionStrings__DefaultConnection=Server=CartServiceDB;Port=3306;Database=CartsDb;User=root;Password=admin;
+        - ConnectionStrings__DefaultConnection=Server=CartServiceDB;Port=3306;Database=CartDb;User=root;Password=admin;
         - Kafka__BootstrapServers=kafka:29092
     networks:
       - ecommerce-network

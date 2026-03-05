@@ -1,6 +1,49 @@
-@CartService_HostAddress = http://localhost:5279
+@CartService_HostAddress = http://localhost:5003/api/cart
+@AuthService_HostAddress = http://localhost:5001/api/auth
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWRhMzhhZi0yNWUwLTQ1NjEtYjFhNC01YTE0MTM3NDcyNjgiLCJlbWFpbCI6ImVsbWFsa2lAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQ3VzdG9tZXIiLCJqdGkiOiJhMjcyZmIzOS1iM2Y0LTRlYjEtYjM1OC00NmUwMWYxOTIyYWYiLCJleHAiOjE3NzI2Nzg1MjMsImlzcyI6IkF1dGhTZXJ2aWNlIiwiYXVkIjoiRWNvbW1lcmNlVXNlcnMifQ.cnqarPrIrEHckCw5GfxGhUcvCpPwzlNG3ABe8mRmjiU
 
-GET {{CartService_HostAddress}}/weatherforecast/
-Accept: application/json
+### Login to get JWT Token
+POST {{AuthService_HostAddress}}/login
+Content-Type: application/json
 
-###
+{
+  "email": "elmalki@gmail.com",
+  "password": "123"
+}
+
+### Get User Cart
+GET {{CartService_HostAddress}}/getCart
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+### Add Item to Cart
+POST {{CartService_HostAddress}}/addToCart
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "productId": 1,
+    "productName": "Sample Product",
+    "stock": 2,
+    "price": 29.99
+}
+
+### Update Item Quantity
+PUT {{CartService_HostAddress}}/api/cart/updateStock
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "productId": 1,
+    "stock": 5
+}
+
+### Delete Item from Cart (replace 1 with actual productId)
+DELETE {{CartService_HostAddress}}/api/cart/deleteItem/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+### Clear Entire Cart
+POST {{CartService_HostAddress}}/api/cart/clearCart
+Authorization: Bearer {{token}}
+Content-Type: application/json
