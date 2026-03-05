@@ -16,13 +16,13 @@ GET {{CartService_HostAddress}}/getCart
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-### Add Item to Cart - Done ( But Doesn't Show An Error Message When I Try To Add An Invalid Product )
+### Add Item to Cart - Done 
 POST {{CartService_HostAddress}}/addToCart
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "productId": 80,
+    "productId": 4,
     "stock": 5
 }
 
