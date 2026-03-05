@@ -1,6 +1,6 @@
 @CartService_HostAddress = http://localhost:5003/api/cart
 @AuthService_HostAddress = http://localhost:5001/api/auth
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWRhMzhhZi0yNWUwLTQ1NjEtYjFhNC01YTE0MTM3NDcyNjgiLCJlbWFpbCI6ImVsbWFsa2lAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQ3VzdG9tZXIiLCJqdGkiOiJlZjMzMjVlYS1mMWRmLTRjZTItYWM2OS0zNDFkN2VjODA2NGIiLCJleHAiOjE3NzI2ODI1NjEsImlzcyI6IkF1dGhTZXJ2aWNlIiwiYXVkIjoiRWNvbW1lcmNlVXNlcnMifQ.aF68ewpcf4Ao_Mi_cxS5EMH8V5T0GbbhHQNfRcUz7bI
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWRhMzhhZi0yNWUwLTQ1NjEtYjFhNC01YTE0MTM3NDcyNjgiLCJlbWFpbCI6ImVsbWFsa2lAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQ3VzdG9tZXIiLCJqdGkiOiIzZTg2NmI3ZC04ZjE1LTQzMjItOGIyZS03NWViOGYxODU4NGQiLCJleHAiOjE3NzI3NDQxNTYsImlzcyI6IkF1dGhTZXJ2aWNlIiwiYXVkIjoiRWNvbW1lcmNlVXNlcnMifQ.uo43EyBjB5ZsJ8a3hookeUd28w-NnvdK25lNwWVdk-c
 
 ### Login to get JWT Token - Done
 POST {{AuthService_HostAddress}}/login
@@ -23,17 +23,17 @@ Content-Type: application/json
 
 {
     "productId": 4,
-    "stock": 5
+    "stock": 7
 }
 
-### Update Item Quantity - Half_Done ( Issue Is I Can Update Above The Max )
+### Update Item Quantity - Done
 PUT {{CartService_HostAddress}}/updateStock
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "productId": 6,
-    "stock": 2000
+    "productId": 4,
+    "stock": 16
 }
 
 ### Delete Item from Cart - Done

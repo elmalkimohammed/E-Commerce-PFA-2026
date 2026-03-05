@@ -103,6 +103,12 @@ namespace CartService.Repository
         // Change The Quantity Of The Selected Cart Product
         public async Task UpdateStock_ForCartItem(Guid cartId , UpdateStockRequest req)
         {
+            // Getting The Maximum Stock Of The Product From The Product Service For Verification Purposes
+            int? maxStock = await this._productClient.GetProductStock(req.ProductId) ;
+            if ( req.Stock > maxStock)
+            {
+                throw new Exception("The Selected Quantity Is Far Higher Than What We Actually Have...");
+            }
             // Initializing The Database Connection
             using var conn = new MySqlConnection(this._connString);
             await conn.OpenAsync();
