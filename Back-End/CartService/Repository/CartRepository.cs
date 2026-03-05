@@ -35,7 +35,8 @@ namespace CartService.Repository
             {
                 CartId = Guid.Parse(reader["CartId"].ToString()!),
                 UserId = Guid.Parse(reader["UserId"].ToString()!),
-                CreatedAt = Convert.ToDateTime(reader["CreatedAt"])
+                CreatedAt = Convert.ToDateTime(reader["CreatedAt"]),
+                Items = new List<CartItem>()
             };
             reader.Close();
             // MySql Querry Against The Sql Injection Attack For Getting The Items Of The Cart
