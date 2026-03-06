@@ -1,4 +1,4 @@
-import { authAPI } from "../services/authAPI"
+import { authAPI } from "../services/servicesAPI"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "./styles/globalAuthForm.css"

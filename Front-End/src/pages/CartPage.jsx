@@ -3,7 +3,7 @@ import CommandDesc from "../Components/CartPage/CommandDesc"
 import TopNav from "../Components/navbarComponent/TopNav"
 import "./Styles/CartPage.css"
 
-import { prodAPI } from "../services/prodAPI"
+import { prodAPI } from "../services/servicesAPI"
 import { useState , useEffect } from "react"
 
 import axios from "axios"

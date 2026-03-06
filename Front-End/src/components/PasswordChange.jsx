@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { authAPI } from "../services/authAPI"
+import { authAPI } from "../services/servicesAPI"
 
 import axios from "axios"
 

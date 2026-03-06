@@ -1,4 +1,4 @@
-import { authAPI } from "../services/authAPI"
+import { authAPI } from "../services/servicesAPI"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 import axios from "axios"
