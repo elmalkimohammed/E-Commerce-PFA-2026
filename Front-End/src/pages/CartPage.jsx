@@ -28,7 +28,7 @@ function CartPage() {
 
     useEffect( () => {
         console.log(products)
-        products.map( async (item) => {
+        products.map( async () => {
             /* Fetch Each One Of Our Product's Infos */
             const promises = products.map( 
                 (item) => axios.get(`${prodAPI}/${item.productId}`)
@@ -72,20 +72,38 @@ function CartPage() {
     return(
         <>
             <TopNav/>
-            <div className="entireContainer">
-                <h1>Votre pannier</h1>
-                <div className="cartContainer">
-                    <div className="cartItems" style={ { display: "flex", flexDirection: "column", gap: "1em" } }>
-                        {
-                            /* Going Through The 'productsInfos' Array Of Promises And Display The Infos Of Each One Of Them From The ProductService API */
-                            productsInfos.map( prod =>
-                                <ProductBox productName={prod.name} productDescription={prod.description} productPrice={prod.price} productMaxStock={prod.stock}/>,
-                            )
-                        }
+            {
+                /* Checking If The Cart Is Empty Or Full With Items To Choose Which Of These Displays Should Render To The User */
+                productsInfos.length === 0 ? 
+                (
+                    <div className="entireContainer" style={ { justifyContent: "center", marginTop: "0px" } }>
+                        <h1>Votre pannier</h1>
+                        <div className="cartContainer">
+                            <div className="cartItems" style={ { display: "flex", flexDirection: "column", gap: "1em" } }>
+                                <div style={ { fontSize: "50px", fontWeight: "bolder", textAlign: "center" } }>There's No Added Item So Far... <br/>Try Adding One And Check This Page Again!</div> 
+                            </div>
+                        </div>
                     </div>
-                    <CommandDesc totalP={totalPrice}/>
-                </div>
-            </div>
+                )
+                :
+                (
+                    <div className="entireContainer">
+                        <h1>Votre pannier</h1>
+                        <div className="cartContainer">
+                            <div className="cartItems" style={ { display: "flex", flexDirection: "column", gap: "1em" } }>
+                                {
+                                    /* Going Through The 'productsInfos' Array Of Promises And Display The Infos Of Each One Of Them From The ProductService API */
+                                    productsInfos.map( prod =>
+                                        <ProductBox productName={prod.name} productDescription={prod.description} productPrice={prod.price} productMaxStock={prod.stock}/>,
+                                    )
+                                }
+                            </div>
+                            <CommandDesc totalP={totalPrice}/>
+                        </div>
+                    </div> 
+                )
+            }
+            
         </>
     )
 }
