@@ -4,6 +4,7 @@ import TopNav from "../Components/navbarComponent/TopNav"
 import "./Styles/CartPage.css"
 
 import { prodAPI } from "../services/servicesAPI"
+import { cartAPI } from "../services/servicesAPI"
 import { useState , useEffect } from "react"
 
 import axios from "axios"
@@ -12,19 +13,56 @@ function CartPage() {
 
     /* Data Simulation */
 
-    const [ product , setProduct ] = useState(null)
+    const [ fullCart , setFullCart ] = useState({ items:[] })
     const [ loading , setLoading ] = useState(true)
+    const [ products , setProducts ] = useState([]) // The Products From CartServie
+    const [ productsInfos , setProductsInfos ] = useState([]) // The Products From ProductService
+    const [ prodPrice , setProdPrice ] = useState(0)
+    const [ totalPrice , setTotalPrice ] = useState(0)
+
+    /* The Logs Are For Testing Purposes Only */
 
     useEffect( () => {
-        axios.get(`${ prodAPI }`).then(
-            (response) => { 
-                console.log(response.data[0])
-                setProduct(response.data[0])
+        console.log(productsInfos)
+    } , [productsInfos])
+
+    useEffect( () => {
+        console.log(products)
+        products.map( async (item) => {
+            /* Fetch Each One Of Our Product's Infos */
+            const promises = products.map( 
+                (item) => axios.get(`${prodAPI}/${item.productId}`)
+            )
+            const responses = await Promise.all(promises)
+            setProductsInfos( responses.map( res => res.data ) )
+        } )
+    }, [products])
+
+    useEffect( () => {
+        /* Recover The Token From localStorage */
+        const token = localStorage.getItem("generatedJWT_Token")
+        /* Declaring The Constant Responsible For The Config */ 
+        const tokenSender = {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        }
+        /* 
+            Getting The Full Cart From The CartService API 
+            Going Through Each Object Of The 'items' Arrays And Putting It Inside The State 'Products' To Be Mapped On Later
+        */
+        axios.get(`${ cartAPI }/getCart` , tokenSender ).then(
+            (response) => {
+                console.log(response.data)
+                setFullCart(response.data)
+                setProducts(response.data.items)
                 setLoading(false)
             }
         )
     }, [] )
 
+    /* Display A Loading Screen Unti The Data Is Fetched Successfully*/
     if( loading ) {
         return(
             <div>loading.....</div>
@@ -38,12 +76,14 @@ function CartPage() {
                 <h1>Votre pannier</h1>
                 <div className="cartContainer">
                     <div className="cartItems" style={ { display: "flex", flexDirection: "column", gap: "1em" } }>
-                        <ProductBox productMimeType={product.mimetype} productImage={product.image} productDescription={ product.description } productName={product.name} productPrice={product.price} productMaxStock={product.stock}/>
-                        <ProductBox productMimeType={product.mimetype} productImage={product.image} productDescription={ product.description } productName={product.name} productPrice={product.price} productMaxStock={product.stock}/>
-                        <ProductBox productMimeType={product.mimetype} productImage={product.image} productDescription={ product.description } productName={product.name} productPrice={product.price} productMaxStock={product.stock}/>
-                        <ProductBox productMimeType={product.mimetype} productImage={product.image} productDescription={ product.description } productName={product.name} productPrice={product.price} productMaxStock={product.stock}/>
+                        {
+                            /* Going Through The 'productsInfos' Array Of Promises And Display The Infos Of Each One Of Them From The ProductService API */
+                            productsInfos.map( prod =>
+                                <ProductBox productName={prod.name} productDescription={prod.description} productPrice={prod.price} productMaxStock={prod.stock}/>,
+                            )
+                        }
                     </div>
-                    <CommandDesc/>
+                    <CommandDesc totalP={totalPrice}/>
                 </div>
             </div>
         </>

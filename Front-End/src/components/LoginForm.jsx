@@ -16,8 +16,9 @@ function LoginForm( { onSwitch } ) {
         try {
             e.preventDefault()
             const token = await axios.post( `${authAPI}/login`, { email , password } )
-            localStorage.setItem("generatedJWT_Token", token)
+            localStorage.setItem("generatedJWT_Token", token.data)
             navigate("/")
+            console.log(token.data)
         } catch (error) {
             alert( error.response?.data || "Login Failed" )
         }

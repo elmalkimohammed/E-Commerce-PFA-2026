@@ -29,7 +29,7 @@ function ProductBox( { productMimeType , productImage , productName , productDes
                 <div className="description">
                     <h1>{ productName }</h1>
                     <h2>{ productDescription }</h2>
-                    <h3>{ productPrice }</h3>
+                    <h3>{ productPrice }$</h3>
                 </div>
             </div>
             <div className="rightSide">

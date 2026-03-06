@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 
 import "../styles/CommandDesc.css"
 
-function CommandDesc() {
+function CommandDesc( { totalP } ) {
 
     const navigate = useNavigate()
 
@@ -23,7 +23,7 @@ function CommandDesc() {
             <div className="footerRes">
                 <div className="totalPrice">
                     <p>Total</p>
-                    <span>1</span>
+                    <span>{totalP}</span>
                 </div>
                 <div className="buttons">
                     <button>Nettoyer Le Pannier</button>
