@@ -1,6 +1,16 @@
 @UserProfileService_HostAddress = http://localhost:5008
+@AuthService_HostAddress = http://localhost:5001/api/auth
 
-GET {{UserProfileService_HostAddress}}/weatherforecast/
-Accept: application/json
+
+
 
 ###
+POST {{AuthService_HostAddress}}/login
+Content-Type: application/json
+
+{
+  "email": "c@gmail.com",
+  "password": "123"
+}
+###
+GET https://www.google.com

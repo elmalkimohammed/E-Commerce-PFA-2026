@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using MySqlConnector;
 using System.Reflection.Emit;
 using UserProfileService.Enums;
@@ -20,10 +21,9 @@ namespace UserProfileService.Repository
         {
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
-
-            string sql = @"
-                INSERT INTO UserProfile (UserId)VALUES (@UserId)
-                ON DUPLICATE KEY UPDATE UserId = UserId;";
+            string sql = @"INSERT INTO UserProfile(UserId, FirstName, LastName)
+                            VALUES(@UserId, 'user', 'Default')
+                            ON DUPLICATE KEY UPDATE UserId = UserId;";
 
             using MySqlCommand cmd = new MySqlCommand(sql, coon);
             cmd.Parameters.AddWithValue("@UserId", user.UserId.ToString());
@@ -64,8 +64,8 @@ namespace UserProfileService.Repository
             using MySqlDataReader ProfileRd = Profilecmd.ExecuteReader();
             if (ProfileRd.Read())
             {
-                user.FirstName = ProfileRd["FirstName"] as string;
-                user.LastName = ProfileRd["LastName"] as string;
+                user.FirstName = ProfileRd["FirstName"] as string ?? "user";
+                user.LastName = ProfileRd["LastName"] as string ?? "Default";
                 user.Phone = ProfileRd["Phone"] as string;
                 user.Address = ProfileRd["Address"] as string;
                 user.Sex = ProfileRd["Sex"] != DBNull.Value ? Enum.Parse<Sex>((string)ProfileRd["Sex"]) : null;

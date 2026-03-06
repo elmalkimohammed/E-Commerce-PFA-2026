@@ -15,6 +15,7 @@ namespace UserProfileService
             // Add services to the container.
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
+            
             builder.Services.AddHostedService<KafkaConsumerService>();
             builder.Services.AddScoped<IUserProfileHandler, UserProfileHandler>();
             builder.Services.AddControllers().AddJsonOptions(options =>
@@ -40,6 +41,11 @@ namespace UserProfileService
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
             });
+            builder.Services.AddCors(options =>
+                {
+                    options.AddPolicy("AllowReact", policy => policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod());
+                }
+            );
 
             builder.Services.AddAuthorization();
 
@@ -50,9 +56,11 @@ namespace UserProfileService
             {
                 app.MapOpenApi();
             }
-
+            // Activate The CORS Policy
+            app.UseCors("AllowReact");
             app.UseHttpsRedirection();
             app.UseAuthentication();
+            
             app.UseAuthorization();
             app.MapControllers();
 
