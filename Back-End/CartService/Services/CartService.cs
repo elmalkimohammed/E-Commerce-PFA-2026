@@ -21,20 +21,21 @@ namespace CartService.Services
             }
             // Gathering The Cart for the user, if it doesn't exist, create a new cart for them
             var cart = await this._cartRepository.GetUserCart_ThroughID(userId) ?? await this._cartRepository.CreateCart_ForUser(userId);
+            // Getting The Maximum Stock Of The Product From The Product Service For Verification Purposes
+            var maxStock = await this._productClient.GetProductStock(req.ProductId);
             // Checking If The Item already exists in the cart And If it does, update the stock, otherwise add a new item to the cart
             var existingItem = cart.Items.FirstOrDefault( i => i.ProductId == req.ProductId );
-            if ( existingItem != null)
+            if ( existingItem == null)
             {
-                // Mapping To UpdateStockRequest DTO And Calling The Cart Repository To Update The Stock For The Existing Item
-                UpdateStockRequest newUpdReq = new UpdateStockRequest
+                // If The Stock To Be Added Is Greater Than The Maximum Stock, Throw An Exception
+                if (req.Stock > maxStock)
                 {
-                    ProductId = req.ProductId,
-                    Stock = existingItem.Stock + req.Stock
-                };
-                await this._cartRepository.UpdateStock_ForCartItem(cart.CartId, newUpdReq );
+                    throw new Exception("Your Adding A Product With A Higher Quantity Than Expected...");
+                }
+                await this._cartRepository.AddItem_ForCart(cart.CartId, req);
             } else
             {
-                await this._cartRepository.AddItem_ForCart(cart.CartId, req);
+                throw new Exception("The Product Already Exists In The Cart!");
             }
         }
 
