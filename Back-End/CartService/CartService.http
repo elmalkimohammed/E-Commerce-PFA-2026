@@ -1,7 +1,6 @@
 @CartService_HostAddress = http://localhost:5003/api/cart
 @AuthService_HostAddress = http://localhost:5001/api/auth
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWRhMzhhZi0yNWUwLTQ1NjEtYjFhNC01YTE0MTM3NDcyNjgiLCJlbWFpbCI6ImVsbWFsa2lAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQ3VzdG9tZXIiLCJqdGkiOiJkMzAyMDc5ZS00MDFjLTQ2MGMtODdmYS1jZTI4ZDA2MzBjNDEiLCJleHAiOjE3NzI3NTk1NjksImlzcyI6IkF1dGhTZXJ2aWNlIiwiYXVkIjoiRWNvbW1lcmNlVXNlcnMifQ.3bQeq5SZsBAqBpR_Qn3AO5vXNQW-yF-utoK3Jkog9Fo
-
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWRhMzhhZi0yNWUwLTQ1NjEtYjFhNC01YTE0MTM3NDcyNjgiLCJlbWFpbCI6ImVsbWFsa2lAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQ3VzdG9tZXIiLCJqdGkiOiJjNTM1MTA0My1iYzY3LTQ1N2QtODU1YS1iMDA5NzY4OWRjY2IiLCJleHAiOjE3NzI3NjQ1MDgsImlzcyI6IkF1dGhTZXJ2aWNlIiwiYXVkIjoiRWNvbW1lcmNlVXNlcnMifQ.7A-TMErFY-lTPLBj5fKJf4sC2zE1S6w8dBOsXo5O49o
 ### Login to get JWT Token - Done
 POST {{AuthService_HostAddress}}/login
 Content-Type: application/json
@@ -23,7 +22,7 @@ Content-Type: application/json
 
 {
     "productId": 4,
-    "stock": 1
+    "stock": 10
 }
 
 ### Update Item Quantity - Done
