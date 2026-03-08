@@ -5,7 +5,7 @@ import "./Styles/CartPage.css"
 
 import { prodAPI } from "../services/servicesAPI"
 import { cartAPI } from "../services/servicesAPI"
-import { useState , useEffect } from "react"
+import { useState , useEffect , useCallback } from "react"
 
 import axios from "axios"
 
@@ -19,6 +19,7 @@ function CartPage() {
     const [ productsInfos , setProductsInfos ] = useState([]) // The Products From ProductService
     const [ prodPrice , setProdPrice ] = useState(0)
     const [ totalPrice , setTotalPrice ] = useState(0)
+    const [ quantities , setQuantities ] = useState({})
 
     /* The Logs Are For Testing Purposes Only */
 
@@ -62,6 +63,25 @@ function CartPage() {
         )
     }, [] )
 
+    useEffect(() => {
+        let total = 0;
+        productsInfos.forEach(product => {
+            const quantity = quantities[product.id] || 0;
+            total += product.price * quantity;
+        });
+        // Only update if the total has actually changed
+        if (total !== totalPrice) {
+            setTotalPrice(total);
+        }
+    }, [productsInfos, quantities]);
+
+    const handleQuantityChange = useCallback((productId, quantity) => {
+        setQuantities(prev => ({
+            ...prev,
+            [productId]: quantity
+        }));
+    }, []);
+
     /* Display A Loading Screen Unti The Data Is Fetched Successfully*/
     if( loading ) {
         return(
@@ -94,7 +114,7 @@ function CartPage() {
                                 {
                                     /* Going Through The 'productsInfos' Array Of Promises And Display The Infos Of Each One Of Them From The ProductService API */
                                     productsInfos.map( prod =>
-                                        <ProductBox productId={prod.id} productName={prod.name} productDescription={prod.description} productPrice={prod.price} productMaxStock={prod.stock}/>,
+                                        <ProductBox key={prod.id} productId={prod.id} productName={prod.name} productDescription={prod.description} productPrice={prod.price} productMaxStock={prod.stock} onQuantityChange={handleQuantityChange}/>,
                                     )
                                 }
                             </div>

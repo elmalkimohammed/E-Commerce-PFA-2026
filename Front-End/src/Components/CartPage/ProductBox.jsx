@@ -1,10 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { cartAPI } from "../../services/servicesAPI"
 import axios from "axios"
 
 import "../styles/ProductBox.css"
 
-function ProductBox( { productId , productMimeType , productImage , productName , productDescription , productPrice , productMaxStock } ) {
+function ProductBox( { productId , productMimeType , productImage , productName , productDescription , productPrice , productMaxStock, onQuantityChange } ) {
     
     const imgSrc = `data:${ productMimeType };base64,${ productImage }`
 
@@ -20,6 +20,13 @@ function ProductBox( { productId , productMimeType , productImage , productName 
         }
 
     const [ stockCounter , setStockCounter ] = useState(0)
+
+    // Follows The Quantity Counter Change And Pass It As A Props To Be Treated Via The Parent Component
+    useEffect(() => {
+        if (onQuantityChange) {
+            onQuantityChange(productId, stockCounter);
+        }
+    }, [stockCounter, productId, onQuantityChange]);
 
     const stockAddition = async () => {
         if ( stockCounter < productMaxStock ) {
