@@ -21,6 +21,8 @@ function CommandDesc( { totalP } ) {
         }
         const cartInfos = await axios.get(`${cartAPI}/getCart`, config)
         await axios.post(`${cartAPI}/clearCart`, { cartId: cartInfos.data.cartId }, config )
+        /* Forcefully Reload The Page To Display The New Changes */
+        window.location.reload()
     }
 
     return(

@@ -35,6 +35,8 @@ function ProductBox( { productId , productMimeType , productImage , productName 
 
     const deleteItem = async () => {
         await axios.delete(`${cartAPI}/deleteItem/${productId}`, config)
+        /* Forcefully Reload The Page To Display The New Changes */
+        window.location.reload()
     }
 
     return(
