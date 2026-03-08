@@ -1,10 +1,23 @@
 import { useState } from "react"
+import { cartAPI } from "../../services/servicesAPI"
+import axios from "axios"
 
 import "../styles/ProductBox.css"
 
-function ProductBox( { productMimeType , productImage , productName , productDescription , productPrice , productMaxStock } ) {
+function ProductBox( { productId , productMimeType , productImage , productName , productDescription , productPrice , productMaxStock } ) {
     
     const imgSrc = `data:${ productMimeType };base64,${ productImage }`
+
+    /* Recovering The JWT As It's Needed To Clear The Cart From Items */
+        const token = localStorage.getItem("generatedJWT_Token")
+        if ( !token ) navigate("/Authentication")
+        /* Declaring The Constant Responsible For The Config */ 
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        }
 
     const [ stockCounter , setStockCounter ] = useState(0)
 
@@ -18,6 +31,10 @@ function ProductBox( { productMimeType , productImage , productName , productDes
         if ( stockCounter > 0 ) {
             setStockCounter(stockCounter-1)
         }
+    }
+
+    const deleteItem = async () => {
+        await axios.delete(`${cartAPI}/deleteItem/${productId}`, config)
     }
 
     return(
@@ -38,7 +55,7 @@ function ProductBox( { productMimeType , productImage , productName , productDes
                     <p>{ stockCounter }</p>
                     <button className="add" onClick={ stockAddition }>+</button>
                 </div>
-                <button style={ { background: "transparent", borderStyle: "none", border: "1px solid black", fontWeight: "bolder", width: "fit-content", alignSelf: "flex-end", padding: "10px", borderRadius: "5px", color: "#143a63", cursor: "pointer" } }>Retirer</button>
+                <button onClick={ deleteItem } style={ { background: "transparent", borderStyle: "none", border: "1px solid black", fontWeight: "bolder", width: "fit-content", alignSelf: "flex-end", padding: "10px", borderRadius: "5px", color: "#143a63", cursor: "pointer" } }>Retirer</button>
             </div>
         </div>
     )

@@ -94,7 +94,7 @@ function CartPage() {
                                 {
                                     /* Going Through The 'productsInfos' Array Of Promises And Display The Infos Of Each One Of Them From The ProductService API */
                                     productsInfos.map( prod =>
-                                        <ProductBox productName={prod.name} productDescription={prod.description} productPrice={prod.price} productMaxStock={prod.stock}/>,
+                                        <ProductBox productId={prod.id} productName={prod.name} productDescription={prod.description} productPrice={prod.price} productMaxStock={prod.stock}/>,
                                     )
                                 }
                             </div>
