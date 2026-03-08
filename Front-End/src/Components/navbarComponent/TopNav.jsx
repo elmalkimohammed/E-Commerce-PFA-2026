@@ -7,6 +7,11 @@ function TopNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate()
 
+  const navChecker = () => {
+    if ( localStorage.getItem("generatedJWT_Token") ) navigate("/ProfilePage")
+    else navigate("/Authentication")
+  }
+
   return (
     <nav className="top-nav">
       <p className="brand">TechStore</p>
@@ -30,7 +35,7 @@ function TopNav() {
 
       <div className="user-icons">
         <i className="bi bi-search" aria-hidden></i>
-        <i className="bi bi-person" aria-hidden onClick={ () => { navigate("/Authentication") } }></i>
+        <i className="bi bi-person" aria-hidden onClick={ navChecker }></i>
         <span className="cart-icon">
           <i className="bi bi-cart" aria-hidden onClick={ () => { navigate("/CartPage") } } ></i>
           <span className="cart-badge">3</span>
