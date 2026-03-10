@@ -3,4 +3,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: rgb(26, 41, 66);
+    width: 50%;
+    padding: 30px;
+    border-radius: 12px;
+}
+.headerSection h1 {
+    color: rgb(255, 255, 255);
+}
+.headerSection p {
+    color: rgba(255,255,255,0.5);
 }

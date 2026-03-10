@@ -1,12 +1,16 @@
 import TopNav from "../Components/navbarComponent/TopNav"
 import HeaderTitle from "../Components/CategoryPage/HeaderTitle"
 
+import "./Styles/categoryPage.css"
+
 function CategoryPage() {
     return(
-        <div>
+        <>
             <TopNav/>
-            <HeaderTitle/>
-        </div>
+            <div className="filterContainer">
+                <HeaderTitle/>
+            </div>
+        </>
     )
 }
 
