@@ -3,7 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Acceuil from "./pages/Acceuil";
 import AuthPage from './pages/AuthPage.jsx'
 import SellerPortal from './pages/SellerPortal'
-import ProfilePage from './pages/ProfilePage';
+import ProfilePage from './pages/ProfilePage'
+import ProductDetail from './pages/ProductDetail';;
 
 function NotFound() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/Authentication" element={<AuthPage/>} />
         <Route path="/SellerPortal" element={ <SellerPortal/> }/>
         <Route path="/ProfilePage" element={ <ProfilePage/> }/>
+        <Route path="/product/:id" element={<ProductDetail />} />
       </Routes>
     </BrowserRouter>
   );
