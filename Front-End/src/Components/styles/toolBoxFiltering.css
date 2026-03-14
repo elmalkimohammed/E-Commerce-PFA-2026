@@ -1,3 +1,31 @@
+@media screen and (max-width: 646px) {
+    .toolBox {
+        display: flex;
+        flex-direction: column;
+    }
+    .actions {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .actions button {
+        width: 100%;
+    }
+}
+@media screen and (max-width: 446px) {
+    .toolBox table tr {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        margin-bottom: 15px;
+    }
+    .toolBoxSection {
+        background-color: red;
+    }
+    .toolBox table tbody tr:first-child td {
+        display: none;
+    }
+}
 .title {
     display: flex;
     align-items: center;
