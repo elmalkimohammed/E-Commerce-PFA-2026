@@ -1,0 +1,40 @@
+.prodRow {
+    border-radius: 12px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+}
+.prodRow h1 {
+    color: #1a2942;
+}
+.leftInfos {
+    display: flex;
+    gap: 1em;
+}
+.leftInfos img {
+    align-self: center;
+    width: 56px;
+    height: 56px;
+}
+.desc_name {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.rightInfos {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+.rightInfos button {
+    padding: 10px;
+    border-style: none;
+    border: 1px solid rgba(60,179,113,0.2);
+    border-radius: 12px;
+    color: #33a063;
+    background: rgba(60,179,113,0.12);
+}
+.rightInfos button:hover {
+    cursor: pointer;
+}

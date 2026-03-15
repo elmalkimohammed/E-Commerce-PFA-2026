@@ -3,7 +3,7 @@ import "../styles/productRow.css"
 function ProductRow({ prodName , prodCateg , prodPrice }) {
     return(
         <>
-            <div className="prodRox">
+            <div className="prodRow">
                 <div className="leftInfos">
                     <img src="" alt="Image De Produit" />
                     <div className="desc_name">
@@ -12,7 +12,7 @@ function ProductRow({ prodName , prodCateg , prodPrice }) {
                     </div>
                 </div>
                 <div className="rightInfos">
-                    <h1>{ prodPrice }</h1>
+                    <h1>{ prodPrice }$</h1>
                     <button>Détails</button>
                 </div>
             </div>
