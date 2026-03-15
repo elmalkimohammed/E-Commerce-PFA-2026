@@ -1,8 +1,5 @@
 import { Plus, X } from "lucide-react";
 
-// Receives: attributes = [{ key: "", value: "" }, ...]
-// Emits:    onChange(newAttributes)
-
 export default function AttributesEditor({ attributes, onChange }) {
   const add = () => {
     onChange([...attributes, { key: "", value: "" }]);

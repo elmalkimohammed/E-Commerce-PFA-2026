@@ -2,17 +2,17 @@ import { useState, useEffect, useRef } from "react";
 import { X, ImagePlus } from "lucide-react";
 import AttributesEditor from "./AttributesEditor";
 
-const CATEGORIES = ["Electronics", "Clothing", "Home & Garden", "Books", "Sports", "Toys", "Food", "Other"];
+const dictToArray = (dict) => {
+  if (!dict) return [];
+  if (Array.isArray(dict)) return dict;
+  return Object.entries(dict).map(([key, value]) => ({ key, value: String(value) }));
+};
 
-// Convert { key: value } dict → [{ key, value }] array for the editor
-const dictToArray = (dict) =>
-  dict ? Object.entries(dict).map(([key, value]) => ({ key, value: String(value) })) : [];
+const arrayToDict = (arr) => {
+  return Object.fromEntries(arr.filter((a) => a.key.trim()).map((a) => [a.key.trim(), a.value]));
+};
 
-// Convert [{ key, value }] array → { key: value } dict for the API
-const arrayToDict = (arr) =>
-  Object.fromEntries(arr.filter((a) => a.key.trim()).map((a) => [a.key.trim(), a.value]));
-
-export default function EditProductModal({ product, onSave, onClose }) {
+export default function EditProductModal({ product, onSave, onClose, categories = [] }) {
   const [form, setForm] = useState({ ...product });
   const [images, setImages] = useState(product.images || []);
   const [attributes, setAttributes] = useState(dictToArray(product.attributes));
@@ -38,7 +38,12 @@ export default function EditProductModal({ product, onSave, onClose }) {
     fileInputRef.current.value = "";
   };
 
-  const removeImage = (index) => setImages((prev) => prev.filter((_, i) => i !== index));
+  const removeImage = (index) => {
+    if (images[index].url?.startsWith('blob:')) {
+      URL.revokeObjectURL(images[index].url);
+    }
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const validate = () => {
     const newErrors = {};
@@ -52,14 +57,19 @@ export default function EditProductModal({ product, onSave, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = validate();
-    if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return; }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
     onSave({ ...form, images, attributes: arrayToDict(attributes) });
   };
+
+  const displayCategories = categories.length > 0 ? categories : 
+    ["Electronics", "Clothing", "Home & Garden", "Books", "Sports", "Toys", "Food", "Other"];
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-
         <div className="modal-header">
           <h3 className="modal-title">Edit Product</h3>
           <button className="modal-close" onClick={onClose}><X size={18} /></button>
@@ -76,7 +86,7 @@ export default function EditProductModal({ product, onSave, onClose }) {
               <label>Category *</label>
               <select name="category" value={form.category} onChange={handleChange} className={errors.category ? "error" : ""}>
                 <option value="">Select a category</option>
-                {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                {displayCategories.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>
               {errors.category && <span className="field-error">{errors.category}</span>}
             </div>
@@ -127,7 +137,6 @@ export default function EditProductModal({ product, onSave, onClose }) {
             <button type="submit" className="btn-primary">Save Changes</button>
           </div>
         </form>
-
       </div>
     </div>
   );

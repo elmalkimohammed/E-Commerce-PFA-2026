@@ -4,64 +4,72 @@ import ProductTable from "../components/SellerPortal/ProductTable";
 import AddProductForm from "../components/SellerPortal/AddProductForm";
 import EditProductModal from "../components/SellerPortal/EditProductModal";
 import TopNav from "../Components/navbarComponent/TopNav";
+import { useProducts } from "../hooks/useProducts";
+import { useDashboard } from "../hooks/useDashboard";
 
 import "./styles/SellerPortal.css";
 
-// Mock data — replace with API calls later
-const MOCK_PRODUCTS = [
-  { id: 1, name: "Wireless Headphones", category: "Electronics", price: "79.99", stock: 14 },
-  { id: 2, name: "Running Shoes", category: "Sports", price: "59.99", stock: 3 },
-  { id: 3, name: "Coffee Maker", category: "Home & Garden", price: "49.99", stock: 22 },
-];
-
 export default function SellerPortal() {
-  const [products, setProducts] = useState(MOCK_PRODUCTS);
+  const { products, loading, error, categories, addProduct, updateProduct, deleteProduct } = useProducts();
+  const { stats, loading: statsLoading } = useDashboard();
   const [editingProduct, setEditingProduct] = useState(null);
 
-  const handleAddProduct = (product) => {
-    setProducts((prev) => [...prev, { ...product, id: Date.now() }]);
+  const handleAddProduct = async (product) => {
+    await addProduct(product);
   };
 
-  const handleSaveEdit = (updatedProduct) => {
-    setProducts((prev) =>
-      prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    );
-    setEditingProduct(null);
-  };
-
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this product?")) {
-      setProducts((prev) => prev.filter((p) => p.id !== id));
+  const handleSaveEdit = async (updatedProduct) => {
+    const result = await updateProduct(updatedProduct.id, updatedProduct);
+    if (result.success) {
+      setEditingProduct(null);
     }
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce produit?")) {
+      await deleteProduct(id);
+    }
+  };
+
+  if (error) {
+    return (
+      <>
+        <TopNav/>
+        <div className="seller-portal">
+          <div className="portal-header">
+            <h1 className="portal-title">Seller Portal</h1>
+            <p className="portal-subtitle">Gérez vos produits et suivez vos performances</p>
+          </div>
+          <div className="error-container">
+            <h2>Mode Démonstration</h2>
+            <p>Le backend n'est pas accessible. Affichage des données de démonstration.</p>
+          </div>
+          <Analytics stats={stats} loading={statsLoading} />
+          <ProductTable products={products} loading={loading} onEdit={setEditingProduct} onDelete={handleDelete} />
+          <AddProductForm onAddProduct={handleAddProduct} categories={categories} />
+          {editingProduct && (
+            <EditProductModal product={editingProduct} onSave={handleSaveEdit} onClose={() => setEditingProduct(null)} categories={categories} />
+          )}
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
-    <TopNav/>
-    <div className="seller-portal">
-      <div className="portal-header">
-        <h1 className="portal-title">Seller Portal</h1>
-        <p className="portal-subtitle">Manage your products and track performance</p>
+      <TopNav/>
+      <div className="seller-portal">
+        <div className="portal-header">
+          <h1 className="portal-title">Seller Portal</h1>
+          <p className="portal-subtitle">Gérez vos produits et suivez vos performances</p>
+        </div>
+        <Analytics stats={stats} loading={statsLoading} />
+        <ProductTable products={products} loading={loading} onEdit={setEditingProduct} onDelete={handleDelete} />
+        <AddProductForm onAddProduct={handleAddProduct} categories={categories} />
+        {editingProduct && (
+          <EditProductModal product={editingProduct} onSave={handleSaveEdit} onClose={() => setEditingProduct(null)} categories={categories} />
+        )}
       </div>
-
-      <Analytics />
-
-      <ProductTable
-        products={products}
-        onEdit={setEditingProduct}
-        onDelete={handleDelete}
-      />
-
-      <AddProductForm onAddProduct={handleAddProduct} />
-
-      {editingProduct && (
-        <EditProductModal
-          product={editingProduct}
-          onSave={handleSaveEdit}
-          onClose={() => setEditingProduct(null)}
-        />
-      )}
-    </div>
     </>
   );
 }

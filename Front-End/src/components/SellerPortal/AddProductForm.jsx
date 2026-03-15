@@ -1,14 +1,11 @@
 import { useState, useRef } from "react";
 import { ImagePlus, X } from "lucide-react";
 import AttributesEditor from "./AttributesEditor";
-
-import "../styles/sellerPortal.css"
-
-const CATEGORIES = ["Electronics", "Clothing", "Home & Garden", "Books", "Sports", "Toys", "Food", "Other"];
+import "../styles/sellerPortal.css";
 
 const emptyForm = { name: "", category: "", description: "", price: "", stock: "" };
 
-export default function AddProductForm({ onAddProduct }) {
+export default function AddProductForm({ onAddProduct, categories = [] }) {
   const [form, setForm] = useState(emptyForm);
   const [images, setImages] = useState([]);
   const [attributes, setAttributes] = useState([]);
@@ -28,7 +25,10 @@ export default function AddProductForm({ onAddProduct }) {
     fileInputRef.current.value = "";
   };
 
-  const removeImage = (index) => setImages((prev) => prev.filter((_, i) => i !== index));
+  const removeImage = (index) => {
+    URL.revokeObjectURL(images[index].url);
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const validate = () => {
     const newErrors = {};
@@ -39,20 +39,26 @@ export default function AddProductForm({ onAddProduct }) {
     return newErrors;
   };
 
-  // Convert [{key, value}] array → { key: value } dict for the API
-  const buildAttributesDict = () =>
-    Object.fromEntries(attributes.filter((a) => a.key.trim()).map((a) => [a.key.trim(), a.value]));
+  const buildAttributesDict = () => {
+    return Object.fromEntries(attributes.filter((a) => a.key.trim()).map((a) => [a.key.trim(), a.value]));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = validate();
-    if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return; }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
     onAddProduct({ ...form, images, attributes: buildAttributesDict() });
     setForm(emptyForm);
     setImages([]);
     setAttributes([]);
     setErrors({});
   };
+
+  const displayCategories = categories.length > 0 ? categories : 
+    ["Electronics", "Clothing", "Home & Garden", "Books", "Sports", "Toys", "Food", "Other"];
 
   return (
     <section className="add-product-section">
@@ -68,7 +74,7 @@ export default function AddProductForm({ onAddProduct }) {
             <label htmlFor="category">Category *</label>
             <select id="category" name="category" value={form.category} onChange={handleChange} className={errors.category ? "error" : ""}>
               <option value="">Select a category</option>
-              {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              {displayCategories.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
             {errors.category && <span className="field-error">{errors.category}</span>}
           </div>

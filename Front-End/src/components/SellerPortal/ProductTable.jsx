@@ -1,6 +1,15 @@
 import { Pencil, Trash2 } from "lucide-react";
 
-export default function ProductTable({ products, onEdit, onDelete }) {
+export default function ProductTable({ products, loading, onEdit, onDelete }) {
+  if (loading) {
+    return (
+      <section className="products-section">
+        <h2 className="section-title">Your Products</h2>
+        <div className="loading-state">Loading products...</div>
+      </section>
+    );
+  }
+
   if (products.length === 0) {
     return (
       <section className="products-section">
@@ -38,15 +47,15 @@ export default function ProductTable({ products, onEdit, onDelete }) {
                 </td>
                 <td className="product-price">${parseFloat(product.price).toFixed(2)}</td>
                 <td>
-                  <span className={`stock-badge ${product.stock < 5 ? "low" : ""}`}>
+                  <span className={`stock-badge ${parseInt(product.stock) < 5 ? "low" : ""}`}>
                     {product.stock} units
                   </span>
                 </td>
                 <td className="actions-cell">
-                  <button className="action-btn edit-btn" onClick={() => onEdit(product)} title="Edit product">
+                  <button className="action-btn edit-btn" onClick={() => onEdit(product)}>
                     <Pencil size={15} /> Edit
                   </button>
-                  <button className="action-btn delete-btn" onClick={() => onDelete(product.id)} title="Delete product">
+                  <button className="action-btn delete-btn" onClick={() => onDelete(product.id)}>
                     <Trash2 size={15} /> Delete
                   </button>
                 </td>
