@@ -1,8 +1,25 @@
 import "../styles/toolBoxFiltering.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter } from '@fortawesome/free-solid-svg-icons' 
+import { useState } from "react"
 
-function ToolBoxFiltering({ buttonState }) {
+function ToolBoxFiltering({ buttonState , setCategory , setPrice }) {
+
+        const [ categFilterValue , setCategFilterValue ] = useState("All")
+        const [ priceFilterValue , setpriceFilterValue ] = useState("0")
+
+        const handleApply = async () => {
+            setCategory(categFilterValue)
+            setPrice(priceFilterValue)
+            buttonState(true)
+        }
+
+        const handleReset = async () => {
+            setCategory("All")
+            setPrice("0")
+            buttonState(false)
+        }
+
     return(
         <div className="toolBoxSection">
             <div className="title">
@@ -18,7 +35,7 @@ function ToolBoxFiltering({ buttonState }) {
                         </tr>
                         <tr>
                             <td>
-                                <select>
+                                <select value={categFilterValue} onChange={ (e) => { setCategFilterValue(e.target.value) } }>
                                     <option value="All">All</option>
                                     <option value="Electronics">Electronics</option>
                                     <option value="Clothing">Clothing</option>
@@ -30,7 +47,7 @@ function ToolBoxFiltering({ buttonState }) {
                                 </select>
                             </td>
                             <td>
-                                <select>
+                                <select value={priceFilterValue} onChange={ (e) => { setpriceFilterValue(e.target.value) } }>
                                     <option value="0">All Prices</option>
                                     <option value="1">Under $25</option>
                                     <option value="2">$25 {"<->"} $50</option>
@@ -42,8 +59,8 @@ function ToolBoxFiltering({ buttonState }) {
                     </tbody>
                 </table>
                 <div className="actions">
-                    <button onClick={ () => buttonState(true) }>Appliquer</button>
-                    <button onClick={ () => buttonState(false) }>Réinitialiser</button>
+                    <button onClick={ handleApply }>Appliquer</button>
+                    <button onClick={ handleReset }>Réinitialiser</button>
                 </div>
             </div>
         </div>
