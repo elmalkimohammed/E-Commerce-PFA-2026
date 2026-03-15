@@ -1,0 +1,50 @@
+[
+  {
+    "ContainingType": "UserProfileService.Controllers.UserProfileController",
+    "Method": "GetUserFullInfo",
+    "RelativePath": "api/UserProfile",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "UserProfileService.DTO.GetFullInfoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "UserProfileService.Controllers.UserProfileController",
+    "Method": "UpdatePrivateInfo",
+    "RelativePath": "api/UserProfile",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "UserProfileService.DTO.PutPrivateInfoDtoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "UserProfileService.Controllers.UserProfileController",
+    "Method": "UpdatePublicInfo",
+    "RelativePath": "api/UserProfile",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "UserProfileService.DTO.PutPublicInfoDtoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

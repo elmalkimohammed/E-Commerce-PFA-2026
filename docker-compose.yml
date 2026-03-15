@@ -91,6 +91,24 @@ services:
       - ./Back-End/CartService/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - ecommerce-network
+  UserProfileDB:
+    image: mysql:8.0
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_DATABASE: UserProfileDb
+      MYSQL_ROOT_PASSWORD: admin
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - UserProfileDB-data:/var/lib/mysql
+      - ./Back-End/UserProfileService/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ecommerce-network
 
   #___Micro-Services___
   AuthServiceAPI:
@@ -154,12 +172,34 @@ services:
         - Kafka__BootstrapServers=kafka:29092
     networks:
       - ecommerce-network
+  UserProfileServiceAPI:
+    build:
+      context: ./Back-End/UserProfileService
+      dockerfile: Dockerfile
+    image: userprofileservice-api:latest
+    container_name: userprofileservice-api
+    ports:
+      - "5004:5353"
+    depends_on:
+      UserProfileDB:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=http://+:5353
+        - ConnectionStrings__DefaultConnection=Server=UserProfileDB;Port=3306;Database=UserProfileDb;User=root;Password=admin;
+        - Kafka__BootstrapServers=kafka:29092
+    networks:
+      - ecommerce-network
 volumes:
   AuthServiceDB-data: 
     driver: local
   ProductServiceDB-data:
     driver: local
   CartServiceDB-data:
+    driver: local
+  UserProfileDB-data:
     driver: local
 networks:
   ecommerce-network:
