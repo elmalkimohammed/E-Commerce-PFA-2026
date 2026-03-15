@@ -30,6 +30,7 @@ function TopNav() {
         <p><a href="/" onClick={() => setMenuOpen(false)}>Accueil</a></p>
         <p><a href="#" onClick={() => setMenuOpen(false)}>Catègories</a></p>
         <p><a href="#" onClick={() => setMenuOpen(false)}>À propos</a></p>
+        <p><a href="/CategoryPage" onClick={() => setMenuOpen(false)}>Filtrage</a></p>
         <p><a href="#" onClick={() => setMenuOpen(false)}>Contact</a></p>
       </div>
 

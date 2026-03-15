@@ -1,0 +1,34 @@
+.dispSection {
+    color: #7a8499;
+    text-align: center;
+    width: 100%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+}
+.dispSection section {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 20px;
+}
+.dispSection table {
+    width: fit-content;
+    align-self: center;
+}
+.dispSection table tr {
+    display: flex;
+    gap: 1em;
+}
+.dispSection table tr td:first-child {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+.dispSection table tr td:nth-child(2) {
+    align-self: center;
+}
