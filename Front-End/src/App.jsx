@@ -6,6 +6,7 @@ import SellerPortal from './pages/SellerPortal'
 import ProfilePage from './pages/ProfilePage';
 import CartPage from "./pages/CartPage.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
+import ProductDetail from './pages/ProductDetail';
 
 function NotFound() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/ProfilePage" element={ <ProfilePage/> }/>
         <Route path="/CartPage" element={ <CartPage/> }/>
         <Route path="/CategoryPage" element={ <CategoryPage/> }/>
+        <Route path="/product/:id" element={<ProductDetail />} />
       </Routes>
     </BrowserRouter>
   );
