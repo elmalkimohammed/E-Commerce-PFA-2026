@@ -1,9 +1,11 @@
-import "../styles/displaySection.css"
+import "../styles/tipsSection.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons' 
+import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 
-function DisplaySection() {
-    return(
+function TipsSection() {
+
+    /* Show The Tips Component First Before Starting The Filter Process */
+        return(
         <div className="dispSection">
             <h1 style={{ color: "black", textAlign: "start", padding: "20px" }}>Produits</h1>
             <section style={{ backgroundColor: "#fff", borderBottomRightRadius: "12px", borderBottomLeftRadius: "12px"}}>
@@ -40,4 +42,4 @@ function DisplaySection() {
     )
 }
 
-export default DisplaySection
+export default TipsSection

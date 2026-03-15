@@ -2,7 +2,7 @@ import "../styles/toolBoxFiltering.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter } from '@fortawesome/free-solid-svg-icons' 
 
-function ToolBoxFiltering() {
+function ToolBoxFiltering({ buttonState }) {
     return(
         <div className="toolBoxSection">
             <div className="title">
@@ -42,8 +42,8 @@ function ToolBoxFiltering() {
                     </tbody>
                 </table>
                 <div className="actions">
-                    <button>Appliquer</button>
-                    <button>Réinitialiser</button>
+                    <button onClick={ () => buttonState(true) }>Appliquer</button>
+                    <button onClick={ () => buttonState(false) }>Réinitialiser</button>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import "../styles/productRow.css"
 
-function ProductRow({ prodName , prodDesc , prodPrice }) {
+function ProductRow({ prodName , prodCateg , prodPrice }) {
     return(
         <>
             <div className="prodRox">
@@ -8,7 +8,7 @@ function ProductRow({ prodName , prodDesc , prodPrice }) {
                     <img src="" alt="Image De Produit" />
                     <div className="desc_name">
                         <h1>{ prodName }</h1>
-                        <p>{ prodDesc }</p>
+                        <p>{ prodCateg }</p>
                     </div>
                 </div>
                 <div className="rightInfos">
