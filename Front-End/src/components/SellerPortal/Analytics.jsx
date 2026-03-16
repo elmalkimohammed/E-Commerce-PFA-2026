@@ -1,13 +1,37 @@
 import { TrendingUp, ShoppingBag, DollarSign, Package } from "lucide-react";
 
-const stats = [
-  { label: "Total Revenue", value: "$12,430", change: "+8.2%", icon: DollarSign, up: true },
-  { label: "Orders", value: "284", change: "+12.5%", icon: ShoppingBag, up: true },
-  { label: "Products Listed", value: "36", change: "+3", icon: Package, up: true },
-  { label: "Avg. Order Value", value: "$43.7", change: "-1.4%", icon: TrendingUp, up: false },
-];
+export default function Analytics({ data }) {
+  const stats = [
+    { 
+      label: "Total Revenue", 
+      value: data?.totalRevenue || "$12,430", 
+      change: "+8.2%", 
+      icon: DollarSign, 
+      up: true 
+    },
+    { 
+      label: "Orders", 
+      value: data?.totalOrders || "284", 
+      change: "+12.5%", 
+      icon: ShoppingBag, 
+      up: true 
+    },
+    { 
+      label: "Products Listed", 
+      value: data?.productsListed || "36", 
+      change: "+" + (data?.productsListed || "3"), 
+      icon: Package, 
+      up: true 
+    },
+    { 
+      label: "Avg. Order Value", 
+      value: data?.avgOrderValue || "$43.7", 
+      change: "+2.3%", 
+      icon: TrendingUp, 
+      up: true 
+    },
+  ];
 
-export default function Analytics() {
   return (
     <section className="analytics-section">
       <h2 className="section-title">Analytics Overview</h2>
