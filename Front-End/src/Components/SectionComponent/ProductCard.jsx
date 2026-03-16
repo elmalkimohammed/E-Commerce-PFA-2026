@@ -1,6 +1,13 @@
 import "../../pages/Styles/product.css";
-function ProductCard({ product }) {
+
+function ProductCard({ product, onAddToCart }) {
   const { name, desc, logo, price, oldPrice, badge } = product;
+
+  const handleAddToCart = () => {
+    if (onAddToCart) {
+      onAddToCart(product.id);
+    }
+  };
 
   return (
     <div className="product-card">
@@ -22,7 +29,7 @@ function ProductCard({ product }) {
             <span className="price">{price}€</span>
             {oldPrice ? <span className="old-price">{oldPrice}€</span> : null}
           </div>
-          <button>Ajouter</button>
+          <button onClick={handleAddToCart}>Ajouter</button>
         </div>
       </div>
     </div>
