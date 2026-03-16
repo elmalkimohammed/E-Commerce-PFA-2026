@@ -32,6 +32,7 @@ function TopNav() {
         <p><a href="#" onClick={() => setMenuOpen(false)}>À propos</a></p>
         <p><a href="/CategoryPage" onClick={() => setMenuOpen(false)}>Filtrage</a></p>
         <p><a href="#" onClick={() => setMenuOpen(false)}>Contact</a></p>
+        { localStorage.getItem("generatedJWT_Token") && <p><a href="/SellerPortal" onClick={() => setMenuOpen(false)}>Vendres</a></p> }
       </div>
 
       <div className="user-icons">

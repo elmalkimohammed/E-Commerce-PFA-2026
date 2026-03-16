@@ -33,6 +33,7 @@ namespace TicketProductApi
             {
                 app.MapOpenApi();
             }
+            app.UseCors("AllowReact");
 
             // Activate The CORS Policy
             app.UseCors("AllowReact");

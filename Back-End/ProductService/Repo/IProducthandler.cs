@@ -12,6 +12,7 @@ namespace TicketProductApi.Repo
         public void UpdateProductAndImage(ProductAndImage product);
         public void UpdateProduct(Product product);
         public void UpdateImage(ProductImage image);
+        public List<ProductAndImage> GetProductsByUserId(Guid userId);
         public void DeleteProduct(int id); 
         public void DeleteImage(int id);
 
