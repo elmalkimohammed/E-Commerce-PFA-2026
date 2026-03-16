@@ -6,7 +6,6 @@ using TicketProductApi.Mapper;
 using TicketProductApi.Model;
 using TicketProductApi.Repo;
 
-
 namespace TicketProductApi.Controllers
 {
     [Route("TechStore/ProductService")]
@@ -18,21 +17,17 @@ namespace TicketProductApi.Controllers
         public ProductController(IProducthandler productHandler)
         {
             _productHandler = productHandler;
-
         }
+
         [HttpGet]
         public IActionResult GetAllProducts()
         {
-
-
             var products = _productHandler.GetAllProducts();
             List<GetDtoResponse> response = ProductMapper.ProductsToGetDtoList(products);
             return Ok(response);
-
-
         }
-        [HttpGet("Latest")]
 
+        [HttpGet("Latest")]
         public IActionResult Get5Products()
         {
             try
@@ -45,9 +40,8 @@ namespace TicketProductApi.Controllers
             {
                 return NotFound();
             }
-
-
         }
+
         [HttpGet("{id}")]
         public IActionResult GetProduct(int id)
         {
@@ -62,6 +56,29 @@ namespace TicketProductApi.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet("user/{userId}")]
+        public IActionResult GetProductsByUserId(Guid userId)
+        {
+            try
+            {
+                List<ProductAndImage> products = _productHandler.GetProductsByUserId(userId);
+                
+                if (products == null || products.Count == 0)
+                {
+                    return NotFound($"No products found for user with ID: {userId}");
+                }
+                
+                List<GetDtoResponse> response = ProductMapper.ProductsToGetDtoList(products);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception here if you have logging
+                return StatusCode(500, $"An error occurred while retrieving products: {ex.Message}");
+            }
+        }
+
         [HttpPost]
         public IActionResult addProduct(PostDtoRequest obj)
         {
@@ -80,6 +97,7 @@ namespace TicketProductApi.Controllers
                 return BadRequest();
             }
         }
+
         [HttpDelete("{id}")]
         public IActionResult DeleteProduct(int id)
         {
@@ -87,13 +105,13 @@ namespace TicketProductApi.Controllers
             {
                 _productHandler.DeleteProduct(id);
                 return Ok();
-
             }
             catch
             {
                 return NotFound();
             }
         }
+
         [HttpPut]
         public IActionResult UpdateProduct(PutDtoRequest obj)
         {
@@ -112,6 +130,7 @@ namespace TicketProductApi.Controllers
                 return BadRequest();
             }
         }
+
         [HttpPost("AddImage")]
         public IActionResult AddImage(PostImageDtoRequest obj)
         {
@@ -130,6 +149,7 @@ namespace TicketProductApi.Controllers
                 return BadRequest();
             }
         }
+
         [HttpDelete("DeleteImage/{id}")]
         public IActionResult DeleteImage(int id)
         {
@@ -137,13 +157,13 @@ namespace TicketProductApi.Controllers
             {
                 _productHandler.DeleteImage(id);
                 return Ok();
-
             }
             catch
             {
                 return NotFound();
             }
         }
+
         [HttpPut("UpdateImage")]
         public IActionResult UpdateImage(PutImageDtoRequest obj)
         {

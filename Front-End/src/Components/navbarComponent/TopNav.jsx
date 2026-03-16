@@ -7,6 +7,8 @@ function TopNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate()
 
+  const token = localStorage.getItem("generatedJWT_Token")
+
   return (
     <nav className="top-nav">
       <p className="brand">TechStore</p>
@@ -26,6 +28,7 @@ function TopNav() {
         <p><a href="#" onClick={() => setMenuOpen(false)}>Catègories</a></p>
         <p><a href="#" onClick={() => setMenuOpen(false)}>À propos</a></p>
         <p><a href="#" onClick={() => setMenuOpen(false)}>Contact</a></p>
+        { token && <p><a href="/SellerPortal" onClick={() => setMenuOpen(false)}>Vendres</a></p> }
       </div>
 
       <div className="user-icons">

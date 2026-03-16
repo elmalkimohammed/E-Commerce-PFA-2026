@@ -11,7 +11,7 @@ function ProductHolder() {
   const [error, setError] = useState(null);
 
   // Base URL for your microservice
-  const API_BASE_URL = "http://localhost:5002/TechStore/ProductService";
+  const API_BASE_URL = "http://localhost:5002/TechStore/ProductService/Latest";
 
   useEffect(() => {
     fetchProducts();

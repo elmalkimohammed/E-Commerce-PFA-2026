@@ -1,6 +1,6 @@
 import { authAPI } from "../services/authAPI"
 import { useNavigate } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 
 import "./styles/globalAuthForm.css"
@@ -16,7 +16,7 @@ function LoginForm( { onSwitch } ) {
         try {
             e.preventDefault()
             const token = await axios.post( `${authAPI}/login`, { email , password } )
-            localStorage.setItem("generatedJWT_Token", token)
+            localStorage.setItem("generatedJWT_Token", token.data)
             navigate("/Authentication") // The Route Will Be Changed When The Actual Home Page Is Made
             console.log("hi")
         } catch (error) {
