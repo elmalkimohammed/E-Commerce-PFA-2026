@@ -15,6 +15,12 @@ namespace TicketProductApi
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+            builder.Services.AddCors(options =>
+                {
+                    options.AddPolicy("AllowReact", policy => policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod());
+                }
+            );
+
             builder.Services.AddScoped<MySqlConnection>(sp =>
             new MySqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"))
             );
@@ -27,6 +33,7 @@ namespace TicketProductApi
             {
                 app.MapOpenApi();
             }
+            app.UseCors("AllowReact");
 
             app.UseHttpsRedirection();
 
