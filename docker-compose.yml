@@ -155,7 +155,7 @@ services:
   CartServiceAPI:
     build:
       context: ./Back-End/CartService
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     image: cartservice-api:latest
     container_name: cartservice-api
     ports:

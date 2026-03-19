@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using TicketProductApi.Dto;
@@ -17,6 +18,24 @@ namespace TicketProductApi.Controllers
         public ProductController(IProducthandler productHandler)
         {
             _productHandler = productHandler;
+        }
+
+        [HttpGet("getCategories")]
+        public IActionResult GetAllCategories()
+        {
+            try
+            {
+
+                var response = this._productHandler.GetCategories();
+                return Ok(response);
+
+            }
+            catch (Exception error)
+            {
+
+                return StatusCode(500, $"An error occurred while retrieving products: {error.Message}");
+
+            }
         }
 
         [HttpGet]

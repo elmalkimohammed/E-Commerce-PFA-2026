@@ -1,4 +1,5 @@
-﻿using TicketProductApi.Model;
+﻿using Microsoft.VisualBasic;
+using TicketProductApi.Model;
 
 namespace TicketProductApi.Repo
 {
@@ -15,6 +16,7 @@ namespace TicketProductApi.Repo
         public List<ProductAndImage> GetProductsByUserId(Guid userId);
         public void DeleteProduct(int id); 
         public void DeleteImage(int id);
+        public List<String> GetCategories();
 
     }
 }
