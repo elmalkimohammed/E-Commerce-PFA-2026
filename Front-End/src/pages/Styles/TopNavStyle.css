@@ -13,6 +13,9 @@ a {
   text-decoration: none; /* Removes the underline from all links */
   color: inherit; /* Inherits the text color from the parent element */
 }
+a:hover {
+  color: rgb(183, 183, 183);
+}
 
 .brand {
   color: var(--accent);
@@ -138,4 +141,13 @@ a {
   .brand {
     font-size: 15px;
   }
+}
+.hiddenCategories {
+  border-top: 1px solid white;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  background-color: #143a63;
+  color: white;
 }
