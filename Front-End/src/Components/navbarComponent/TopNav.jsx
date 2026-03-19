@@ -5,10 +5,11 @@ import axios from "axios"
 
 import "../../pages/Styles/TopNavStyle.css";
 
-function TopNav() {
+function TopNav( { currentCategory: selectedCategory } ) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [ categories , setCategories ] = useState([]);
   const [ spanState , setSpanState ] = useState(false);
+  const [ currentCategory , setCurrentCategory ] = useState("Default");
   const navigate = useNavigate()
 
   const navChecker = () => {
@@ -19,7 +20,7 @@ function TopNav() {
   /* Fetching All Of The Available Categories From The API */
   useEffect( () => {
     getCategories()
-  }, [categories] )
+  }, [] )
 
   const getCategories = async () => {
     try {
@@ -37,6 +38,8 @@ function TopNav() {
       setSpanState(false)
     }
   }
+
+  /* Taking The Value Of The Selected Category */
 
   return (
     <>
@@ -73,8 +76,13 @@ function TopNav() {
       </nav>
       {/* Hidden Categories HTML Span */}
       { spanState &&
-      <span className="hiddenCategories">
-        { categories.map( (foundCategory) => <span style={{ color: "white", cursor: "pointer", padding: "5px" }} ><a>{ foundCategory }</a></span> ) }
+      <span className="hiddenCategories" style={{ position: "sticky", top: "56.8px", zIndex: "51" }}>
+        { 
+          categories.map( (foundCategory) => 
+          <span 
+          style={{ color: "white", cursor: "pointer", padding: "5px" }} ><a onClick={ (e) => { setCurrentCategory(e.target.innerText) } } >{ foundCategory }</a>
+          </span> ) 
+        }
       </span>
       }
     </>

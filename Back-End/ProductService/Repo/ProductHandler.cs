@@ -252,7 +252,7 @@ namespace TicketProductApi.Repo
             /* The Sql Process */
             using MySqlConnection conn = new MySqlConnection(connection);
             conn.Open();
-            MySqlCommand cmd = new MySqlCommand("SELECT Category FROM product", conn);
+            MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT Category FROM product", conn);
             MySqlDataReader rd = cmd.ExecuteReader();
             while ( rd.Read() )
             {
