@@ -5,11 +5,10 @@ import axios from "axios"
 
 import "../../pages/Styles/TopNavStyle.css";
 
-function TopNav( { currentCategory: selectedCategory } ) {
+function TopNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [ categories , setCategories ] = useState([]);
   const [ spanState , setSpanState ] = useState(false);
-  const [ currentCategory , setCurrentCategory ] = useState("Default");
   const navigate = useNavigate()
 
   const navChecker = () => {
@@ -39,7 +38,10 @@ function TopNav( { currentCategory: selectedCategory } ) {
     }
   }
 
-  /* Taking The Value Of The Selected Category */
+  /* Taking The Value Of The Selected Category And Storing It In A Temporary Session */
+  const storeCategory = ( value ) => {
+    localStorage.setItem("selectedCategory" , value)
+  }
 
   return (
     <>
@@ -80,7 +82,7 @@ function TopNav( { currentCategory: selectedCategory } ) {
         { 
           categories.map( (foundCategory) => 
           <span 
-          style={{ color: "white", cursor: "pointer", padding: "5px" }} ><a onClick={ (e) => { setCurrentCategory(e.target.innerText) } } >{ foundCategory }</a>
+          style={{ color: "white", cursor: "pointer", padding: "5px" }} ><a onClick={ (e) => { storeCategory(e.target.innerText); window.dispatchEvent(new Event("categoryChanged")); navigate("/CategoryPage") } } >{ foundCategory }</a>
           </span> ) 
         }
       </span>
