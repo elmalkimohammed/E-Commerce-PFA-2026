@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
+import { prodAPI } from "../services/servicesAPI"
 import "./Styles/ProductDetail.css"
 
 const ProductDetail = () => {
@@ -12,7 +13,7 @@ const ProductDetail = () => {
   const [activeImg, setActiveImg] = useState(0)
 
   useEffect(() => {
-    fetch(`http://localhost:5002/TechStore/ProductService/${id}`)
+    fetch(`${prodAPI}/${id}`)
       .then(res => res.json())
       .then(data => {
         setProduct(data)

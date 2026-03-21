@@ -4,6 +4,7 @@ import ToolBoxFiltering from "../Components/CategoryPage/ToolBoxFiltering"
 import TipsSection from "../Components/CategoryPage/TipsSection"
 import ProductsSection from "../Components/CategoryPage/ProductsSections"
 import "./Styles/categoryPage.css"
+import { prodAPI } from "../services/servicesAPI"
 
 import { useState, useEffect } from "react"
 
@@ -16,7 +17,7 @@ function CategoryPage() {
 
     useEffect(() => {
 
-    fetch("http://localhost:5002/TechStore/ProductService/")
+    fetch(`${prodAPI}`)
         .then(res => res.json())
         .then(data => {
             console.log("API DATA:", data)
