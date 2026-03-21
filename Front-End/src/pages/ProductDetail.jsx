@@ -1,159 +1,171 @@
-import React, { useState } from 'react';
-import './Styles/ProductDetail.css';
+import React, { useState, useEffect } from "react"
+import { useParams, useNavigate } from "react-router-dom"
+import "./Styles/ProductDetail.css"
 
 const ProductDetail = () => {
-  const [quantity, setQuantity] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(0);
-  
-  const product = {
-    name: "Sony WH-1000XM5",
-    category: "Casques Audio",
-    rating: 4.7,
-    reviews: 128,
-    price: 3499,
-    originalPrice: 4199,
-    discount: 17,
-    stock: 12,
-    description: "Le casque Sony WH-1000XM5 offre une réduction de bruit de niveau professionnel avec 8 microphones intégrés et deux processeurs. Profitez d'une qualité audio exceptionnelle avec le codec LDAC, d'un confort supérieur grâce à son design ergonomique et d'une autonomie de 30 heures. Idéal pour les voyageurs et les professionnels exigeants.",
-    connectivity: "Bluetooth 5.2",
-    weight: "250g",
-    battery: "30 heures",
-    color: "Noir Minuit",
-    images: [
-      "/api/placeholder/600/600",
-      "/api/placeholder/600/600",
-      "/api/placeholder/600/600",
-      "/api/placeholder/600/600"
-    ]
-  };
+
+  const { id } = useParams()
+  const navigate = useNavigate()
+
+  const [product, setProduct] = useState(null)
+  const [quantity, setQuantity] = useState(1)
+  const [activeImg, setActiveImg] = useState(0)
+
+  useEffect(() => {
+    fetch(`http://localhost:5002/TechStore/ProductService/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        setProduct(data)
+        setActiveImg(0)
+      })
+      .catch(err => console.error(err))
+  }, [id])
+
+  if (!product) return (
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+      <p>Chargement...</p>
+    </div>
+  )
+
+  const images = product.images?.length > 0
+    ? product.images
+    : [{ image: product.image, mimetype: product.mimetype, id_Image: 0 }]
 
   const handleQuantityChange = (action) => {
-    if (action === 'increment' && quantity < product.stock) {
-      setQuantity(quantity + 1);
-    } else if (action === 'decrement' && quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
+    if (action === "increment" && quantity < product.stock) setQuantity(q => q + 1)
+    if (action === "decrement" && quantity > 1) setQuantity(q => q - 1)
+  }
 
-  const formatPrice = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
+  const formatPrice = price => price.toLocaleString("fr-MA")
+
+  const stockStatus = product.stock > 10
+    ? { label: "En stock" }
+    : product.stock > 0
+    ? { label: "Stock limité" }
+    : { label: "Rupture de stock" }
+
+  const attributeEntries = product.attributes ? Object.entries(product.attributes) : []
+
+  const RATING = 4.0
+  const REVIEW_COUNT = 24
 
   return (
     <div className="product-detail-container">
-      {/* Breadcrumb Navigation */}
+
+      {/* Breadcrumb */}
       <nav className="breadcrumb">
-        <a href="/">Accueil</a>
+        <a onClick={() => navigate("/")}>Accueil</a>
         <span className="separator">›</span>
-        <a href="/category/casques-audio">{product.category}</a>
+        <a onClick={() => navigate("/category")}>{product.category}</a>
         <span className="separator">›</span>
         <span className="current">{product.name}</span>
       </nav>
 
       <div className="product-content">
-        {/* Left Column - Images */}
+
+        {/* LEFT — Gallery */}
         <div className="product-gallery">
+
           <div className="main-image-container">
-            <img 
-              src={product.images[selectedImage]} 
+            <img
+              key={activeImg}
+              src={`data:${images[activeImg].mimetype};base64,${images[activeImg].image}`}
               alt={product.name}
               className="main-image"
             />
           </div>
-          <div className="thumbnail-container">
-            {product.images.map((image, index) => (
-              <button
-                key={index}
-                className={`thumbnail-btn ${selectedImage === index ? 'active' : ''}`}
-                onClick={() => setSelectedImage(index)}
-              >
-                <img src={image} alt={`${product.name} view ${index + 1}`} />
-              </button>
-            ))}
-          </div>
-        </div>
 
-        {/* Right Column - Product Info */}
-        <div className="product-info">
-          <h1 className="product-title">{product.name}</h1>
-          
-          {/* Rating Section */}
-          <div className="rating-section">
-            <div className="stars-container">
-              {[...Array(5)].map((_, index) => (
-                <span key={index} className={`star ${index < Math.floor(product.rating) ? 'filled' : ''}`}>
-                  ★
-                </span>
+          {images.length > 1 && (
+            <div className="thumbnail-container">
+              {images.map((img, index) => (
+                <button
+                  key={img.id_Image ?? index}
+                  className={`thumbnail-btn ${activeImg === index ? "active" : ""}`}
+                  onClick={() => setActiveImg(index)}
+                >
+                  <img
+                    src={`data:${img.mimetype};base64,${img.image}`}
+                    alt={`${product.name} view ${index + 1}`}
+                  />
+                </button>
               ))}
             </div>
-            <span className="rating-value">{product.rating}</span>
-            <span className="review-count">({product.reviews} avis)</span>
+          )}
+
+        </div>
+
+        {/* RIGHT — Info */}
+        <div className="product-info">
+
+          <h1 className="product-title">{product.name}</h1>
+
+          {/* Rating */}
+          <div className="rating-section">
+            <div className="stars-container">
+              {[1, 2, 3, 4, 5].map(star => (
+                <span key={star} className={`star ${star <= Math.round(RATING) ? "filled" : ""}`}>★</span>
+              ))}
+            </div>
+            <span className="rating-value">{RATING}</span>
+            <span className="review-count">({REVIEW_COUNT} avis)</span>
           </div>
 
-          {/* Price Section */}
+          {/* Price */}
           <div className="price-section">
             <span className="current-price">{formatPrice(product.price)} MAD</span>
-            <span className="original-price">{formatPrice(product.originalPrice)} MAD</span>
-            <span className="discount-badge">-{product.discount}%</span>
           </div>
 
-          {/* Stock Status */}
+          {/* Stock */}
           <div className="stock-status">
             <span className="in-stock-indicator">●</span>
-            <span className="in-stock-text">En stock</span>
-            <span className="stock-count">— {product.stock} unités disponibles</span>
+            <span className="in-stock-text">{stockStatus.label}</span>
+            {product.stock > 0 && (
+              <span className="stock-count">— {product.stock} unités disponibles</span>
+            )}
           </div>
 
           {/* Description */}
           <p className="product-description">{product.description}</p>
 
-          {/* Technical Specifications */}
-          <div className="specs-grid">
-            <div className="spec-item">
-              <span className="spec-label">CONNECTIVITÉ</span>
-              <span className="spec-value">{product.connectivity}</span>
+          {/* Attributes */}
+          {attributeEntries.length > 0 && (
+            <div className="specs-grid">
+              {attributeEntries.map(([key, value]) => (
+                <div key={key} className="spec-item">
+                  <span className="spec-label">{key}</span>
+                  <span className="spec-value">{String(value)}</span>
+                </div>
+              ))}
             </div>
-            <div className="spec-item">
-              <span className="spec-label">POIDS</span>
-              <span className="spec-value">{product.weight}</span>
-            </div>
-            <div className="spec-item">
-              <span className="spec-label">AUTONOMIE</span>
-              <span className="spec-value">{product.battery}</span>
-            </div>
-            <div className="spec-item">
-              <span className="spec-label">COULEUR</span>
-              <span className="spec-value">{product.color}</span>
-            </div>
-          </div>
+          )}
 
-          {/* Add to Cart Section */}
+          {/* Quantity + Cart */}
           <div className="add-to-cart-section">
+
             <div className="quantity-selector">
-              <button 
-                className="quantity-btn minus"
-                onClick={() => handleQuantityChange('decrement')}
+              <button
+                className="quantity-btn"
+                onClick={() => handleQuantityChange("decrement")}
                 disabled={quantity <= 1}
-              >
-                −
-              </button>
+              >−</button>
               <span className="quantity-display">{quantity}</span>
-              <button 
-                className="quantity-btn plus"
-                onClick={() => handleQuantityChange('increment')}
+              <button
+                className="quantity-btn"
+                onClick={() => handleQuantityChange("increment")}
                 disabled={quantity >= product.stock}
-              >
-                +
-              </button>
+              >+</button>
             </div>
+
             <button className="add-to-cart-btn">
               Ajouter au Panier
             </button>
+
           </div>
+
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProductDetail;
+export default ProductDetail
