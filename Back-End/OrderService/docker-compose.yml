@@ -1,0 +1,38 @@
+services:
+  order-service:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: order-service-api
+    ports:
+      - "5000:80"
+      - "5001:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=sql-server;Database=OrderDb;User Id=sa;Password=Your_password123;TrustServerCertificate=True;
+    depends_on:
+      - sql-server
+    networks:
+      - order-network
+
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql-server
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Your_password123
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql-data:/var/opt/mssql
+    networks:
+      - order-network
+
+networks:
+  order-network:
+    driver: bridge
+
+volumes:
+  sql-data:
