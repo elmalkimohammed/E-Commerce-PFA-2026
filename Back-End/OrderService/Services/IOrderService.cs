@@ -1,11 +1,13 @@
-using OrderService.Models;
+using OrderService.DTOs;
+
 
 namespace OrderService.Services;
 
 public interface IOrderService
 {
-    Task<Order> CreateOrderAsync(Guid userId, List<OrderItem> items);
-    Task<List<Order>> GetUserOrdersAsync(Guid userId);
-    Task CancelOrderAsync(Guid orderId);
-    Task UpdateStatusAsync(Guid orderId, OrderStatus status);
+    Task<OrderResponseDto> CreateOrderFromCartAsync(CreateOrderDto dto);
+    Task<OrderResponseDto> CreateSingleProductOrderAsync(Guid userId, OrderItemDto item);
+    Task<IEnumerable<OrderResponseDto>> GetActiveOrdersByUserAsync(Guid userId);
+    Task<OrderResponseDto> UpdateOrderStatusAsync(Guid orderId, UpdateOrderStatusDto dto);
+    Task<bool> CancelOrderAsync(Guid orderId);
 }

@@ -1,11 +1,12 @@
-using OrderService.Models;
+using OrderService.Entities;
 
-namespace OrderService.Repository;
+namespace OrderService.Repositories;
 
 public interface IOrderRepository
 {
-    Task<Order?> GetByIdAsync(Guid id);
-    Task<List<Order>> GetByUserIdAsync(Guid userId);
-    Task AddAsync(Order order);
-    Task UpdateAsync(Order order);
+    Task<Order> CreateAsync(Order order);
+    Task<IEnumerable<Order>> GetActiveByUserIdAsync(Guid userId);
+    Task<Order?> GetByIdAsync(Guid orderId);
+    Task<Order> UpdateAsync(Order order);
+    Task<bool> DeleteAsync(Guid orderId);
 }

@@ -1,45 +1,55 @@
 using Microsoft.AspNetCore.Mvc;
-using OrderService.Models;
-using OrderService.Services;
 using OrderService.DTOs;
+using OrderService.Services;
 
-namespace OrderService.Controllers;
+namespace OrderService.API.Controllers;
 
 [ApiController]
 [Route("api/orders")]
-public class OrdersController : ControllerBase
+public class OrdersController(IOrderService orderService) : ControllerBase
 {
-    private readonly IOrderService _service;
-
-    public OrdersController(IOrderService service)
+    [HttpPost("cart")]
+    public async Task<IActionResult> CreateFromCart([FromBody] CreateOrderDto dto)
     {
-        _service = service;
+        var order = await orderService.CreateOrderFromCartAsync(dto);
+        return CreatedAtAction(nameof(GetActiveOrders), new { userId = order.UserId }, order);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Create(CreateOrderDto dto)
+    [HttpPost("users/{userId}/single")]
+    public async Task<IActionResult> CreateSingleProduct(Guid userId, [FromBody] OrderItemDto item)
     {
-        var order = await _service.CreateOrderAsync(dto.UserId, dto.Items);
-        return Ok(order);
+        var order = await orderService.CreateSingleProductOrderAsync(userId, item);
+        return CreatedAtAction(nameof(GetActiveOrders), new { userId }, order);
     }
 
-    [HttpGet("{userId}")]
-    public async Task<IActionResult> Get(Guid userId)
+    [HttpGet("users/{userId}")]
+    public async Task<IActionResult> GetActiveOrders(Guid userId)
     {
-        return Ok(await _service.GetUserOrdersAsync(userId));
-    }
-
-    [HttpDelete("{orderId}")]
-    public async Task<IActionResult> Cancel(Guid orderId)
-    {
-        await _service.CancelOrderAsync(orderId);
-        return Ok();
+        var orders = await orderService.GetActiveOrdersByUserAsync(userId);
+        return Ok(orders);
     }
 
     [HttpPut("{orderId}/status")]
-    public async Task<IActionResult> Update(Guid orderId, OrderStatus status)
+    public async Task<IActionResult> UpdateStatus(Guid orderId, [FromBody] UpdateOrderStatusDto dto)
     {
-        await _service.UpdateStatusAsync(orderId, status);
-        return Ok();
+        try
+        {
+            var order = await orderService.UpdateOrderStatusAsync(orderId, dto);
+            return Ok(order);
+        }
+        catch (KeyNotFoundException ex) { return NotFound(new { message = ex.Message }); }
+        catch (ArgumentException ex) { return BadRequest(new { message = ex.Message }); }
+    }
+
+    [HttpDelete("{orderId}")]
+    public async Task<IActionResult> CancelOrder(Guid orderId)
+    {
+        try
+        {
+            await orderService.CancelOrderAsync(orderId);
+            return NoContent();
+        }
+        catch (KeyNotFoundException ex) { return NotFound(new { message = ex.Message }); }
+        catch (InvalidOperationException ex) { return BadRequest(new { message = ex.Message }); }
     }
 }

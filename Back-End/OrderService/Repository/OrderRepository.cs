@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using OrderService.Data;
-using OrderService.Models;
+using OrderService.Entities;
+using OrderService.Enums;
 
-namespace OrderService.Repository;
+
+namespace OrderService.Repositories;
 
 public class OrderRepository : IOrderRepository
 {
@@ -13,30 +15,44 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
 
-    public async Task<Order?> GetByIdAsync(Guid id)
+    public async Task<Order> CreateAsync(Order order)
     {
-        return await _context.Orders
-            .Include(o => o.OrderItems)
-            .FirstOrDefaultAsync(o => o.OrderId == id);
+        _context.Orders.Add(order);
+        await _context.SaveChangesAsync();
+        return order;
     }
 
-    public async Task<List<Order>> GetByUserIdAsync(Guid userId)
+    public async Task<IEnumerable<Order>> GetActiveByUserIdAsync(Guid userId)
     {
         return await _context.Orders
             .Include(o => o.OrderItems)
-            .Where(o => o.UserId == userId)
+            .Where(o => o.UserId == userId &&
+                        (o.Status == OrderStatus.Shipped || o.Status == OrderStatus.Delivered))
+            .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
     }
 
-    public async Task AddAsync(Order order)
+    public async Task<Order?> GetByIdAsync(Guid orderId)
     {
-        await _context.Orders.AddAsync(order);
-        await _context.SaveChangesAsync();
+        return await _context.Orders
+            .Include(o => o.OrderItems)
+            .FirstOrDefaultAsync(o => o.OrderId == orderId);
     }
 
-    public async Task UpdateAsync(Order order)
+    public async Task<Order> UpdateAsync(Order order)
     {
         _context.Orders.Update(order);
         await _context.SaveChangesAsync();
+        return order;
+    }
+
+    public async Task<bool> DeleteAsync(Guid orderId)
+    {
+        var order = await _context.Orders.FindAsync(orderId);
+        if (order is null) return false;
+
+        _context.Orders.Remove(order);
+        await _context.SaveChangesAsync();
+        return true;
     }
 }

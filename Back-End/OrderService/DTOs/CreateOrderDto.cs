@@ -1,10 +1,13 @@
-
-using OrderService.Models;
-
 namespace OrderService.DTOs;
 
-public class CreateOrderDto
-{
-    public Guid UserId { get; set; }
-    public List<OrderItem> Items { get; set; } = new();
-}
+public record CreateOrderDto(
+    Guid UserId,
+    List<OrderItemDto> Items
+);
+
+public record OrderItemDto(
+    Guid ProductId,
+    string ProductName,
+    int Quantity,
+    decimal UnitPrice
+);

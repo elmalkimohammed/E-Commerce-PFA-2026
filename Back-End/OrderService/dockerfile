@@ -1,9 +1,30 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-WORKDIR /app
-COPY . .
-RUN dotnet publish -c Release -o out
+# -----Building Stage-----
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0
+# Pulling The Base Image For Building 
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+# Set The Current Working Directory Inside The Container
+WORKDIR /src
+# Copy The '.csproj' Into The Container And Restore The Dependencies
+COPY [ "./OrderService.csproj",  "." ]
+RUN dotnet restore
+# Copy Everything Else To The Working Directory And Build
+COPY . .
+RUN dotnet publish -c Release -o /app/publish
+
+# -----Runtime Stage-----
+
+# Pulling The Base Image For Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+# Set The Current Working Directory Inside The Container
 WORKDIR /app
-COPY --from=build /app/out .
-ENTRYPOINT ["dotnet", "OrderService.dll"]
+# Copy All The Published Files From The Building Stage
+COPY --from=build /app/publish .
+# Expose The Port Of The .NET Server
+    # HTTPS
+EXPOSE 7002  
+    # HTTP
+EXPOSE 5037 
+# Set Environement Variables
+ENV ASPNETCORE_ENVIRONMENT=Production
+# Define The Entry Point
+ENTRYPOINT [ "dotnet", "OrderService.dll" ] 
