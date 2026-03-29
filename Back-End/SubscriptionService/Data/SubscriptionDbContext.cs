@@ -25,6 +25,34 @@ public class SubscriptionDbContext : DbContext
             entity.Property(e => e.Price).IsRequired().HasColumnType("decimal(18,2)");
             entity.Property(e => e.Duration).IsRequired().HasMaxLength(20);
             entity.Property(e => e.MaxProducts).IsRequired();
+
+            entity.HasData(
+                new SubscriptionPlan
+                {
+                    PlanId = 1,
+                    Name = "Basic",
+                    Price = 19.99m,
+                    Duration = "30 Day",
+                    MaxProducts = 10
+                },
+                new SubscriptionPlan
+                {
+                    PlanId = 2,
+                    Name = "Premium",
+                    Price = 29.99m,
+                    Duration = "90 Day",
+                    MaxProducts = 30
+                },
+                new SubscriptionPlan
+                {
+                    PlanId = 3,
+                    Name = "Entreprise",
+                    Price = 69.99m,
+                    Duration = "365 Day",
+                    MaxProducts = 400
+                }
+            );
+
         });
         
         // Configure SubscribedUser

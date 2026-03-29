@@ -1,0 +1,22 @@
+
+@hostAddress = http://localhost:5005/
+
+GET {{hostAddress}}api/Subscription/plans
+Accept: application/json
+###
+
+POST http://localhost:5005/api/subscription/register
+Content-Type: application/json
+Accept: application/json
+
+{
+  "userId": "00000000-0000-0000-0000-000000000002",
+  "planId": 1
+}
+####
+DELETE {{hostAddress}}api/subscription/cancel/1
+Accept: application/json
+
+###
+GET {{hostAddress}}api/Subscription/00000000-0000-0000-0000-000000000002
+Accept: application/json

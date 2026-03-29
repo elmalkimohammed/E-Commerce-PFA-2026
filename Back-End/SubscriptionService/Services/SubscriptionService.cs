@@ -5,11 +5,11 @@ using SubscriptionService.Repositories;
 
 namespace SubscriptionService.Services;
 
-public class SubscriptionService : ISubscriptionService
+public class subscriptionService : ISubscriptionService
 {
     private readonly ISubscriptionRepository _repository;
     
-    public SubscriptionService(ISubscriptionRepository repository)
+    public subscriptionService(ISubscriptionRepository repository)
     {
         _repository = repository;
     }

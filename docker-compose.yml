@@ -109,6 +109,24 @@ services:
       - ./Back-End/UserProfileService/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - ecommerce-network
+  SubscriptionServiceDB:
+    image: mysql:8.0
+    ports:
+      - "3310:3306"
+    environment:
+      MYSQL_DATABASE: SubscriptionDb
+      MYSQL_ROOT_PASSWORD: admin
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - SubscriptionServiceDB-data:/var/lib/mysql
+    networks:
+      - ecommerce-network
+      
 
   #___Micro-Services___
   AuthServiceAPI:
@@ -155,7 +173,7 @@ services:
   CartServiceAPI:
     build:
       context: ./Back-End/CartService
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     image: cartservice-api:latest
     container_name: cartservice-api
     ports:
@@ -192,6 +210,26 @@ services:
         - Kafka__BootstrapServers=kafka:29092
     networks:
       - ecommerce-network
+  SubscriptionServiceAPI:
+    build:
+      context: ./Back-End/SubscriptionService
+      dockerfile: dockerfile
+    image: subscriptionservice-api:latest
+    container_name: subscriptionservice-api
+    ports:
+      - "5005:5353"
+    depends_on:
+      SubscriptionServiceDB:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=http://+:5353
+        - ConnectionStrings__DefaultConnection=Server=SubscriptionServiceDB;Port=3306;Database=SubscriptionDb;User=root;Password=admin;
+        - Kafka__BootstrapServers=kafka:29092
+    networks:
+      - ecommerce-network
 volumes:
   AuthServiceDB-data: 
     driver: local
@@ -200,6 +238,8 @@ volumes:
   CartServiceDB-data:
     driver: local
   UserProfileDB-data:
+    driver: local
+  SubscriptionServiceDB-data:
     driver: local
 networks:
   ecommerce-network:
