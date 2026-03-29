@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Asus\\Desktop\\projet_TechStore_Pfa\\E-Commerce-PFA-2026\\Back-End\\SubscriptionService\\SubscriptionService.csproj": {}
+    "C:\\Users\\pc\\OneDrive\\Bureau\\PFA\\E-Commerce-PFA-2026\\Back-End\\SubscriptionService\\SubscriptionService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Asus\\Desktop\\projet_TechStore_Pfa\\E-Commerce-PFA-2026\\Back-End\\SubscriptionService\\SubscriptionService.csproj": {
+    "C:\\Users\\pc\\OneDrive\\Bureau\\PFA\\E-Commerce-PFA-2026\\Back-End\\SubscriptionService\\SubscriptionService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Asus\\Desktop\\projet_TechStore_Pfa\\E-Commerce-PFA-2026\\Back-End\\SubscriptionService\\SubscriptionService.csproj",
+        "projectUniqueName": "C:\\Users\\pc\\OneDrive\\Bureau\\PFA\\E-Commerce-PFA-2026\\Back-End\\SubscriptionService\\SubscriptionService.csproj",
         "projectName": "SubscriptionService",
-        "projectPath": "C:\\Users\\Asus\\Desktop\\projet_TechStore_Pfa\\E-Commerce-PFA-2026\\Back-End\\SubscriptionService\\SubscriptionService.csproj",
-        "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Asus\\Desktop\\projet_TechStore_Pfa\\E-Commerce-PFA-2026\\Back-End\\SubscriptionService\\obj\\",
+        "projectPath": "C:\\Users\\pc\\OneDrive\\Bureau\\PFA\\E-Commerce-PFA-2026\\Back-End\\SubscriptionService\\SubscriptionService.csproj",
+        "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pc\\OneDrive\\Bureau\\PFA\\E-Commerce-PFA-2026\\Back-End\\SubscriptionService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\pc\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -63,7 +62,7 @@
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[9.0.0, )"
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
