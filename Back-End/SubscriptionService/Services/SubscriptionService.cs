@@ -8,10 +8,12 @@ namespace SubscriptionService.Services;
 public class subscriptionService : ISubscriptionService
 {
     private readonly ISubscriptionRepository _repository;
+    private readonly IAuthClient _authClient;
     
-    public subscriptionService(ISubscriptionRepository repository)
+    public subscriptionService(ISubscriptionRepository repository, IAuthClient authClient)
     {
         _repository = repository;
+        _authClient = authClient;
     }
     
     public async Task<IEnumerable<SubscriptionPlanDto>> GetAllPlansAsync()
@@ -30,6 +32,14 @@ public class subscriptionService : ISubscriptionService
     
     public async Task<SubscriptionResponse> RegisterSubscriptionAsync(SubscriptionRequest request)
     {
+        // Check if the user id is in our 'authentification' database 
+        bool userExists = await this._authClient.userExistance_Verification(request.UserId);
+        if ( !userExists)
+        {
+            throw new KeyNotFoundException("The Given UserId Is Not Correct....");
+        }
+
+
         // Check if user already has an active subscription
         var hasActive = await _repository.UserHasActiveSubscriptionAsync(request.UserId);
         if (hasActive)

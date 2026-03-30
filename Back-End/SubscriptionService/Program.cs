@@ -19,6 +19,7 @@ builder.Services.AddDbContext<SubscriptionDbContext>(options =>
     ));
 
 // Dependency Injection
+builder.Services.AddHttpClient<IAuthClient, AuthClient>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ISubscriptionService, subscriptionService>();
 

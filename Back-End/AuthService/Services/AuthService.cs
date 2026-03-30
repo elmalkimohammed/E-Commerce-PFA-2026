@@ -125,5 +125,16 @@ namespace AuthService.Services
             // Removing The Used Token From The In-Memory Store
             _resetToken.Remove(request.resetToken);
         }
+        public async Task<bool> UserId_Existance( Guid request)
+        {
+            var response = await this._userRepository.VerifyUserId(request);
+            if ( response != null )
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
     }
 }

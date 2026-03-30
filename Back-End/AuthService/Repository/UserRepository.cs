@@ -77,5 +77,25 @@ namespace AuthService.Repository
             // Executing The MySQL Command
             await cmd.ExecuteNonQueryAsync();
         }
+        public async Task<User> VerifyUserId( Guid userId )
+        {
+            using var connection = new MySqlConnection(this._connectionString);
+            await connection.OpenAsync();
+            var cmd = new MySqlCommand("SELECT * FROM Users WHERE UserId = @userId", connection);
+            cmd.Parameters.AddWithValue("@userId", userId);
+            var reader = await cmd.ExecuteReaderAsync() ;
+            if( !await reader.ReadAsync() )
+            {
+                return null;
+            }
+            return new User
+            {
+                UserId = reader.GetGuid(0),
+                Email = reader.GetString(1),
+                PasswordHash = reader.GetString(2),
+                Role = reader.GetString(3),
+                CreatedAt = reader.GetDateTime(4)
+            };
+        }
     }
 }

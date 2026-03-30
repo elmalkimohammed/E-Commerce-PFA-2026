@@ -1,6 +1,18 @@
 
 @hostAddress = http://localhost:5005/
-
+@AuthService = http://localhost:5001/api/auth
+###
+POST {{AuthService}}/register
+Content-Type: application/json
+{
+  "email": "mohammed@gmail.com",
+  "password": "stargazer896",
+  "confirmPassword": "stargazer896"
+}
+###
+GET {{AuthService}}/verify-userId/d9da38af-25e0-4561-b1a4-5a1413747268
+Accept: application/json
+###
 GET {{hostAddress}}api/Subscription/plans
 Accept: application/json
 ###
@@ -10,7 +22,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "userId": "00000000-0000-0000-0000-000000000002",
+  "userId": "d9da38af-25e0-4561-b1a4-5a1413747268",
   "planId": 1
 }
 ####
@@ -18,5 +30,5 @@ DELETE {{hostAddress}}api/subscription/cancel/1
 Accept: application/json
 
 ###
-GET {{hostAddress}}api/Subscription/00000000-0000-0000-0000-000000000002
+GET {{hostAddress}}api/Subscription/d9da38af-25e0-4561-b1a4-5a1413747268
 Accept: application/json

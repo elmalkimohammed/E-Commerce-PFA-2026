@@ -67,7 +67,7 @@ public class SubscriptionController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error registering subscription for user {UserId}", request.UserId);
-            return StatusCode(500, new { message = "An error occurred while registering subscription" });
+            return StatusCode(500, new { message = ex.Message, detail = ex.InnerException?.Message });
         }
     }
     
