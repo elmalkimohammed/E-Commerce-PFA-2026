@@ -214,7 +214,7 @@ services:
       context: ./Back-End/OrderService
       dockerfile: dockerfile
     ports:
-      - "5006:5038"
+      - "5006:5037"
     environment:
       - ConnectionStrings__DefaultConnection=Server=OrderServiceDB;Port=3306;Database=OrderServiceDb;User=root;Password=admin;
     depends_on:

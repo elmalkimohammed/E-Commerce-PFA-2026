@@ -121,7 +121,6 @@ C:\Users\asus\Desktop\E-commerce\E-Commerce-PFA-2026\Back-End\OrderService\obj\D
 C:\Users\asus\Desktop\E-commerce\E-Commerce-PFA-2026\Back-End\OrderService\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\asus\Desktop\E-commerce\E-Commerce-PFA-2026\Back-End\OrderService\obj\Debug\net9.0\staticwebassets.development.json
 C:\Users\asus\Desktop\E-commerce\E-Commerce-PFA-2026\Back-End\OrderService\obj\Debug\net9.0\staticwebassets.build.endpoints.json
-C:\Users\asus\Desktop\E-commerce\E-Commerce-PFA-2026\Back-End\OrderService\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Users\asus\Desktop\E-commerce\E-Commerce-PFA-2026\Back-End\OrderService\obj\Debug\net9.0\OrderSer.4493321F.Up2Date
 C:\Users\asus\Desktop\E-commerce\E-Commerce-PFA-2026\Back-End\OrderService\obj\Debug\net9.0\OrderService.dll
 C:\Users\asus\Desktop\E-commerce\E-Commerce-PFA-2026\Back-End\OrderService\obj\Debug\net9.0\refint\OrderService.dll
@@ -166,3 +165,4 @@ C:\Users\asus\Desktop\E-commerce\E-Commerce-PFA-2026\Back-End\OrderService\bin\D
 C:\Users\asus\Desktop\E-commerce\E-Commerce-PFA-2026\Back-End\OrderService\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\asus\Desktop\E-commerce\E-Commerce-PFA-2026\Back-End\OrderService\bin\Debug\net9.0\MySqlConnector.dll
 C:\Users\asus\Desktop\E-commerce\E-Commerce-PFA-2026\Back-End\OrderService\bin\Debug\net9.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\asus\Desktop\E-commerce\E-Commerce-PFA-2026\Back-End\OrderService\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
