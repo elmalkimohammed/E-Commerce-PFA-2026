@@ -27,7 +27,8 @@ public class OrderRepository : IOrderRepository
         return await _context.Orders
             .Include(o => o.OrderItems)
             .Where(o => o.UserId == userId &&
-                        (o.Status == OrderStatus.Shipped || o.Status == OrderStatus.Delivered))
+                        o.Status != OrderStatus.Cancelled &&
+                        o.Status != OrderStatus.Delivered)
             .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
     }

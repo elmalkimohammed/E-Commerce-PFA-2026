@@ -23,7 +23,7 @@ COPY --from=build /app/publish .
     # HTTPS
 EXPOSE 7002  
     # HTTP
-EXPOSE 5037 
+EXPOSE 5038 
 # Set Environement Variables
 ENV ASPNETCORE_ENVIRONMENT=Production
 # Define The Entry Point

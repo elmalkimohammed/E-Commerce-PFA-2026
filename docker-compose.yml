@@ -214,9 +214,12 @@ services:
       context: ./Back-End/OrderService
       dockerfile: dockerfile
     ports:
-      - "5006:5037"
+      - "5006:5038"
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5038
       - ConnectionStrings__DefaultConnection=Server=OrderServiceDB;Port=3306;Database=OrderServiceDb;User=root;Password=admin;
+      - Kafka__BootstrapServers=kafka:29092
     depends_on:
       OrderServiceDB:
         condition: service_healthy
