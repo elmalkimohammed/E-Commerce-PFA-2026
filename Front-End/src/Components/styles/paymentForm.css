@@ -1,0 +1,21 @@
+
+.header h1 {
+    align-self: center;
+}
+/* Bottom Section */
+footer {
+    background-color: #f8f9fa;
+    color: #718096;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
+footer a {
+    color: #2b6cb0;
+    align-self: center;
+}
+footer a:hover {
+    text-decoration: underline;
+}

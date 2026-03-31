@@ -7,6 +7,7 @@ import ProfilePage from './pages/ProfilePage';
 import CartPage from "./pages/CartPage.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import ProductDetail from './pages/ProductDetail';
+import PaymentPage from "./pages/PaymentPage.jsx";
 
 function NotFound() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/CartPage" element={ <CartPage/> }/>
         <Route path="/CategoryPage" element={ <CategoryPage/> }/>
         <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/paymentForm" element={<PaymentPage/>}/>
       </Routes>
     </BrowserRouter>
   );
