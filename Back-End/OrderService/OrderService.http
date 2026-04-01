@@ -1,0 +1,49 @@
+@OrderService = http://localhost:5006/api/orders/
+
+POST {{OrderService}}cart
+Content-Type: application/json
+Accept: application/json
+
+{
+  "userId": "11111111-1111-1111-1111-111111111111",
+  "items": [
+    {
+      "productId": "11111111-1111-1111-1111-111111111111",
+      "productName": "Product 1",
+      "quantity": 2,
+      "unitPrice": 80.00
+    }
+  ]
+}
+
+###
+
+POST {{OrderService}}users/11111111-1111-1111-1111-111111111111/single
+Content-Type: application/json
+
+{
+  "productId": "22222222-2222-2222-2222-222222222222",
+  "productName": "Product 2",
+  "quantity": 1,
+  "unitPrice": 50.00
+}
+
+###
+
+GET {{OrderService}}users/11111111-1111-1111-1111-111111111111
+Accept: application/json
+
+###
+
+PUT {{OrderService}}YOUR-ORDER-ID-HERE/status
+Content-Type: application/json
+
+{
+  "status": "Shipped"
+}
+
+###
+
+DELETE {{OrderService}}YOUR-ORDER-ID-HERE
+
+###

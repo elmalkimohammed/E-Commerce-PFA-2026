@@ -126,7 +126,23 @@ services:
       - SubscriptionServiceDB-data:/var/lib/mysql
     networks:
       - ecommerce-network
-      
+  OrderServiceDB:
+    image: mysql:8.0
+    ports:
+      - "3311:3306"
+    environment:
+      MYSQL_DATABASE: OrderServiceDb
+      MYSQL_ROOT_PASSWORD: admin
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-padmin"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+    volumes:
+      - OrderServiceDB-data:/var/lib/mysql
+    networks:
+      - ecommerce-network
 
   #___Micro-Services___
   AuthServiceAPI:
@@ -230,6 +246,22 @@ services:
         - Kafka__BootstrapServers=kafka:29092
     networks:
       - ecommerce-network
+  orderservice.api:
+    build:
+      context: ./Back-End/OrderService
+      dockerfile: dockerfile
+    ports:
+      - "5006:5038"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5038
+      - ConnectionStrings__DefaultConnection=Server=OrderServiceDB;Port=3306;Database=OrderServiceDb;User=root;Password=admin;
+      - Kafka__BootstrapServers=kafka:29092
+    depends_on:
+      OrderServiceDB:
+        condition: service_healthy
+    networks:
+      - ecommerce-network
 volumes:
   AuthServiceDB-data: 
     driver: local
@@ -240,6 +272,8 @@ volumes:
   UserProfileDB-data:
     driver: local
   SubscriptionServiceDB-data:
+    driver: local
+  OrderServiceDB-data:
     driver: local
 networks:
   ecommerce-network:
