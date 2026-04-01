@@ -245,6 +245,22 @@ namespace TicketProductApi.Repo
             cmd.ExecuteNonQuery();
         }
         
+        public List<String> GetCategories()
+        {
+            /* Declaring The List That Will Contain The All Of The Existing Categories */
+            List<String> Categories_List = new List<String>() ;
+            /* The Sql Process */
+            using MySqlConnection conn = new MySqlConnection(connection);
+            conn.Open();
+            MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT Category FROM product", conn);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            while ( rd.Read() )
+            {
+                Categories_List.Add( rd[0].ToString() );
+            }
+            /* The Returned List */
+            return Categories_List;
+        }
         public void AddImage(ProductImage image)
         {
             using MySqlConnection coon = new MySqlConnection(connection);

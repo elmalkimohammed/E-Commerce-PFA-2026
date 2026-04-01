@@ -1,6 +1,7 @@
-@TicketProductApi_HostAddress = http://localhost:5252
+@productService_HostAddress = http://localhost:5002/TechStore/ProductService
 
-GET {{TicketProductApi_HostAddress}}/weatherforecast/
+### Récuperer tous les catégories
+GET {{productService_HostAddress}}/getCategories
 Accept: application/json
 
 ###

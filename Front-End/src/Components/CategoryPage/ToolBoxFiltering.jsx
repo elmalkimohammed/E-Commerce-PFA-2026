@@ -1,12 +1,29 @@
 import "../styles/toolBoxFiltering.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter } from '@fortawesome/free-solid-svg-icons' 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-function ToolBoxFiltering({ buttonState , setCategory , setPrice }) {
-
+function ToolBoxFiltering({ buttonState , setCategory , setPrice , currentSelectedCategory }) {
+    
         const [ categFilterValue , setCategFilterValue ] = useState("All")
         const [ priceFilterValue , setpriceFilterValue ] = useState("0")
+
+        useEffect( () => {
+            if ( currentSelectedCategory && currentSelectedCategory.length > 1 ) {
+                setCategFilterValue(currentSelectedCategory)
+            }
+        }, [ currentSelectedCategory ] )
+
+        /* Checking If The User Is Trying To Filter Via The Navbar Link 'Catégories' And Changing The State To What He Desires*/
+        useEffect( () => {
+            const sessionVerifier = localStorage.getItem("selectedCategory")
+            if ( sessionVerifier && sessionVerifier.length > 1 ) {
+                setCategFilterValue(sessionVerifier)
+                setCategory(sessionVerifier)
+                buttonState(true)
+                localStorage.removeItem("selectedCategory")
+            }
+        }, [] )
 
         const handleApply = async () => {
             setCategory(categFilterValue)

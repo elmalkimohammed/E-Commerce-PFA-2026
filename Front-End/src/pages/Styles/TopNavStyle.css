@@ -13,6 +13,9 @@ a {
   text-decoration: none; /* Removes the underline from all links */
   color: inherit; /* Inherits the text color from the parent element */
 }
+a:hover {
+  color: rgb(183, 183, 183);
+}
 
 .brand {
   color: var(--accent);
@@ -128,6 +131,7 @@ a {
   .user-icons i {
     font-size: 20px;
   }
+
 }
 
 @media (max-width: 480px) {
@@ -137,5 +141,59 @@ a {
 
   .brand {
     font-size: 15px;
+  }
+}
+.hiddenCategories {
+  border-top: 1px solid white;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  background-color: #143a63;
+  color: white;
+}
+/* Responsive categories span */
+@media (max-width: 768px) {
+  .hiddenCategories {
+    position: sticky;
+    top: 60px; /* Adjust to match your mobile navbar height */
+    padding: 15px 10px;
+    gap: 8px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .hiddenCategories span {
+    flex: 0 0 auto;
+    padding: 6px 12px !important;
+    font-size: 14px;
+    white-space: nowrap;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+  }
+  
+  .hiddenCategories::-webkit-scrollbar {
+    height: 3px;
+  }
+  
+  .hiddenCategories::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hiddenCategories {
+    top: 55px; /* Adjust for smaller screens */
+    padding: 12px 8px;
+  }
+  
+  .hiddenCategories span {
+    padding: 4px 10px !important;
+    font-size: 13px;
   }
 }

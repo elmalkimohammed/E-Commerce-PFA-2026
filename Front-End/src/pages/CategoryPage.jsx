@@ -5,7 +5,7 @@ import TipsSection from "../Components/CategoryPage/TipsSection"
 import ProductsSection from "../Components/CategoryPage/productsSections"
 import "./Styles/categoryPage.css"
 
-import { useState } from "react"
+import { useState , useEffect } from "react"
 
 function CategoryPage() {
 
@@ -22,12 +22,27 @@ function CategoryPage() {
     const [ selectedPrice , setSelectedPrice ] = useState("")
     const [ filteredProducts , setFilteredProducts ] = useState([])
 
+    useEffect( () => {
+        const handleNavCategory = () => {
+            const savedCategory = localStorage.getItem("selectedCategory")
+            if ( savedCategory && savedCategory.length > 1 ) {
+                localStorage.removeItem("selectedCategory")
+                setSelectedCateg(savedCategory)
+                setButtonState(true)
+            }
+        }
+        window.addEventListener("categoryChanged", handleNavCategory)
+        return () => {
+            window.removeEventListener("categoryChanged", handleNavCategory)
+        }
+    }, [] )
+
     return(
         <>
             <TopNav/>
             <div className="filterContainer">
                 <HeaderTitle/>
-                <ToolBoxFiltering buttonState={ setButtonState } setCategory={ setSelectedCateg } setPrice={ setSelectedPrice }/>
+                <ToolBoxFiltering buttonState={ setButtonState } setCategory={ setSelectedCateg } setPrice={ setSelectedPrice } currentSelectedCategory={selectedCateg}/>
                 { !buttonState && <TipsSection/> }
                 { buttonState && <ProductsSection buttonState={ setButtonState } productsList={ mockData } desiredCategory={ selectedCateg } desiredPrice={ selectedPrice }/> }
             </div>
