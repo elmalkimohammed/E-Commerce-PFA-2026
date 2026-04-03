@@ -143,6 +143,17 @@ services:
       - OrderServiceDB-data:/var/lib/mysql
     networks:
       - ecommerce-network
+  postgres:
+    image: postgres:15-alpine
+    container_name: review-postgres
+    environment:
+      POSTGRES_DB: reviewdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   #___Micro-Services___
   AuthServiceAPI:
@@ -262,6 +273,21 @@ services:
         condition: service_healthy
     networks:
       - ecommerce-network
+  review-service:
+    build: 
+      context: ./Back-End/ReviewService
+      dockerfile: Dockerfile
+    container_name: review-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/reviewdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - postgres
+
 volumes:
   AuthServiceDB-data: 
     driver: local
@@ -274,6 +300,8 @@ volumes:
   SubscriptionServiceDB-data:
     driver: local
   OrderServiceDB-data:
+    driver: local
+  postgres_data:
     driver: local
 networks:
   ecommerce-network:
