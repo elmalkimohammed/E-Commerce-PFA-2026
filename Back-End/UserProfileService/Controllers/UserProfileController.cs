@@ -21,7 +21,7 @@ namespace UserProfileService.Controllers
             _UserHandler = UserHandler;
         }
        
-        [HttpGet]
+        [HttpPost]
         public IActionResult GetUserFullInfo(GetFullInfoRequest dto)
         {
             UserFullInfo user = _UserHandler.FullInfo(dto.UserId);

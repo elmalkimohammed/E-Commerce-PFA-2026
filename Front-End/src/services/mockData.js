@@ -1,20 +1,4 @@
 // Données utilisateur
-export const initialUser = {
-  firstName: "Mohammed",
-  lastName: "mensori",
-  phone: "+212 6 12 34 56 78",
-  address: "andaloss,123,Oujda,Maroc",
-  gender: "male",
-  dob: "2001-06-15",
-  avatar: null,
-};
-
-export const initialPrivate = {
-  email: "mohammed.mes@gmail.com",
-  password: "",
-  confirmPassword: "",
-};
-
 export const stats = [
   { label: "Commandes", value: 12 },
   { label: "Avis", value: 8 },
@@ -22,10 +6,7 @@ export const stats = [
   { label: "Note moy.", value: "4.2" },
 ];
 
-export const genderOptions = [
-  { value: "female", label: "Femme" },
-  { value: "male", label: "Homme" },
-];
+
 
 // Commentaires simulés
 export const mockComments = [

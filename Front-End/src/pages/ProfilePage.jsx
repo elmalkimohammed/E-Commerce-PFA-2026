@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
+import { jwtDecode } from "jwt-decode";
+import { useEffect } from "react";
 import { styles } from '../styles/styles';
-import { initialUser, initialPrivate, stats, genderOptions, mockComments } from '../services/mockData';
+import {  stats, mockComments } from '../services/mockData';
 import Avatar from '../components/common/Avatar';
 import InputField from '../components/common/InputField';
 import SelectField from '../components/common/SelectField';
@@ -9,14 +11,60 @@ import ActionButtons from '../components/common/ActionButtons';
 import Toast from '../components/common/Toast';
 import CommentsPage from '../components/comments/CommentsPage';
 import TopNav from "../Components/navbarComponent/TopNav";
+import { userAPI } from '../services/servicesAPI';
 
 const ProfilePage = () => {
   const [currentPage, setCurrentPage] = useState("profile"); // "profile" ou "comments"
-  const [user, setUser] = useState(initialUser);
-  const [priv, setPriv] = useState(initialPrivate);
+  const [user, setUser] = useState({
+});
+  const [priv, setPriv] = useState({
+  });
   const [toast, setToast] = useState(null);
   const [errors, setErrors] = useState({});
+  
   const fileRef = useRef(null);
+  const jwtToken = localStorage.getItem("generatedJWT_Token");
+  const decodedToken = jwtDecode(jwtToken);
+  const userId = decodedToken.sub;
+  useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const res = await fetch(`${userAPI}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${jwtToken}`
+        },
+        body: JSON.stringify({ userId })
+      });
+      const data = await res.json();
+      setUser({
+            firstName: data.firstName,
+            lastName: data.lastName ,
+            phone: data.phone ?? "",
+            address: data.address ?? "",
+            gender: data.gender ?? "",                                          // ← add
+            dob: data.dateOfBirth ? data.dateOfBirth.split("T")[0] : "",   // ← add
+            avatar: data.profileImage ?? null
+          });
+          
+      setPriv({
+        email: data.email ?? "",
+        password: data.password ??""
+      });
+    } catch (err) {
+      console.error("Failed to fetch user:", err);
+    }
+  };
+  fetchUser();
+}, []);
+  function decryptPassword(object) {
+    
+  }
+  const sexeOptions = [
+    { value: "female", label: "female" },
+    { value: "male", label: "male" },
+  ];
 
   // Gestionnaires d'événements
   const showToast = (msg, type = "success") => {
@@ -69,17 +117,12 @@ const ProfilePage = () => {
 
   const handleSavePrivate = () => {
     if (validatePrivateInfo()) {
-      console.log("Données privées à sauvegarder:", { 
-        email: priv.email, 
-        password: priv.password ? "[MASQUÉ]" : null 
-      });
       showToast("Informations de sécurité enregistrées");
       setPriv((p) => ({ ...p, password: "", confirmPassword: "" }));
     }
   };
 
   const handleSavePublic = () => {
-    console.log("Données publiques à sauvegarder:", user);
     showToast("Informations personnelles enregistrées");
   };
 
@@ -115,7 +158,7 @@ const ProfilePage = () => {
       <div style={styles.container}>
         {/* Sidebar */}
         <aside style={styles.sidebar}>
-          <div style={styles.logo}>Bazaro</div>
+          
 
           {/* Avatar upload */}
           <div style={styles.avatarContainer}>
@@ -135,28 +178,8 @@ const ProfilePage = () => {
           <div style={styles.userInfo}>
             <div style={styles.userName}>{user.firstName} {user.lastName}</div>
             <div style={styles.userEmail}>{priv.email}</div>
-            <div style={styles.userBadge}>✓ Client vérifié</div>
+            
           </div>
-
-          {/* Stats */}
-          <div style={styles.statsGrid}>
-            {stats.map((s) => (
-              <div key={s.label} style={styles.statCard}>
-                <div style={styles.statValue}>{s.value}</div>
-                <div style={styles.statLabel}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Navigation */}
-          {["Informations personnelles", "Sécurité & Confidentialité", "Historique des commandes"].map((item, i) => (
-            <div key={item} style={{
-              ...styles.navItem,
-              ...(i === 0 ? styles.navItemActive : {})
-            }}>
-              {item}
-            </div>
-          ))}
         </aside>
 
         {/* Main Content */}
@@ -175,38 +198,38 @@ const ProfilePage = () => {
               <div style={styles.formGrid}>
                 <InputField
                   label="Prénom"
-                  value={user.firstName}
-                  onChange={updateUser("firstName")}
+                  value = {user.firstName}
+                  
                   placeholder="Votre prénom"
                 />
                 <InputField
                   label="Nom"
-                  value={user.lastName}
-                  onChange={updateUser("lastName")}
+                  value = {user.lastName}
+                  
                   placeholder="Votre nom"
                 />
                 <InputField
                   label="Téléphone"
                   value={user.phone}
-                  onChange={updateUser("phone")}
+                  
                   placeholder="+212 6 00 00 00 00"
                 />
                 <SelectField
                   label="Genre"
                   value={user.gender}
-                  onChange={updateUser("gender")}
-                  options={genderOptions}
+                  
+                  options={sexeOptions}
                 />
                 <InputField
                   label="Date de naissance"
                   type="date"
                   value={user.dob}
-                  onChange={updateUser("dob")}
+                  
                 />
                 <InputField
                   label="Adresse"
                   value={user.address}
-                  onChange={updateUser("address")}
+                  
                   placeholder="Votre adresse complète"
                 />
               </div>
@@ -243,7 +266,7 @@ const ProfilePage = () => {
                 <InputField
                   label="Nouveau mot de passe"
                   type="password"
-                  value={priv.password}
+                  
                   onChange={updatePriv("password")}
                   placeholder="••••••••"
                   error={errors.password}
@@ -251,7 +274,7 @@ const ProfilePage = () => {
                 <InputField
                   label="Confirmer le mot de passe"
                   type="password"
-                  value={priv.confirmPassword}
+                  
                   onChange={updatePriv("confirmPassword")}
                   placeholder="••••••••"
                   error={errors.confirmPassword}
@@ -284,6 +307,6 @@ const ProfilePage = () => {
       </div>
     </>
   );
-};
+};  
 
 export default ProfilePage;

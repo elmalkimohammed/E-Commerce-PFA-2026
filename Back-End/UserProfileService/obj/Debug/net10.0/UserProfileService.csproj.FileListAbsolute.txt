@@ -138,3 +138,15 @@ C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfileService\E
 C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfileService\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\UserProfileService.pdb
 C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfileService\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\UserProfileService.genruntimeconfig.cache
 C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfileService\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\ref\UserProfileService.dll
+C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfile Page --- Dynamic Edition (React)\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\UserProfileService.csproj.AssemblyReference.cache
+C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfile Page --- Dynamic Edition (React)\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\rpswa.dswa.cache.json
+C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfile Page --- Dynamic Edition (React)\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\UserProfileService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfile Page --- Dynamic Edition (React)\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\UserProfileService.AssemblyInfoInputs.cache
+C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfile Page --- Dynamic Edition (React)\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\UserProfileService.AssemblyInfo.cs
+C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfile Page --- Dynamic Edition (React)\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\UserProfileService.csproj.CoreCompileInputs.cache
+C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfile Page --- Dynamic Edition (React)\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\UserProfileService.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfile Page --- Dynamic Edition (React)\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\UserProfileService.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfile Page --- Dynamic Edition (React)\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\UserProfileService.sourcelink.json
+C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfile Page --- Dynamic Edition (React)\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\UserProfileService.dll
+C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfile Page --- Dynamic Edition (React)\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\refint\UserProfileService.dll
+C:\Users\Admin\OneDrive\Documents\4eme annee 1 semestre\pfa\UserProfile Page --- Dynamic Edition (React)\E-Commerce-PFA-2026\Back-End\UserProfileService\obj\Debug\net10.0\UserProfileService.pdb
