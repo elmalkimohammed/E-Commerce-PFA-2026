@@ -17,7 +17,9 @@ function ToolBoxFiltering({ buttonState, setCategory, setPrice }) {
     useEffect( () => {
         if ( chosenCateg ) {
             setCategFilterValue(chosenCateg)
-            handleApply()
+            setCategory(chosenCateg)
+            setPrice(priceFilterValue)
+            buttonState(true)
         }
     }, [chosenCateg] )
 
