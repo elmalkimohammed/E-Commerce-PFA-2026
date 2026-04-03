@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { prodAPI } from "../../services/servicesAPI";
+
+/* Needed Global CHosen Category State Import */
+import { useDispatch } from "react-redux"
+import { setChosenCategory } from "../../store/categorySlicer.js"
+
 import axios from "axios" 
 
 import "../../pages/Styles/TopNavStyle.css";
@@ -38,9 +43,10 @@ function TopNav() {
     }
   }
 
-  /* Taking The Value Of The Selected Category And Storing It In A Temporary Session */
+  /* Taking The Value Of The Selected Category And Storing It In The Redux State */
+  const dispatcher = useDispatch()
   const storeCategory = ( value ) => {
-    localStorage.setItem("selectedCategory" , value)
+    dispatcher( setChosenCategory(value) )
   }
 
   return (
@@ -82,7 +88,7 @@ function TopNav() {
         { 
           categories.map( (foundCategory) => 
           <span 
-          style={{ color: "white", cursor: "pointer", padding: "5px" }} ><a onClick={ (e) => { storeCategory(e.target.innerText); window.dispatchEvent(new Event("categoryChanged")); navigate("/CategoryPage") } } >{ foundCategory }</a>
+          style={{ color: "white", cursor: "pointer", padding: "5px" }} ><a onClick={ (e) => { storeCategory(e.target.innerText); navigate("/CategoryPage") } } >{ foundCategory }</a>
           </span> ) 
         }
       </span>

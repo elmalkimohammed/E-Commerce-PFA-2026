@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
 import { useState , useEffect } from "react"
 import { prodAPI } from "../../services/servicesAPI"
+import { useSelector } from "react-redux"
 import axios from "axios"
 
 function ToolBoxFiltering({ buttonState, setCategory, setPrice }) {
@@ -10,10 +11,19 @@ function ToolBoxFiltering({ buttonState, setCategory, setPrice }) {
     const [categFilterValue, setCategFilterValue] = useState("All")
     const [priceFilterValue, setPriceFilterValue] = useState("0")
     const [ Categories , setCategories ] = useState([])
+    const chosenCateg = useSelector( ( state ) => state.chosenCategory.value )
+
+    /* Checks If The User Trully Sorted Via The NavLink 'Catègories' And Sets The Select Value To The Desired One */
+    useEffect( () => {
+        if ( chosenCateg ) {
+            setCategFilterValue(chosenCateg)
+            handleApply()
+        }
+    }, [chosenCateg] )
 
     useEffect( () => {
         getCategories()
-    }, [Categories] )
+    }, [] )
 
   const getCategories = async () => {
     try {
