@@ -7,18 +7,15 @@ import Avatar from '../components/common/Avatar';
 import InputField from '../components/common/InputField';
 import SelectField from '../components/common/SelectField';
 import SectionCard from '../components/common/SectionCard';
-import ActionButtons from '../components/common/ActionButtons';
 import Toast from '../components/common/Toast';
 import CommentsPage from '../components/comments/CommentsPage';
 import TopNav from "../Components/navbarComponent/TopNav";
 import { userAPI } from '../services/servicesAPI';
 
 const ProfilePage = () => {
-  const [currentPage, setCurrentPage] = useState("profile"); // "profile" ou "comments"
-  const [user, setUser] = useState({
-});
-  const [priv, setPriv] = useState({
-  });
+  const [currentPage, setCurrentPage] = useState("profile");
+  const [user, setUser] = useState({});
+  const [priv, setPriv] = useState({});
   const [toast, setToast] = useState(null);
   const [errors, setErrors] = useState({});
   
@@ -26,47 +23,103 @@ const ProfilePage = () => {
   const jwtToken = localStorage.getItem("generatedJWT_Token");
   const decodedToken = jwtDecode(jwtToken);
   const userId = decodedToken.sub;
+
   useEffect(() => {
-  const fetchUser = async () => {
-    try {
-      const res = await fetch(`${userAPI}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${jwtToken}`
-        },
-        body: JSON.stringify({ userId })
-      });
-      const data = await res.json();
-      setUser({
-            firstName: data.firstName,
-            lastName: data.lastName ,
-            phone: data.phone ?? "",
-            address: data.address ?? "",
-            gender: data.gender ?? "",                                          // ← add
-            dob: data.dateOfBirth ? data.dateOfBirth.split("T")[0] : "",   // ← add
-            avatar: data.profileImage ?? null
-          });
+    const fetchUser = async () => {
+      try {
+        const res = await fetch(`${userAPI}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${jwtToken}`
+          },
+          body: JSON.stringify({ userId })
+        });
+        const data = await res.json();
+        setUser({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          phone: data.phone ?? "",
+          address: data.address ?? "",
+          gender: data.gender ?? "",
+          dob: data.dateOfBirth ? data.dateOfBirth.split("T")[0] : "",
+          avatar: data.profileImage ?? null
+        });
+        setPriv({
+          email: data.email ?? "",
+          password: data.password ?? ""
           
-      setPriv({
-        email: data.email ?? "",
-        password: data.password ??""
-      });
-    } catch (err) {
-      console.error("Failed to fetch user:", err);
-    }
-  };
-  fetchUser();
-}, []);
-  function decryptPassword(object) {
+        });
+      } catch (err) {
+        console.error("Failed to fetch user:", err);
+      }
+    };
+
+    fetchUser();
     
+  }, []);
+  const SavePrivateInfo = async () => {
+  if (!validatePrivateInfo()) return;
+
+  try {
+    const res = await fetch(`${userAPI}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${jwtToken}`
+      },
+      body: JSON.stringify({
+        userId,
+        email: priv.email,
+        password: priv.password || null
+      })
+    });
+    if(res.ok){ console.log("User info updated successfully"); }
+
+    if (!res.ok) throw new Error("Update failed");
+
+    showToast("Informations de sécurité enregistrées");
+    setPriv((p) => ({ ...p, password: "", confirmPassword: "" }));
+  } catch (err) {
+    showToast(err.message, "error");
   }
+};
+const SavePublicInfo = async () => {
+  
+  try{
+    const res = await fetch(`${userAPI}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${jwtToken}`
+      },
+      body: JSON.stringify({
+        userId,
+        firstName: user.firstName || null,
+        lastName: user.lastName || null,
+        phone: user.phone || null,
+        address: user.address || null,
+        sex: user.gender || null,
+        dateOfBirth: user.dob || null,
+        profileImage: user.avatar || null
+      })
+    });
+    if(res.ok){ console.log("User info updated successfully"); }
+
+    if (!res.ok) throw new Error("Update failed");
+    showToast("Informations personnelles enregistrées");
+
+  }
+  catch(err){
+    showToast(err.message, "error");
+  }
+};       
+
   const sexeOptions = [
-    { value: "female", label: "female" },
-    { value: "male", label: "male" },
+    { value: "Female", label: "female" },
+    { value: "Male", label: "male" },
   ];
 
-  // Gestionnaires d'événements
   const showToast = (msg, type = "success") => {
     setToast({ message: msg, type });
     setTimeout(() => setToast(null), 2800);
@@ -74,27 +127,21 @@ const ProfilePage = () => {
 
   const updateUser = (field) => (e) => {
     setUser((u) => ({ ...u, [field]: e.target.value }));
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: null }));
-    }
+    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: null }));
   };
 
   const updatePriv = (field) => (e) => {
     setPriv((p) => ({ ...p, [field]: e.target.value }));
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: null }));
-    }
+    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: null }));
   };
 
   const handleAvatar = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    
     if (file.size > 2 * 1024 * 1024) {
       showToast("L'image ne doit pas dépasser 2 Mo", "error");
       return;
     }
-    
     const url = URL.createObjectURL(file);
     setUser((u) => ({ ...u, avatar: url }));
     showToast("Photo de profil mise à jour");
@@ -102,15 +149,10 @@ const ProfilePage = () => {
 
   const validatePrivateInfo = () => {
     const newErrors = {};
-    
-    if (priv.password && priv.password.length < 6) {
+    if (priv.password && priv.password.length < 6)
       newErrors.password = "Le mot de passe doit contenir au moins 6 caractères";
-    }
-    
-    if (priv.password !== priv.confirmPassword) {
+    if (priv.password !== priv.confirmPassword)
       newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
-    }
-    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -126,15 +168,9 @@ const ProfilePage = () => {
     showToast("Informations personnelles enregistrées");
   };
 
-  const handleViewComments = () => {
-    setCurrentPage("comments");
-  };
+  const handleViewComments = () => setCurrentPage("comments");
+  const handleBackToProfile = () => setCurrentPage("profile");
 
-  const handleBackToProfile = () => {
-    setCurrentPage("profile");
-  };
-
-  // Affichage conditionnel
   if (currentPage === "comments") {
     return (
       <>
@@ -147,42 +183,27 @@ const ProfilePage = () => {
     );
   }
 
-  // Page de profil
   return (
     <>
-      <TopNav/>
+      <TopNav />
       <style>{styles.global}</style>
-
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
       <div style={styles.container}>
-        {/* Sidebar */}
         <aside style={styles.sidebar}>
-          
-
-          {/* Avatar upload */}
           <div style={styles.avatarContainer}>
             <Avatar src={user.avatar} name={`${user.firstName} ${user.lastName}`} size={90} />
             <button onClick={() => fileRef.current.click()} style={styles.avatarButton}>
               📷
             </button>
-            <input 
-              ref={fileRef} 
-              type="file" 
-              accept="image/*" 
-              style={{ display: "none" }} 
-              onChange={handleAvatar} 
-            />
+            <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleAvatar} />
           </div>
-
           <div style={styles.userInfo}>
             <div style={styles.userName}>{user.firstName} {user.lastName}</div>
             <div style={styles.userEmail}>{priv.email}</div>
-            
           </div>
         </aside>
 
-        {/* Main Content */}
         <main style={styles.main}>
           <div style={styles.pageHeader}>
             <h1 style={styles.pageTitle}>Profil</h1>
@@ -191,50 +212,18 @@ const ProfilePage = () => {
             </p>
           </div>
 
-          {/* Sections côte à côte */}
           <div style={styles.sectionsGrid}>
             {/* Section publique */}
             <SectionCard title="Informations personnelles">
               <div style={styles.formGrid}>
-                <InputField
-                  label="Prénom"
-                  value = {user.firstName}
-                  
-                  placeholder="Votre prénom"
-                />
-                <InputField
-                  label="Nom"
-                  value = {user.lastName}
-                  
-                  placeholder="Votre nom"
-                />
-                <InputField
-                  label="Téléphone"
-                  value={user.phone}
-                  
-                  placeholder="+212 6 00 00 00 00"
-                />
-                <SelectField
-                  label="Genre"
-                  value={user.gender}
-                  
-                  options={sexeOptions}
-                />
-                <InputField
-                  label="Date de naissance"
-                  type="date"
-                  value={user.dob}
-                  
-                />
-                <InputField
-                  label="Adresse"
-                  value={user.address}
-                  
-                  placeholder="Votre adresse complète"
-                />
+                <InputField label="Prénom" value={user.firstName} onChange={updateUser("firstName")} placeholder="Votre prénom" />
+                <InputField label="Nom" value={user.lastName} onChange={updateUser("lastName")} placeholder="Votre nom" />
+                <InputField label="Téléphone" value={user.phone} onChange={updateUser("phone")} placeholder="+212 6 00 00 00 00" />
+                <SelectField label="Genre" value={user.gender} onChange={updateUser("gender")} options={sexeOptions} />
+                <InputField label="Date de naissance" type="date" value={user.dob} onChange={updateUser("dob")} />
+                <InputField label="Adresse" value={user.address} onChange={updateUser("address")} placeholder="Votre adresse complète" />
               </div>
 
-              {/* Photo de profil */}
               <div style={styles.photoSection}>
                 <Avatar src={user.avatar} name={`${user.firstName} ${user.lastName}`} size={56} />
                 <div style={styles.photoInfo}>
@@ -246,52 +235,30 @@ const ProfilePage = () => {
                 </div>
               </div>
 
-              <ActionButtons
-                onCancel={() => setUser(initialUser)}
-                onSave={handleSavePublic}
-              />
+              {/* Inline save button replacing ActionButtons */}
+              <div style={styles.actionButtons}>
+                <button onClick={SavePublicInfo} style={styles.saveButton}>
+                  Enregistrer
+                </button>
+              </div>
             </SectionCard>
 
             {/* Section privée */}
             <SectionCard title="Sécurité et Confidentialité">
               <div style={styles.formGrid}>
-                <InputField
-                  label="Adresse e-mail"
-                  type="email"
-                  value={priv.email}
-                  onChange={updatePriv("email")}
-                  placeholder="votre@email.com"
-                />
-                <div /> {/* Spacer */}
-                <InputField
-                  label="Nouveau mot de passe"
-                  type="password"
-                  
-                  onChange={updatePriv("password")}
-                  placeholder="••••••••"
-                  error={errors.password}
-                />
-                <InputField
-                  label="Confirmer le mot de passe"
-                  type="password"
-                  
-                  onChange={updatePriv("confirmPassword")}
-                  placeholder="••••••••"
-                  error={errors.confirmPassword}
-                />
+                <InputField label="Adresse e-mail" type="email" value={priv.email} onChange={updatePriv("email")} placeholder="votre@email.com" />
+                <div />
+                <InputField label="Nouveau mot de passe" type="password" onChange={updatePriv("password")} placeholder="••••••••" error={errors.password} />
+                <InputField label="Confirmer le mot de passe" type="password" onChange={updatePriv("confirmPassword")} placeholder="••••••••" error={errors.confirmPassword} />
               </div>
-
-              <ActionButtons
-                onCancel={() => {
-                  setPriv(initialPrivate);
-                  setErrors({});
-                }}
-                onSave={handleSavePrivate}
-              />
+              <div style={styles.actionButtons}>
+                <button onClick={SavePrivateInfo} style={styles.saveButton}>
+                  Enregistrer
+                </button>
+              </div>
             </SectionCard>
           </div>
 
-          {/* Section Historique - BOUTON FONCTIONNEL */}
           <div style={styles.historySection}>
             <div>
               <div style={styles.historyTitle}>Historique des commentaires</div>
@@ -307,6 +274,6 @@ const ProfilePage = () => {
       </div>
     </>
   );
-};  
+};
 
 export default ProfilePage;
