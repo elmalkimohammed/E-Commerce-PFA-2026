@@ -248,7 +248,7 @@ const SavePublicInfo = async () => {
               <div style={styles.formGrid}>
                 <InputField label="Adresse e-mail" type="email" value={priv.email ?? ""} onChange={updatePriv("email")} placeholder="votre@email.com" />
                 <div />
-                <InputField label="Nouveau mot de passe" type="password" value={priv.password ?? ""} onChange={updatePriv("password")} placeholder="••••••••" error={errors.password} />
+                <InputField label="Nouveau mot de passe" type="password" value={""} onChange={updatePriv("password")} placeholder="••••••••" error={errors.password} />
                 <InputField label="Confirmer le mot de passe" type="password" value={priv.confirmPassword ?? ""} onChange={updatePriv("confirmPassword")} placeholder="••••••••" error={errors.confirmPassword} />
               </div>
               <div style={styles.actionButtons}>
