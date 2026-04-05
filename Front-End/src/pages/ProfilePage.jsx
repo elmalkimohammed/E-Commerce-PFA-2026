@@ -216,16 +216,16 @@ const SavePublicInfo = async () => {
             {/* Section publique */}
             <SectionCard title="Informations personnelles">
               <div style={styles.formGrid}>
-                <InputField label="Prénom" value={user.firstName} onChange={updateUser("firstName")} placeholder="Votre prénom" />
-                <InputField label="Nom" value={user.lastName} onChange={updateUser("lastName")} placeholder="Votre nom" />
-                <InputField label="Téléphone" value={user.phone} onChange={updateUser("phone")} placeholder="+212 6 00 00 00 00" />
-                <SelectField label="Genre" value={user.gender} onChange={updateUser("gender")} options={sexeOptions} />
-                <InputField label="Date de naissance" type="date" value={user.dob} onChange={updateUser("dob")} />
-                <InputField label="Adresse" value={user.address} onChange={updateUser("address")} placeholder="Votre adresse complète" />
+                <InputField label="Prénom" value={user.firstName ?? ""} onChange={updateUser("firstName")} placeholder="Votre prénom" />
+                <InputField label="Nom" value={user.lastName ?? ""} onChange={updateUser("lastName")} placeholder="Votre nom" />
+                <InputField label="Téléphone" value={user.phone ?? ""} onChange={updateUser("phone")} placeholder="+212 6 00 00 00 00" />
+                <SelectField label="Genre" value={user.gender ?? ""} onChange={updateUser("gender")} options={sexeOptions} />
+                <InputField label="Date de naissance" type="date" value={user.dob ?? ""} onChange={updateUser("dob")} />
+                <InputField label="Adresse" value={user.address ?? ""} onChange={updateUser("address")} placeholder="Votre adresse complète" />
               </div>
 
               <div style={styles.photoSection}>
-                <Avatar src={user.avatar} name={`${user.firstName} ${user.lastName}`} size={56} />
+                <Avatar src={user.avatar} name={`${user.firstName ?? ""} ${user.lastName ?? ""}`} size={56} />
                 <div style={styles.photoInfo}>
                   <div style={styles.photoTitle}>Photo de profil</div>
                   <div style={styles.photoSubtitle}>Formats JPG, PNG. Max 2 Mo.</div>
@@ -246,10 +246,10 @@ const SavePublicInfo = async () => {
             {/* Section privée */}
             <SectionCard title="Sécurité et Confidentialité">
               <div style={styles.formGrid}>
-                <InputField label="Adresse e-mail" type="email" value={priv.email} onChange={updatePriv("email")} placeholder="votre@email.com" />
+                <InputField label="Adresse e-mail" type="email" value={priv.email ?? ""} onChange={updatePriv("email")} placeholder="votre@email.com" />
                 <div />
-                <InputField label="Nouveau mot de passe" type="password" onChange={updatePriv("password")} placeholder="••••••••" error={errors.password} />
-                <InputField label="Confirmer le mot de passe" type="password" onChange={updatePriv("confirmPassword")} placeholder="••••••••" error={errors.confirmPassword} />
+                <InputField label="Nouveau mot de passe" type="password" value={priv.password ?? ""} onChange={updatePriv("password")} placeholder="••••••••" error={errors.password} />
+                <InputField label="Confirmer le mot de passe" type="password" value={priv.confirmPassword ?? ""} onChange={updatePriv("confirmPassword")} placeholder="••••••••" error={errors.confirmPassword} />
               </div>
               <div style={styles.actionButtons}>
                 <button onClick={SavePrivateInfo} style={styles.saveButton}>
