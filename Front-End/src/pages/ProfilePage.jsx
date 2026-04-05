@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { jwtDecode } from "jwt-decode";
 import { useEffect } from "react";
 import { styles } from '../styles/styles';
@@ -28,12 +28,11 @@ const ProfilePage = () => {
     const fetchUser = async () => {
       try {
         const res = await fetch(`${userAPI}`, {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${jwtToken}`
           },
-          body: JSON.stringify({ userId })
         });
         const data = await res.json();
         setUser({

@@ -7,7 +7,7 @@ namespace UserProfileService.Repository
         public void AddRegistered(UserRegisteredEvent user);
         public void UpdatePublicInfo(UserProfilePublicInfo user);
         public void UpdatePrivateInfo(UserProfilePrivateInfo user);
-        public UserFullInfo FullInfo (Guid userId);
+        public UserFullInfo FullInfo (string userId);
 
 
     }

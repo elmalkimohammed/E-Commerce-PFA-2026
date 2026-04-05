@@ -18,26 +18,6 @@
         "tags": [
           "UserProfile"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetFullInfoRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetFullInfoRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetFullInfoRequest"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -108,15 +88,6 @@
   },
   "components": {
     "schemas": {
-      "GetFullInfoRequest": {
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "string",
-            "format": "uuid"
-          }
-        }
-      },
       "PutPrivateInfoDtoRequest": {
         "type": "object",
         "properties": {

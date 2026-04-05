@@ -7,6 +7,7 @@ using UserProfileService.Repository;
 using UserProfileService.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace UserProfileService.Controllers
 {
@@ -20,11 +21,12 @@ namespace UserProfileService.Controllers
         {
             _UserHandler = UserHandler;
         }
-       
-        [HttpPost]
-        public IActionResult GetUserFullInfo(GetFullInfoRequest dto)
+
+        [HttpGet]
+        public IActionResult GetUserFullInfo()
         {
-            UserFullInfo user = _UserHandler.FullInfo(dto.UserId);
+            var userId = (User.FindFirst(JwtRegisteredClaimNames.Sub)?? User.FindFirst(ClaimTypes.NameIdentifier))?.Value;
+            UserFullInfo user = _UserHandler.FullInfo(userId);
             if (user == null)
             {
                 return NotFound();

@@ -33,7 +33,7 @@ namespace UserProfileService.Repository
 
         }
 
-        public UserFullInfo FullInfo(Guid userId)
+        public UserFullInfo FullInfo(string userId)
         {
             UserFullInfo user = new UserFullInfo();
             using MySqlConnection coon = new MySqlConnection(AuthConnection);
