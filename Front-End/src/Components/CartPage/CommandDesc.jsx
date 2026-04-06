@@ -1,18 +1,19 @@
 import { useNavigate } from "react-router-dom"
 import { cartAPI } from "../../services/servicesAPI"
 import axios from "axios"
+import Cookies from "js-cookie"
 
 import "../styles/CommandDesc.css"
 
-function CommandDesc( { totalP } ) {
+function CommandDesc({ totalP, cartItems }) {
 
     const navigate = useNavigate()
 
+    /* ── Nettoyer Le Pannier ── */
     const clearCart = async () => {
-        /* Recovering The JWT As It's Needed To Clear The Cart From Items */
         const token = localStorage.getItem("generatedJWT_Token")
-        if ( !token ) navigate("/Authentication")
-        /* Declaring The Constant Responsible For The Config */ 
+        if (!token) navigate("/Authentication")
+
         const config = {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -20,13 +21,20 @@ function CommandDesc( { totalP } ) {
             }
         }
         const cartInfos = await axios.get(`${cartAPI}/getCart`, config)
-        await axios.post(`${cartAPI}/clearCart`, { cartId: cartInfos.data.cartId }, config )
-        /* Forcefully Reload The Page To Display The New Changes */
+        await axios.post(`${cartAPI}/clearCart`, { cartId: cartInfos.data.cartId }, config)
         window.location.reload()
     }
 
-    return(
-        <div className="cmdDescContainer" style={ { height: "fit-content" } }>
+    /* ── Passer La Commande ── */
+    const handlePasserCommande = () => {
+        // Sauvegarder le panier dans un cookie (expire dans 1 jour)
+        Cookies.set("pendingCart", JSON.stringify(cartItems), { expires: 1 })
+        // Rediriger vers le formulaire de paiement
+        navigate("/payment")
+    }
+
+    return (
+        <div className="cmdDescContainer" style={{ height: "fit-content" }}>
             <h1>Resumé</h1>
             <hr />
             <div className="headerRes">
@@ -42,13 +50,18 @@ function CommandDesc( { totalP } ) {
             <div className="footerRes">
                 <div className="totalPrice">
                     <p>Total</p>
-                    <span>{totalP}</span>
+                    <span>{totalP} MAD</span>
                 </div>
                 <div className="buttons">
                     <button onClick={clearCart}>Nettoyer Le Pannier</button>
-                    <button >PASSER LA COMMANDE</button>
+                    <button onClick={handlePasserCommande}>PASSER LA COMMANDE</button>
                 </div>
-                <span style={ { textAlign: "center", cursor: "pointer", color: "#143a63" } } onClick={ () => { navigate("/") } } >← Continuer mes achats</span>
+                <span
+                    style={{ textAlign: "center", cursor: "pointer", color: "#143a63" }}
+                    onClick={() => navigate("/")}
+                >
+                    ← Continuer mes achats
+                </span>
             </div>
         </div>
     )
