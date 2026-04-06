@@ -143,7 +143,7 @@ services:
       - OrderServiceDB-data:/var/lib/mysql
     networks:
       - ecommerce-network
-  postgres:
+  ReviwServiceDB:
     image: postgres:15-alpine
     container_name: review-postgres
     environment:
@@ -151,10 +151,17 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     ports:
-      - "5432:5432"
+      - "3312:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
+    healthcheck:  
+      test: ["CMD-SHELL", "pg_isready -U postgres -d reviewdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - ecommerce-network
   #___Micro-Services___
   AuthServiceAPI:
     build: 
@@ -273,20 +280,26 @@ services:
         condition: service_healthy
     networks:
       - ecommerce-network
-  review-service:
+  
+  
+  review-service.api:
     build: 
       context: ./Back-End/ReviewService
       dockerfile: Dockerfile
     container_name: review-service
     ports:
-      - "8080:8080"
+      - "5007:5252"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/reviewdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://ReviwServiceDB:5432/reviewdb
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 5252 
     depends_on:
-      - postgres
+      ReviwServiceDB:
+        condition: service_healthy
+    networks:
+      - ecommerce-network
 
 volumes:
   AuthServiceDB-data: 
