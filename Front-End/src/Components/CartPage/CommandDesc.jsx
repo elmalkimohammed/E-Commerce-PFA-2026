@@ -30,7 +30,7 @@ function CommandDesc({ totalP, cartItems }) {
         // Sauvegarder le panier dans un cookie (expire dans 1 jour)
         Cookies.set("pendingCart", JSON.stringify(cartItems), { expires: 1 })
         // Rediriger vers le formulaire de paiement
-        navigate("/payment")
+        navigate("/paymentForm")
     }
 
     return (

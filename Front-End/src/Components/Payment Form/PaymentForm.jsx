@@ -54,48 +54,143 @@ function PaymentForm() {
     }
 
     /* ── Valider La Commande ── */
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        setLoading(true)
-        setError(null)
 
+    // Helper Function For Decoding JWTs
+    const decodeJWT = (token) => {
         try {
-            const token  = localStorage.getItem("generatedJWT_Token")
-            const userId = localStorage.getItem("userId")
-
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                }
-            }
-
-            /* ── Body pour POST /api/orders/cart ── */
-            const orderDto = {
-                userId: userId,
-                items: cartItems.map(item => ({
-                    productId: item.productId,
-                    quantity:  item.quantity,
-                    unitPrice: item.price
-                }))
-            }
-
-            await axios.post(`${orderAPI}/cart`, orderDto, config)
-
-            /* ── Succès → nettoyer le cookie ── */
-            Cookies.remove("pendingCart")
-            setSuccess(true)
-
-            /* ── Rediriger après 2 secondes ── */
-            setTimeout(() => navigate("/"), 2000)
-
-        } catch (err) {
-            setError("Une erreur est survenue. Veuillez réessayer.")
-            console.error(err)
-        } finally {
-            setLoading(false)
+            const base64Url = token.split('.')[1]
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+            }).join(''))
+            
+            return JSON.parse(jsonPayload)
+        } catch (error) {
+            console.error('Error decoding JWT:', error)
+            return null
         }
     }
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault()
+    //     setLoading(true)
+    //     setError(null)
+
+    //     try {
+    //         const token  = localStorage.getItem("generatedJWT_Token")
+    //         const userId = decodeJWT(token).sub
+    //         console.log(userId)
+
+    //         const config = {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //                 "Content-Type": "application/json"
+    //             }
+    //         }
+
+    //         /* ── Body pour POST /api/orders/cart ── */
+    //         const orderDto = {
+    //             UserId: userId,
+    //             Items: cartItems.map(item => ({
+    //                 ProductId: item.productId,
+    //                 ProductName: item.productName,
+    //                 Quantity:  item.quantity,
+    //                 UnitPrice: item.price
+    //             }))
+    //         }
+
+    //         await axios.post(`${orderAPI}/cart`, orderDto, config)
+
+    //         /* ── Succès → nettoyer le cookie ── */
+    //         Cookies.remove("pendingCart")
+    //         setSuccess(true)
+
+    //         /* ── Rediriger après 2 secondes ── */
+    //         setTimeout(() => navigate("/"), 2000)
+
+    //     } catch (err) {
+    //         setError("Une erreur est survenue. Veuillez réessayer.")
+    //         console.error(err)
+    //     } finally {
+    //         setLoading(false)
+    //     }
+    // }
+    const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
+
+    try {
+        const token = localStorage.getItem("generatedJWT_Token")
+        
+        if (!token) {
+            setError("Token non trouvé. Veuillez vous reconnecter.")
+            setLoading(false)
+            return
+        }
+        
+        const decodedToken = decodeJWT(token)
+        
+        if (!decodedToken || !decodedToken.sub) {
+            setError("Token invalide. Pas d'ID utilisateur trouvé.")
+            setLoading(false)
+            return
+        }
+        
+        const userId = decodedToken.sub
+        
+        if (!cartItems || cartItems.length === 0) {
+            setError("Panier vide")
+            setLoading(false)
+            return
+        }
+
+        // IMPORTANT: Use the EXACT format that works in your .http test
+        const requestBody = {
+            userId: userId,                    // camelCase - NOT UserId
+            items: cartItems.map(item => ({    // camelCase - NOT Items
+                productId: item.productId,     // camelCase - NOT ProductId
+                productName: item.productName, // camelCase - NOT ProductName
+                quantity: Number(item.quantity),
+                unitPrice: Number(item.price)  // camelCase - NOT UnitPrice
+            }))
+        }
+
+        console.log("Sending request body:", JSON.stringify(requestBody, null, 2))
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        }
+
+        // NO 'dto' wrapper - send directly
+        const response = await axios.post(`${orderAPI}/cart`, requestBody, config)
+        
+        console.log("Response:", response.data)
+
+        Cookies.remove("pendingCart")
+        setSuccess(true)
+        setTimeout(() => navigate("/"), 2000)
+
+    } catch (err) {
+        console.error("Error response:", err.response?.data)
+        
+        if (err.response?.data?.errors) {
+            const errorMessages = Object.entries(err.response.data.errors)
+                .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`)
+                .join('; ')
+            setError(`Erreur de validation: ${errorMessages}`)
+        } else if (err.response?.data?.message) {
+            setError(`Erreur: ${err.response.data.message}`)
+        } else {
+            setError("Une erreur est survenue. Veuillez réessayer.")
+        }
+    } finally {
+        setLoading(false)
+    }
+}
 
     /* ── Succès ── */
     if (success) {

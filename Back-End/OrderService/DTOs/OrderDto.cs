@@ -9,7 +9,7 @@
 );
 
     public record OrderItemResponseDto(
-        Guid ProductId,
+        int ProductId,
         string ProductName,
         int Quantity,
         decimal UnitPrice
