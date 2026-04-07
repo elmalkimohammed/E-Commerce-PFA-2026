@@ -20,7 +20,8 @@ namespace TicketProductApi.Controllers
             _productHandler = productHandler;
         }
 
-        [HttpGet("getCategories")]
+        [HttpGet]
+        [Route("getCategories")]
         public IActionResult GetAllCategories()
         {
             try

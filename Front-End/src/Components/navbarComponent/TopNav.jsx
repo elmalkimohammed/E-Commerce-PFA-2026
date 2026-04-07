@@ -14,7 +14,7 @@ function TopNav() {
 
   const navChecker = () => {
     if ( localStorage.getItem("generatedJWT_Token") ) navigate("/ProfilePage")
-    else navigate("/Authentication")
+    else navigate("/Authentication") 
   }
 
   /* Fetching All Of The Available Categories From The API */
