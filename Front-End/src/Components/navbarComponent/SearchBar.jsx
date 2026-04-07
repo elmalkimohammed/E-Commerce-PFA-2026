@@ -2,8 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productService } from '../../services/productService';
 
-const SearchBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const SearchBar = ({ isOpen, setIsOpen }) => {
   const [keyword, setKeyword] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -20,7 +19,7 @@ const SearchBar = () => {
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [setIsOpen]);
 
   const handleInputChange = async (e) => {
     const value = e.target.value;
@@ -73,25 +72,6 @@ const SearchBar = () => {
 
   return (
     <div ref={searchRef} style={{ position: 'relative', display: 'inline-block' }}>
-      
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        style={{
-          background: 'none',
-          border: 'none',
-          fontSize: '20px',
-          cursor: 'pointer',
-          padding: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#333'
-        }}
-      >
-        🔍
-      </button>
-
-      
       {isOpen && (
         <div
           style={{

@@ -10,14 +10,14 @@ function TopNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [ categories , setCategories ] = useState([]);
   const [ spanState , setSpanState ] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);  
   const navigate = useNavigate()
 
   const navChecker = () => {
     if ( localStorage.getItem("generatedJWT_Token") ) navigate("/ProfilePage")
-    else navigate("/Authentication") 
+    else navigate("/Authentication")
   }
 
-  /* Fetching All Of The Available Categories From The API */
   useEffect( () => {
     getCategories()
   }, [] )
@@ -30,7 +30,6 @@ function TopNav() {
     }
   }
 
-  /* Turn On/Off The Hidden Categories HTML Span */
   const displaySpan = () => {
     if ( !spanState ){
       setSpanState(true)
@@ -39,7 +38,6 @@ function TopNav() {
     }
   }
 
-  /* Taking The Value Of The Selected Category And Storing It In A Temporary Session */
   const storeCategory = ( value ) => {
     localStorage.setItem("selectedCategory" , value)
   }
@@ -69,16 +67,22 @@ function TopNav() {
         </div>
 
         <div className="user-icons">
-            <i className="bi bi-search" aria-hidden></i>
-            <SearchBar />
+          {/* OLD SEARCH ICON - NOW OPENS THE SEARCH BAR */}
+          <i 
+            className="bi bi-search" 
+            aria-hidden 
+            onClick={() => setSearchOpen(!searchOpen)}
+            style={{ cursor: 'pointer' }}
+          ></i>
+          <SearchBar isOpen={searchOpen} setIsOpen={setSearchOpen} />
           <i className="bi bi-person" aria-hidden onClick={ navChecker }></i>
-            <span className="cart-icon">
-              <i className="bi bi-cart" aria-hidden onClick={ () => { navigate("/CartPage") } } ></i>
-              <span className="cart-badge">3</span>
-            </span>
+          <span className="cart-icon">
+            <i className="bi bi-cart" aria-hidden onClick={ () => { navigate("/CartPage") } } ></i>
+            <span className="cart-badge">3</span>
+          </span>
         </div>
       </nav>
-      {/* Hidden Categories HTML Span */}
+      
       { spanState &&
       <span className="hiddenCategories" style={{ position: "sticky", top: "56.8px", zIndex: "51" }}>
         { 
