@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { prodAPI } from "../../services/servicesAPI";
+import SearchBar from "./SearchBar";
 import axios from "axios" 
 
 import "../../pages/Styles/TopNavStyle.css";
@@ -68,12 +69,13 @@ function TopNav() {
         </div>
 
         <div className="user-icons">
-          <i className="bi bi-search" aria-hidden></i>
+            <i className="bi bi-search" aria-hidden></i>
+            <SearchBar />
           <i className="bi bi-person" aria-hidden onClick={ navChecker }></i>
-          <span className="cart-icon">
-            <i className="bi bi-cart" aria-hidden onClick={ () => { navigate("/CartPage") } } ></i>
-            <span className="cart-badge">3</span>
-          </span>
+            <span className="cart-icon">
+              <i className="bi bi-cart" aria-hidden onClick={ () => { navigate("/CartPage") } } ></i>
+              <span className="cart-badge">3</span>
+            </span>
         </div>
       </nav>
       {/* Hidden Categories HTML Span */}
