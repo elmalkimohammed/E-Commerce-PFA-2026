@@ -11,6 +11,7 @@ import Toast from '../components/common/Toast';
 import CommentsPage from '../components/comments/CommentsPage';
 import TopNav from "../Components/navbarComponent/TopNav";
 import { userAPI } from '../services/servicesAPI';
+import axios from 'axios';
 
 const ProfilePage = () => {
   const [currentPage, setCurrentPage] = useState("profile");
@@ -18,29 +19,33 @@ const ProfilePage = () => {
   const [priv, setPriv] = useState({});
   const [toast, setToast] = useState(null);
   const [errors, setErrors] = useState({});
-  
+  const [ loading , setLoading ] = useState(true)
   const fileRef = useRef(null);
   const jwtToken = localStorage.getItem("generatedJWT_Token");
   const decodedToken = jwtDecode(jwtToken);
   const userId = decodedToken.sub;
 
+  useEffect( () => {
+    console.log(user)
+  }, [user] )
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch(`${userAPI}`, {
+        const res = await axios.get(`${userAPI}`, {
           method: "GET",
           headers: {
-            "Content-Type": "application/json",
             "Authorization": `Bearer ${jwtToken}`
           },
-        });
-        const data = await res.json();
+        }
+      );
+        const data = res.data;
         setUser({
           firstName: data.firstName,
           lastName: data.lastName,
           phone: data.phone ?? "",
           address: data.address ?? "",
-          gender: data.gender ?? "",
+          sex: data.sex ?? "",
           dob: data.dateOfBirth ? data.dateOfBirth.split("T")[0] : "",
           avatar: data.profileImage ?? null
         });
@@ -55,6 +60,7 @@ const ProfilePage = () => {
     };
 
     fetchUser();
+    setLoading(false)
     
   }, []);
   const SavePrivateInfo = async () => {
@@ -98,7 +104,7 @@ const SavePublicInfo = async () => {
         lastName: user.lastName || null,
         phone: user.phone || null,
         address: user.address || null,
-        sex: user.gender || null,
+        sex: user.sex || null,
         dateOfBirth: user.dob || null,
         profileImage: user.avatar || null
       })
@@ -182,6 +188,8 @@ const SavePublicInfo = async () => {
     );
   }
 
+  if ( loading ) return( <div>loading....</div> )
+
   return (
     <>
       <TopNav />
@@ -218,7 +226,7 @@ const SavePublicInfo = async () => {
                 <InputField label="Prénom" value={user.firstName ?? ""} onChange={updateUser("firstName")} placeholder="Votre prénom" />
                 <InputField label="Nom" value={user.lastName ?? ""} onChange={updateUser("lastName")} placeholder="Votre nom" />
                 <InputField label="Téléphone" value={user.phone ?? ""} onChange={updateUser("phone")} placeholder="+212 6 00 00 00 00" />
-                <SelectField label="Genre" value={user.gender ?? ""} onChange={updateUser("gender")} options={sexeOptions} />
+                <SelectField label="Genre" value={user.sex} onChange={updateUser("gender")} options={sexeOptions} />
                 <InputField label="Date de naissance" type="date" value={user.dob ?? ""} onChange={updateUser("dob")} />
                 <InputField label="Adresse" value={user.address ?? ""} onChange={updateUser("address")} placeholder="Votre adresse complète" />
               </div>
