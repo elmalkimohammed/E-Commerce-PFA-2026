@@ -226,7 +226,7 @@ const SavePublicInfo = async () => {
                 <InputField label="Prénom" value={user.firstName ?? ""} onChange={updateUser("firstName")} placeholder="Votre prénom" />
                 <InputField label="Nom" value={user.lastName ?? ""} onChange={updateUser("lastName")} placeholder="Votre nom" />
                 <InputField label="Téléphone" value={user.phone ?? ""} onChange={updateUser("phone")} placeholder="+212 6 00 00 00 00" />
-                <SelectField label="Genre" value={user.sex} onChange={updateUser("gender")} options={sexeOptions} />
+                <SelectField label="Genre" value={user.sex} onChange={updateUser("sex")} options={sexeOptions} />
                 <InputField label="Date de naissance" type="date" value={user.dob ?? ""} onChange={updateUser("dob")} />
                 <InputField label="Adresse" value={user.address ?? ""} onChange={updateUser("address")} placeholder="Votre adresse complète" />
               </div>
