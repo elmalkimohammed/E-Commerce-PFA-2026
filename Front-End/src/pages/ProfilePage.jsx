@@ -51,7 +51,8 @@ const ProfilePage = () => {
         });
         setPriv({
           email: data.email ?? "",
-          password: data.password ?? ""
+          password: data.password ?? "",
+          confirmPassword: data.password ?? ""
           
         });
       } catch (err) {
@@ -64,27 +65,61 @@ const ProfilePage = () => {
     
   }, []);
   const SavePrivateInfo = async () => {
+
+  // 🟢 CAS 1 : aucun changement de mot de passe
+  if (!priv.password && !priv.confirmPassword) {
+    try {
+      const res = await fetch(userAPI, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`
+        },
+        body: JSON.stringify({
+          userId,
+          email: priv.email,
+          password: null // 🔥 important
+        })
+      });
+
+      if (!res.ok) throw new Error("Update failed");
+
+      showToast("Email mis à jour");
+      return;
+
+    } catch (err) {
+      showToast(err.message, "error");
+      return;
+    }
+  }
+
+  // 🔵 CAS 2 : password rempli → validation obligatoire
   if (!validatePrivateInfo()) return;
 
   try {
-    const res = await fetch(`${userAPI}`, {
+    const res = await fetch(userAPI, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${jwtToken}`
+        Authorization: `Bearer ${jwtToken}`
       },
       body: JSON.stringify({
         userId,
         email: priv.email,
-        password: priv.password || null
+        password: priv.password
       })
     });
-    if(res.ok){ console.log("User info updated successfully"); }
 
     if (!res.ok) throw new Error("Update failed");
 
-    showToast("Informations de sécurité enregistrées");
-    setPriv((p) => ({ ...p, password: "", confirmPassword: "" }));
+    showToast("Email et mot de passe mis à jour");
+
+    setPriv((p) => ({
+      ...p,
+      password: "",
+      confirmPassword: ""
+    }));
+
   } catch (err) {
     showToast(err.message, "error");
   }
@@ -163,12 +198,16 @@ const SavePublicInfo = async () => {
   };
 
   const handleSavePrivate = () => {
-    if (validatePrivateInfo()) {
+    if(priv.email !== ""&& priv.password === "" && priv.confirmPassword === ""){ {
+      return showToast("Adresse e-mail mise à jour");
+    }}
+    else if (validatePrivateInfo()) {
+
       showToast("Informations de sécurité enregistrées");
       setPriv((p) => ({ ...p, password: "", confirmPassword: "" }));
     }
   };
-
+  
   const handleSavePublic = () => {
     showToast("Informations personnelles enregistrées");
   };
@@ -255,8 +294,8 @@ const SavePublicInfo = async () => {
               <div style={styles.formGrid}>
                 <InputField label="Adresse e-mail" type="email" value={priv.email ?? ""} onChange={updatePriv("email")} placeholder="votre@email.com" />
                 <div />
-                <InputField label="Nouveau mot de passe" type="password" value={""} onChange={updatePriv("password")} placeholder="••••••••" error={errors.password} />
-                <InputField label="Confirmer le mot de passe" type="password" value={priv.confirmPassword ?? ""} onChange={updatePriv("confirmPassword")} placeholder="••••••••" error={errors.confirmPassword} />
+                <InputField label="Nouveau mot de passe" type="password" onChange={updatePriv("password")} placeholder="••••••••" error={errors.password} />
+                <InputField label="Confirmer le mot de passe" type="password"  onChange={updatePriv("confirmPassword")} placeholder="••••••••" error={errors.confirmPassword} />
               </div>
               <div style={styles.actionButtons}>
                 <button onClick={SavePrivateInfo} style={styles.saveButton}>
@@ -282,5 +321,4 @@ const SavePublicInfo = async () => {
     </>
   );
 };
-
 export default ProfilePage;
