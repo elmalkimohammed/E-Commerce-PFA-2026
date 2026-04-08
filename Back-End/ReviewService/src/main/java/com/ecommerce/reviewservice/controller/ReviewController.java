@@ -24,13 +24,13 @@ public class ReviewController {
 
     
     @GetMapping("/product/{productId}")
-    public List<Review> getByProduct(@PathVariable UUID productId) {
+    public List<Review> getByProduct(@PathVariable int productId) {
         return service.getByProduct(productId);
     }
 
     
     @GetMapping("/product/{productId}/rating")
-    public double getRating(@PathVariable UUID productId) {
+    public double getRating(@PathVariable int productId) {
         return service.getRating(productId);
     }
 

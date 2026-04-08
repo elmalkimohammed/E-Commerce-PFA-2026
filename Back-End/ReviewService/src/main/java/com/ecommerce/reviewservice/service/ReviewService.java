@@ -29,12 +29,12 @@ public class ReviewService {
     }
 
     
-    public List<Review> getByProduct(UUID productId) {
+    public List<Review> getByProduct(int productId) {
         return repository.findByProductId(productId);
     }
 
     
-    public double getRating(UUID productId) {
+    public double getRating(int productId) {
         List<Review> reviews = repository.findByProductId(productId);
 
         return reviews.stream()
@@ -48,8 +48,13 @@ public class ReviewService {
         Review review = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Review not found"));
 
-        if (dto.comment() != null) review.setComment(dto.comment());
-        if (dto.rating() > 0) review.setRating(dto.rating());
+        if (dto.rating() != null && dto.rating() > 0) {
+            review.setRating(dto.rating());
+        }
+        
+        if (dto.comment() != null) {
+            review.setComment(dto.comment());
+        }
 
         return repository.save(review);
     }

@@ -19,13 +19,13 @@ public class Review {
     private UUID reviewId;
 
     @Column(nullable = false)
-    private UUID productId;
+    private int productId;
 
     @Column(nullable = false)
     private UUID userId;
 
     @Column(nullable = false)
-    private int rating;
+    private Integer rating;
 
     @Column(columnDefinition = "TEXT")
     private String comment;
