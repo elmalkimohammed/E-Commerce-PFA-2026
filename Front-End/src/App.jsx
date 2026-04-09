@@ -1,4 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+/* Necessary For Utilizing And Managing Our States That Are Handeled By Differents Components */
+import { Provider } from "react-redux"
+import store from "./store/store.js";
 
 import Acceuil from "./pages/Acceuil";
 import AuthPage from './pages/AuthPage.jsx'
@@ -20,20 +23,23 @@ function NotFound() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/acceuil" element={<Acceuil />} />
-        <Route path="/" element={<Acceuil />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/Authentication" element={<AuthPage/>} />
-        <Route path="/SellerPortal" element={ <SellerPortal/> }/>
-        <Route path="/ProfilePage" element={ <ProfilePage/> }/>
-        <Route path="/CartPage" element={ <CartPage/> }/>
-        <Route path="/CategoryPage" element={ <CategoryPage/> }/>
-        <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/paymentForm" element={<PaymentPage/>}/>
-      </Routes>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/acceuil" element={<Acceuil />} />        
+          <Route path="/CategoryPage" element={ <CategoryPage/> }/>
+          <Route path="/" element={<Acceuil />} />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/Authentication" element={<AuthPage/>} />
+          <Route path="/SellerPortal" element={ <SellerPortal/> }/>
+          <Route path="/ProfilePage" element={ <ProfilePage/> }/>
+          <Route path="/CartPage" element={ <CartPage/> }/>
+          <Route path="/CategoryPage" element={ <CategoryPage/> }/>
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/paymentForm" element={<PaymentPage/>}/>
+        </Routes>
     </BrowserRouter>
+    </Provider>
   );
 }
 

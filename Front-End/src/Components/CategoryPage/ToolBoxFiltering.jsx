@@ -1,12 +1,39 @@
 import "../styles/toolBoxFiltering.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
-import { useState } from "react"
+import { useState , useEffect } from "react"
+import { prodAPI } from "../../services/servicesAPI"
+import { useSelector } from "react-redux"
+import axios from "axios"
 
 function ToolBoxFiltering({ buttonState, setCategory, setPrice }) {
 
     const [categFilterValue, setCategFilterValue] = useState("All")
     const [priceFilterValue, setPriceFilterValue] = useState("0")
+    const [ Categories , setCategories ] = useState([])
+    const chosenCateg = useSelector( ( state ) => state.chosenCategory.value )
+
+    /* Checks If The User Trully Sorted Via The NavLink 'Catègories' And Sets The Select Value To The Desired One */
+    useEffect( () => {
+        if ( chosenCateg ) {
+            setCategFilterValue(chosenCateg)
+            setCategory(chosenCateg)
+            setPrice(priceFilterValue)
+            buttonState(true)
+        }
+    }, [chosenCateg] )
+
+    useEffect( () => {
+        getCategories()
+    }, [] )
+
+  const getCategories = async () => {
+    try {
+      setCategories( (await axios.get(`${prodAPI}/getCategories`)).data )
+    } catch (error) {
+      alert(error.response?.data || "An Internal Error Happened While Trying To Fetch The Categories.....")
+    }
+  }
 
     const handleApply = () => {
         setCategory(categFilterValue)
@@ -46,14 +73,13 @@ function ToolBoxFiltering({ buttonState, setCategory, setPrice }) {
 
                             {/* CATEGORY FILTER */}
                             <td>
-                                <select
-                                    value={categFilterValue}
-                                    onChange={(e)=>setCategFilterValue(e.target.value)}
-                                >
+                                <select value={categFilterValue} onChange={(e)=>setCategFilterValue(e.target.value)}>
                                     <option value="All">All</option>
-                                    <option value="Electronique">Electronique</option>
-                                    <option value="Vetements">Vetements</option>
-                                    <option value="Accessoires">Accessoires</option>
+                                    {
+                                        Categories.map( ( category ) => {
+                                            return <option value={ category }>{category}</option>
+                                        } )
+                                    }
                                 </select>
                             </td>
 
