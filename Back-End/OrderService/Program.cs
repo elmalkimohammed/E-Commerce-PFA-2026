@@ -19,6 +19,12 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService1>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+// Configure The CORS Policy To Accept Our React App (Cross-Origin)
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowReact", policy => policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod());
+    }
+);
 
 var app = builder.Build();
 
@@ -30,6 +36,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.MapOpenApi();
+app.UseCors("AllowReact");
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

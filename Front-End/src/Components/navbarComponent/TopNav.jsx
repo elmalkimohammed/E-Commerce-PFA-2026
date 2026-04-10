@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { cartAPI } from "../../services/servicesAPI";
 import { prodAPI } from "../../services/servicesAPI";
 
 /* Needed Global CHosen Category State Import */
@@ -25,6 +26,8 @@ function TopNav() {
   useEffect( () => {
     getCategories()
   }, [] )
+
+
 
   const getCategories = async () => {
     try {
@@ -78,7 +81,6 @@ function TopNav() {
           <i className="bi bi-person" aria-hidden onClick={ navChecker }></i>
           <span className="cart-icon">
             <i className="bi bi-cart" aria-hidden onClick={ () => { navigate("/CartPage") } } ></i>
-            <span className="cart-badge">3</span>
           </span>
         </div>
       </nav>

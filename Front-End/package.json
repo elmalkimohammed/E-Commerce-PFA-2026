@@ -17,6 +17,7 @@
     "@fortawesome/react-fontawesome": "^3.2.0",
     "@reduxjs/toolkit": "^2.11.2",
     "axios": "^1.13.5",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.575.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

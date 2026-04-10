@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { prodAPI } from "../services/servicesAPI"
+import { prodAPI, cartAPI } from "../services/servicesAPI"
+import axios from "axios"
 import "./Styles/ProductDetail.css"
 
 const ProductDetail = () => {
@@ -8,9 +9,11 @@ const ProductDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const [product, setProduct] = useState(null)
-  const [quantity, setQuantity] = useState(1)
+  const [product,   setProduct]   = useState(null)
+  const [quantity,  setQuantity]  = useState(1)
   const [activeImg, setActiveImg] = useState(0)
+  const [cartMsg,   setCartMsg]   = useState(null)  // message succès/erreur
+  const [loading,   setLoading]   = useState(false)
 
   useEffect(() => {
     fetch(`${prodAPI}/${id}`)
@@ -50,6 +53,50 @@ const ProductDetail = () => {
   const RATING = 4.0
   const REVIEW_COUNT = 24
 
+  /* ── Ajouter au Panier ── */
+  const handleAddToCart = async () => {
+    
+    // Vérifier si JWT existe
+    const token = localStorage.getItem("generatedJWT_Token")
+    console.log("TOKEN:", token)
+    if (!token) {
+      navigate("/Authentication")
+      return
+    }
+
+    // Vérifier si le stock est disponible
+    if (product.stock === 0) return
+
+    setLoading(true)
+    setCartMsg(null)
+
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      }
+
+      // POST /api/cart/addToCart
+      // userId est extrait automatiquement du JWT côté Back-End
+      await axios.post(`${cartAPI}/addToCart`, {
+        productId: product.id,  // ← l'id du produit
+        stock: quantity          // ← la quantité choisie
+      }, config)
+
+      setCartMsg({ type: "success", text: "✅ Produit ajouté au panier !" })
+
+    } catch (err) {
+      console.error(err)
+      setCartMsg({ type: "error", text: "❌ Erreur lors de l'ajout au panier." })
+    } finally {
+      setLoading(false)
+      // Effacer le message après 3 secondes
+      setTimeout(() => setCartMsg(null), 3000)
+    }
+  }
+
   return (
     <div className="product-detail-container">
 
@@ -66,7 +113,6 @@ const ProductDetail = () => {
 
         {/* LEFT — Gallery */}
         <div className="product-gallery">
-
           <div className="main-image-container">
             <img
               key={activeImg}
@@ -92,7 +138,6 @@ const ProductDetail = () => {
               ))}
             </div>
           )}
-
         </div>
 
         {/* RIGHT — Info */}
@@ -157,11 +202,26 @@ const ProductDetail = () => {
               >+</button>
             </div>
 
-            <button className="add-to-cart-btn">
-              Ajouter au Panier
+            <button
+              className="add-to-cart-btn"
+              onClick={handleAddToCart}
+              disabled={loading || product.stock === 0}
+            >
+              {loading ? "Ajout en cours..." : "Ajouter au Panier"}
             </button>
 
           </div>
+
+          {/* Message succès / erreur */}
+          {cartMsg && (
+            <p style={{
+              marginTop: "1em",
+              color: cartMsg.type === "success" ? "green" : "red",
+              fontWeight: "bold"
+            }}>
+              {cartMsg.text}
+            </p>
+          )}
 
         </div>
       </div>
