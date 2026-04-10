@@ -50,7 +50,7 @@ function PaymentForm() {
     /* ── Annuler La Commande ── */
     const handleAnnuler = () => {
         Cookies.remove("pendingCart")
-        navigate("/cart")
+        navigate("/cartPage")
     }
 
     /* ── Valider La Commande ── */
@@ -70,51 +70,6 @@ function PaymentForm() {
             return null
         }
     }
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault()
-    //     setLoading(true)
-    //     setError(null)
-
-    //     try {
-    //         const token  = localStorage.getItem("generatedJWT_Token")
-    //         const userId = decodeJWT(token).sub
-    //         console.log(userId)
-
-    //         const config = {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //                 "Content-Type": "application/json"
-    //             }
-    //         }
-
-    //         /* ── Body pour POST /api/orders/cart ── */
-    //         const orderDto = {
-    //             UserId: userId,
-    //             Items: cartItems.map(item => ({
-    //                 ProductId: item.productId,
-    //                 ProductName: item.productName,
-    //                 Quantity:  item.quantity,
-    //                 UnitPrice: item.price
-    //             }))
-    //         }
-
-    //         await axios.post(`${orderAPI}/cart`, orderDto, config)
-
-    //         /* ── Succès → nettoyer le cookie ── */
-    //         Cookies.remove("pendingCart")
-    //         setSuccess(true)
-
-    //         /* ── Rediriger après 2 secondes ── */
-    //         setTimeout(() => navigate("/"), 2000)
-
-    //     } catch (err) {
-    //         setError("Une erreur est survenue. Veuillez réessayer.")
-    //         console.error(err)
-    //     } finally {
-    //         setLoading(false)
-    //     }
-    // }
     const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -210,23 +165,6 @@ function PaymentForm() {
                 <h1>Validation du paiement</h1>
                 <p>Valider votre commande après le remplissage de ces informations</p>
             </div>
-
-            {/* ── Résumé du panier ── */}
-            <div className="cartSummary" style={{ marginBottom: "1em", background: "#f5f5f5", padding: "1em", borderRadius: "8px" }}>
-                <h3>Résumé de la commande</h3>
-                {cartItems.map((item, index) => (
-                    <div key={index} style={{ display: "flex", justifyContent: "space-between" }}>
-                        <span>{item.productName} x{item.quantity}</span>
-                        <span>{(item.price * item.quantity).toFixed(2)} MAD</span>
-                    </div>
-                ))}
-                <hr />
-                <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold" }}>
-                    <span>Total</span>
-                    <span>{totalPrice.toFixed(2)} MAD</span>
-                </div>
-            </div>
-
             <form onSubmit={handleSubmit} className="payForm">
                 <div>
                     <label htmlFor="cardName">Nom du carte: </label>

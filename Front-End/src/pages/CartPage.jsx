@@ -19,6 +19,11 @@ function CartPage() {
     const [totalPrice,    setTotalPrice]    = useState(0)
     const [quantities,    setQuantities]    = useState({})
 
+
+    useEffect(() => {
+        console.log(fullCart)
+    }, [fullCart])
+
     /* ── Logs dev ── */
     useEffect(() => { console.log(productsInfos) }, [productsInfos])
     useEffect(() => { console.log(products)      }, [products])
@@ -51,6 +56,7 @@ function CartPage() {
             setProducts(response.data.items)
             setLoading(false)
         })
+
     }, [])
 
     /* ── Calcul total ── */
@@ -72,7 +78,7 @@ function CartPage() {
         productId: product.id,
         productName: product.name,
         price: product.price,
-        quantity: quantities[product.id] || 0
+        quantity: quantities[product.stock] || 0
     }))
 
     /* ── Loading ── */
@@ -113,6 +119,7 @@ function CartPage() {
                                             productPrice={prod.price}
                                             productMaxStock={prod.stock}
                                             onQuantityChange={handleQuantityChange}
+                                            stockchoix={fullCart.items.find(item => item.productId === prod.id)?.stock || 0}
                                         />
                                     )
                                 }

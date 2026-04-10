@@ -4,7 +4,7 @@ import axios from "axios"
 
 import "../styles/ProductBox.css"
 
-function ProductBox( { productId , productMimeType , productImage , productName , productDescription , productPrice , productMaxStock, onQuantityChange } ) {
+function ProductBox( { productId , productMimeType , productImage , productName , productDescription , productPrice , productMaxStock, onQuantityChange , stockchoix } ) {  
     
     const imgSrc = `data:${ productMimeType };base64,${ productImage }`
 
@@ -19,7 +19,7 @@ function ProductBox( { productId , productMimeType , productImage , productName 
             }
         }
 
-    const [ stockCounter , setStockCounter ] = useState(0)
+    const [ stockCounter , setStockCounter ] = useState(stockchoix)
 
     // Follows The Quantity Counter Change And Pass It As A Props To Be Treated Via The Parent Component
     useEffect(() => {
