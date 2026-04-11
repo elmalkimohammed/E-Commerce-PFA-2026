@@ -10,8 +10,8 @@
   color: white;
 }
 a {
-  text-decoration: none; /* Removes the underline from all links */
-  color: inherit; /* Inherits the text color from the parent element */
+  text-decoration: none;
+  color: inherit;
 }
 a:hover {
   color: rgb(183, 183, 183);
@@ -69,7 +69,6 @@ a:hover {
   text-align: center;
 }
 
-/* Bouton hamburger (caché sur desktop) */
 .nav-toggle {
   display: none;
   background: none;
@@ -81,7 +80,152 @@ a:hover {
   line-height: 1;
 }
 
-/* Responsive */
+/* ── Search bar ── */
+.search-wrapper {
+  position: relative;
+}
+
+.search-input-row {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  padding: 0 10px;
+  gap: 6px;
+  height: 34px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.search-input-row:focus-within {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.search-icon {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.search-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13px;
+  width: 180px;
+  color: white;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.search-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 15px;
+  padding: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 200;
+  min-width: 300px;
+  overflow: hidden;
+}
+
+.search-count {
+  font-size: 11px;
+  color: #999;
+  padding: 8px 14px 6px;
+  border-bottom: 1px solid #f2f2f2;
+  margin: 0;
+}
+
+.search-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  cursor: pointer;
+  gap: 12px;
+  transition: background 0.1s;
+}
+
+.search-item:hover {
+  background: #f5f5ff;
+}
+
+.search-item + .search-item {
+  border-top: 1px solid #f2f2f2;
+}
+
+.search-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.search-item-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-item-cat {
+  font-size: 11px;
+  color: #999;
+}
+
+.search-item-price {
+  font-size: 13px;
+  font-weight: 500;
+  color: #534AB7;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.search-mark {
+  background: #EEEDFE;
+  color: #3C3489;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+.search-empty {
+  font-size: 13px;
+  color: #999;
+  padding: 1rem 14px;
+  text-align: center;
+  margin: 0;
+}
+
+/* ── Responsive ── */
 @media (max-width: 768px) {
   .top-nav {
     padding: 12px 16px;
@@ -132,6 +276,14 @@ a:hover {
     font-size: 20px;
   }
 
+  .search-input {
+    width: 120px;
+  }
+
+  .search-dropdown {
+    min-width: 260px;
+    right: auto;
+  }
 }
 
 @media (max-width: 480px) {
@@ -142,7 +294,12 @@ a:hover {
   .brand {
     font-size: 15px;
   }
+
+  .search-input {
+    width: 90px;
+  }
 }
+
 .hiddenCategories {
   border-top: 1px solid white;
   padding: 20px;
@@ -152,11 +309,11 @@ a:hover {
   background-color: #143a63;
   color: white;
 }
-/* Responsive categories span */
+
 @media (max-width: 768px) {
   .hiddenCategories {
     position: sticky;
-    top: 60px; /* Adjust to match your mobile navbar height */
+    top: 60px;
     padding: 15px 10px;
     gap: 8px;
     justify-content: flex-start;
@@ -166,7 +323,7 @@ a:hover {
     scrollbar-width: thin;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
   }
-  
+
   .hiddenCategories span {
     flex: 0 0 auto;
     padding: 6px 12px !important;
@@ -175,11 +332,11 @@ a:hover {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
   }
-  
+
   .hiddenCategories::-webkit-scrollbar {
     height: 3px;
   }
-  
+
   .hiddenCategories::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
@@ -188,10 +345,10 @@ a:hover {
 
 @media (max-width: 480px) {
   .hiddenCategories {
-    top: 55px; /* Adjust for smaller screens */
+    top: 55px;
     padding: 12px 8px;
   }
-  
+
   .hiddenCategories span {
     padding: 4px 10px !important;
     font-size: 13px;

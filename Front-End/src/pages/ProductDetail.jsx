@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { prodAPI, cartAPI } from "../services/servicesAPI"
+import TopNav from "../Components/navbarComponent/TopNav"
 import axios from "axios"
 import "./Styles/ProductDetail.css"
 
@@ -98,6 +99,8 @@ const ProductDetail = () => {
   }
 
   return (
+    <>
+    <TopNav/>
     <div className="product-detail-container">
 
       {/* Breadcrumb */}
@@ -226,6 +229,7 @@ const ProductDetail = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 
