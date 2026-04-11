@@ -2,8 +2,6 @@ import { useEffect, useState, useRef } from "react";   // ← useRef ajouté
 import { useNavigate } from "react-router-dom";
 import { prodAPI } from "../../services/servicesAPI";
 
-import { useDispatch } from "react-redux";
-import { setChosenCategory } from "../../store/categorySlicer.js";
 
 import axios from "axios";
 
@@ -21,7 +19,6 @@ function TopNav() {
   const searchRef                   = useRef(null);   // ← ref pour détecter clic extérieur
 
   const navigate   = useNavigate();
-  const dispatcher = useDispatch();
 
   // Charger les produits une seule fois
   useEffect(() => {
