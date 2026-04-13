@@ -1,0 +1,107 @@
+/* MAIN CARD */
+.notification {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #fff;
+  padding: 15px 18px;
+  margin-bottom: 12px;
+
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: 0.2s ease;
+}
+
+.notification:hover {
+  transform: translateY(-3px);
+}
+
+/* LEFT CONTENT BLOCK */
+.notification-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+/* TITLE */
+.notification-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #222;
+}
+
+/* DESCRIPTION */
+.notification-description {
+  font-size: 14px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+/* STATUS */
+.notification-status {
+  font-size: 12px;
+  font-weight: bold;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* STATUS COLORS */
+.notification-status.non-lu {
+  background: #ffe5e5;
+  color: #e74c3c;
+}
+
+.notification-status.lu {
+  background: #e6f7ea;
+  color: #27ae60;
+}
+
+.notification-status.fini {
+  background: #e6f0ff;
+  color: #3498db;
+}
+
+/* ACTIONS */
+.notification-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* REPLY BUTTON */
+.reply-btn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.reply-btn:hover {
+  background: #2980b9;
+  transform: scale(1.05);
+}
+
+/* DELETE BUTTON */
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+  transform: scale(1.05);
+}

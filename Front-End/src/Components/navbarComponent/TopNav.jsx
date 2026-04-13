@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";   // ← useRef ajouté
 import { useNavigate } from "react-router-dom";
 import { cartAPI } from "../../services/servicesAPI";
 import { prodAPI } from "../../services/servicesAPI";
+import { Link } from "react-router-dom";
 
 /* Needed Global CHosen Category State Import */
 import { useDispatch } from "react-redux"
@@ -21,6 +22,63 @@ function TopNav() {
   const [searchLine, setSearchLine] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const searchRef                   = useRef(null);   // ← ref pour détecter clic extérieur
+  const [notif, setNotif] = useState(false);
+  const [notification, setNotification] = useState([
+  {
+    id: 1,
+    titre: "Notification 1",
+    description: "Description de la notification 1",
+    status: "Non lu",
+    date_ajout: "2024-05-01",
+  },
+  {
+    id: 2,
+    titre: "Notification 2",
+    description: "bonjour test 2",
+    status: "Lu",
+    date_ajout: "2024-06-01",
+  },
+  {
+    id: 3,
+    titre: "Notification 3",
+    description: "more than 1000 3",
+    status: "non lu",
+    date_ajout: "2024-06-02",
+  },
+  {
+    id: 4,
+    titre: "Notification 4",
+    description: "more than 1000 4",
+    status: "lu",
+    date_ajout: "2024-06-02",
+  },
+  {
+    id: 5,
+    titre: "Notification 5",
+    description: "more than 1000 5",
+    status: "non lu",
+    date_ajout: "2024-06-02",
+  },
+  {
+    id: 6,
+    titre: "Notification 6",
+    description: "more than 1000 6",
+    status: "lu",
+    date_ajout: "2024-06-02",
+  }
+  ]);
+  const lastFiveNotifications = notification.slice(0, 5);
+  const NotifRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if(NotifRef.current && !NotifRef.current.contains(event.target)){
+        setNotif(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
 
   const navigate   = useNavigate();
 
@@ -122,6 +180,46 @@ function TopNav() {
         </div>
 
         <div className="user-icons">
+          
+          <div className="notif-wrapper" ref={NotifRef}>
+            <i
+              className="bi bi-bell-fill"
+              onClick={() => setNotif((prev) => !prev)}
+              style={{ cursor: "pointer" }}
+            ></i>
+
+            {notif && (
+              <div className="notif-dropdown">
+                {lastFiveNotifications.length === 0 ? (
+                  <p className="notif-empty">Aucune notification</p>
+                ) : (
+                  <ul>
+                    {lastFiveNotifications.map((n) => (
+                      <li
+                        key={n.id}
+                        className={n.status === "Non lu" ? "unread" : "read"}
+                        onClick={() => {
+                          setNotification((prev) =>
+                            prev.map((x) =>
+                              x.id === n.id ? { ...x, status: "Lu" } : x
+                            )
+                          );
+                        }}
+                      >
+                        <strong>{n.titre}</strong>
+                        <p>{n.description}</p>
+                        <small>{n.date_ajout}</small>
+                      </li>
+                    ))}
+                    <li className="notif-see-all">
+                      <Link to="/notification">voir tous</Link>
+                    </li>
+                  </ul>
+
+                )}
+              </div>
+            )}
+          </div>
 
           {/* ── Barre de recherche ── */}
           <div className="search-wrapper" ref={searchRef}>
