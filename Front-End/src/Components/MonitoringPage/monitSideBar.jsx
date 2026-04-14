@@ -1,16 +1,15 @@
 
-import { useNavigate } from "react-router-dom"
-
 import "../styles/MonitSideBar.css"
 
 function MonitSideBar( { onSwitch } ) {
     return(
         <div className="sideBar">
+            <h1 style={ { textAlign: "center" } } >Side Bar</h1>
             <p onClick={ () => onSwitch("cmds")}>Commandes</p>
-            <p href="" onClick={ () => onSwitch("createdUsers")}>Utilisateurs Crées</p>
-            <p href="" onClick={ () => onSwitch("connUsers")}>Utilisateurs Connectées</p>
-            <p href="" onClick={ () => onSwitch("plans")}>Plans D'inscription</p>
-            <p href="" onClick={ () => onSwitch("SubbedUsers")}>Utilisateurs Inscrits</p>
+            <p onClick={ () => onSwitch("createdUsers")}>Utilisateurs Crées</p>
+            <p onClick={ () => onSwitch("connUsers")}>Utilisateurs Connectées</p>
+            <p onClick={ () => onSwitch("plans")}>Plans D'inscription</p>
+            <p onClick={ () => onSwitch("SubbedUsers")}>Utilisateurs Inscrits</p>
         </div>
     )
 }

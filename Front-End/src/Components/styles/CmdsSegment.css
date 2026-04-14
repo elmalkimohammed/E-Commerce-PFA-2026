@@ -2,3 +2,20 @@
     padding: 0;
     margin: 0;
 }
+.CmdsTable {
+    width: fit-content;
+    display: flex;
+    gap: 2em;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border-radius: 25px;
+    overflow: auto;
+    font-weight: bold;
+}
+.CmdsTable tr:first-child {
+    background: linear-gradient(135deg, #2d3748 0%, #1a365d 100%);
+    color: #ffffff;
+    width: 100%;
+}
+.CmdsTable tbody td {
+    padding: 25px;
+}
