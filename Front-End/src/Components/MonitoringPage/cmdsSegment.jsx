@@ -1,11 +1,11 @@
 
 import CmdsRow from "./Inside Components/cmdsRow"
 
-import "../styles/CmdsSegment.css"
+import "../styles/adminMonitoringGlobalStyles.css"
 
 function CmdsSegment() {
     return(
-        <table style={ { textAlign: "center", backgroudColor: "#f8f9fa" } } className="CmdsTable">
+        <table className="MonitoringGlobalStyles">
             <tbody>
                 <tr>
                     <td>Id D'utilisateur</td>

@@ -1,8 +1,4 @@
-* {
-    padding: 0;
-    margin: 0;
-}
-.CmdsTable {
+.MonitoringGlobalStyles {
     width: fit-content;
     display: flex;
     gap: 2em;
@@ -10,12 +6,14 @@
     border-radius: 25px;
     overflow: auto;
     font-weight: bold;
+    text-align: center;
+    background-color: #f8f9fa;
 }
-.CmdsTable tr:first-child {
+.MonitoringGlobalStyles tr:first-child {
     background: linear-gradient(135deg, #2d3748 0%, #1a365d 100%);
     color: #ffffff;
     width: 100%;
 }
-.CmdsTable tbody td {
+.MonitoringGlobalStyles tbody td {
     padding: 25px;
 }
