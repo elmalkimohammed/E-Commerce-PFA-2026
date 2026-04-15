@@ -17,7 +17,7 @@
 .MonitoringGlobalStyles tbody td {
     padding: 25px;
 }
-button {
+.acionsBtn {
     padding: 5px;
     margin: 5px;
     width: 100%;
@@ -27,7 +27,7 @@ button {
     font-weight: bold;
     transition: 0.5s;
 }
-button:hover {
+.acionsBtn:hover {
     cursor: pointer;
     border: none;
     margin-left: 10px;

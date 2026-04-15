@@ -9,7 +9,7 @@ function AllPlansRow( { planId , planName , planPrice , planDuration , planProdM
             <td>{ planPrice }</td>
             <td>{ planDuration }</td>
             <td>{ planProdMax }</td>
-            <td> <button>Edit</button> <button>Delete</button> </td>
+            <td> <button className="acionsBtn">Edit</button> <button className="acionsBtn">Delete</button> </td>
         </tr>
     )
 }

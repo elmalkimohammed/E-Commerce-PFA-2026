@@ -12,7 +12,7 @@ function AllUsersRow( { userId , Email , FirstName , LastName , Phone , Address 
             <td>{ Sex }</td>
             <td>{ DateOfBirth }</td>
             <td>{ ProfileImage }</td>
-            <td> <button>Edit</button> <button>Delete</button> </td>
+            <td> <button className="acionsBtn">Edit</button> <button className="acionsBtn">Delete</button> </td>
         </tr>
     )
 }

@@ -13,7 +13,7 @@ function AllProductsRow( { productId , productName , productDesc , productPrice 
             <td>{ productCategory }</td>
             <td>{ productUserId }</td>
             <td>{ productImages }</td>
-            <td> <button>Edit</button> <button>Delete</button> </td>
+            <td> <button className="acionsBtn">Edit</button> <button className="acionsBtn">Delete</button> </td>
         </tr>
     )
 }
