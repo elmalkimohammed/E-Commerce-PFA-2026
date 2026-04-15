@@ -2,6 +2,7 @@ import TopNav from "../Components/navbarComponent/TopNav";
 import NotificationRow from "../Components/NotificationComponents/NotificationRow";
 import "./Styles/NotificationPage.css";
 
+
 function Notification() {
   return (
     <>

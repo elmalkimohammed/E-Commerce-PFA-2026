@@ -1,13 +1,14 @@
 import "../styles/Notification.css";
-import { Link } from "react-router-dom";
-function Notification({titre, description,status, id,updatestatus ,deleteNotification}) {
+import { useNavigate } from "react-router-dom";
+function Notification({titre, description,status, id,updatestatus ,deleteNotification,onClick}) {
     const decriptionlimit = 
     description.length > 12 ? 
     description.substring(0, 12) + "..." 
     : description;
+    const navigate = useNavigate();
      
   return (
-    <div className="notification">
+    <div className="notification" onClick={onClick}>
       <div className="notification-title">{titre}</div>
 
       <div className="notification-description">
@@ -18,12 +19,22 @@ function Notification({titre, description,status, id,updatestatus ,deleteNotific
         {status}
       </div>
       <div className="notification-actions">
-          <Link to="/repport">
-            <button className="reply-btn" onClick={()=> updatestatus()}>
+          
+            <button
+              className="reply-btn"
+              onClick={(e) => {e.stopPropagation();
+                updatestatus();
+                navigate("/repport"); 
+              }}
+            >
               répondre au message
             </button>
-          </Link>
-          <button className="delete-btn" onClick={() => deleteNotification(id)}>
+          
+          <button className="delete-btn" onClick={(e) => {
+              e.stopPropagation();
+              deleteNotification(id);
+            }}
+          >
             Supprimer
           </button>
       </div>

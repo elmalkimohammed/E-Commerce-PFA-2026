@@ -1,6 +1,7 @@
 import Notification from "./Notification";
 import { useState } from "react";
 import "../styles/NotificationRow.css";
+import { useNavigate} from "react-router-dom";
 
 const testdonnes = [
   {
@@ -50,6 +51,7 @@ const testdonnes = [
 
 
 function NotificationRow() {
+  const navigate = useNavigate();
      
     const [notification, setNotification] = useState(testdonnes);
     const vider = () => {
@@ -74,10 +76,11 @@ function NotificationRow() {
         <Notification
          key={notif.id}
           id={notif.id}
+          onClick={() => navigate(`/notificationDetail`)}
           titre={notif.titre}
           description={notif.description}
           status={notif.status}
-            updatestatus={() => updatestatus(notif.id)}
+          updatestatus={() => updateStatus(notif.id)}
           deleteNotification={deleteid}
 
         />

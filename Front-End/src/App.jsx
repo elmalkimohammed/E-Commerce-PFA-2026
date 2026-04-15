@@ -13,6 +13,7 @@ import ProductDetail from './pages/ProductDetail';
 import PaymentPage from "./pages/PaymentPage.jsx";
 import RepportPage from "./pages/RepportPage.jsx";
 import Notification from "./pages/NotificationPage.jsx";
+import NotificationDetail from "./pages/NotificationDetailPage.jsx";
 
 function NotFound() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/paymentForm" element={<PaymentPage/>}/>
           <Route path="/repport" element={<RepportPage/>}/>
           <Route path="/notification" element={<Notification/>}/>
+          <Route path="/notificationDetail" element={<NotificationDetail/>}/>
         </Routes>
     </BrowserRouter>
     </Provider>
