@@ -1,9 +1,9 @@
 
-import PlansRow from "./Inside Components/plansRow"
+import AllPlansRow from "./Inside Components/allPlansRow"
 
 import "../styles/adminMonitoringGlobalStyles.css"
 
-function AvailPlans() {
+function AllPlans() {
     return(
         <table className="MonitoringGlobalStyles">
             <tbody>
@@ -13,14 +13,15 @@ function AvailPlans() {
                     <td>Prix</td>
                     <td>Duration</td>
                     <td>Produits Maximale</td>
+                    <td>Actions</td>
                 </tr>
-                <PlansRow planId={1} planName={"basic"} planPrice={"24.99"}
-                    planDuration={"30days"} planProdMax={50}
+                <AllPlansRow planId={1} planName={"basic"} planPrice={"24.99"}
+                        planDuration={"30days"} planProdMax={50}
                 />
-                <PlansRow planId={2} planName={"premium"} planPrice={"49.99"}
+                <AllPlansRow planId={2} planName={"premium"} planPrice={"49.99"}
                     planDuration={"60days"} planProdMax={100}
                 />
-                <PlansRow planId={3} planName={"entreprise"} planPrice={"90.99"}
+                <AllPlansRow planId={3} planName={"entreprise"} planPrice={"90.99"}
                     planDuration={"90days"} planProdMax={1000}
                 />
             </tbody>
@@ -28,4 +29,4 @@ function AvailPlans() {
     )
 }
 
-export default AvailPlans
+export default AllPlans

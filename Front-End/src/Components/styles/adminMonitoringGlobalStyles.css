@@ -17,3 +17,20 @@
 .MonitoringGlobalStyles tbody td {
     padding: 25px;
 }
+button {
+    padding: 5px;
+    margin: 5px;
+    width: 100%;
+    border: 2px solid #143a63;
+    border-radius: 25px;
+    padding: 5px;
+    font-weight: bold;
+    transition: 0.5s;
+}
+button:hover {
+    cursor: pointer;
+    border: none;
+    margin-left: 10px;
+    background-color: #143a63;
+    color: white;
+}
