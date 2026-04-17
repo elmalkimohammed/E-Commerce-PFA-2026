@@ -5,6 +5,7 @@ import AllUsers from "../Components/OperationsPage/allUsers"
 import AllProducts from "../Components/OperationsPage/allProducts"
 import AllPlans from "../Components/OperationsPage/allPlans"
 import AllSubbedUsers from "../Components/OperationsPage/allSubbedUsers"
+import CreateUser from "../Components/OperationsPage/createUser.jsx"
 
 import { useState } from "react"
 
@@ -21,6 +22,7 @@ function CrudPage() {
             { currentPage == "produits" && <AllProducts/> }
             { currentPage == "plans" && <AllPlans/> }
             { currentPage == "SubbedUsers" && <AllSubbedUsers/> }
+            { currentPage == "createUser" && <CreateUser/> }
         </div>
     </>
 )

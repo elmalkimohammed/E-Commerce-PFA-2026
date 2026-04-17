@@ -9,6 +9,7 @@ function OpsSideBar( { onSwitch } ) {
             <p onClick={ () => onSwitch("produits")}>Produits</p>
             <p onClick={ () => onSwitch("plans")}>Plans D'inscription</p>
             <p onClick={ () => onSwitch("SubbedUsers")}>Utilisateurs Inscrits</p>
+            <p onClick={ () => onSwitch("createUser")}>Ajouter Un Utilisateur</p>
         </div>
     )
 }
