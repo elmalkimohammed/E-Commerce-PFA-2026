@@ -162,7 +162,7 @@ function TopNav() {
                           onClick={() => {
                             setSearchOpen(false);
                             setSearchLine("");
-                            navigate(`/ProductPage/${p.id}`);
+                            navigate(`/Product/${p.id}`);
                           }}
                         >
                           <div className="search-item-info">
