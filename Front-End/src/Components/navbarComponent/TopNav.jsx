@@ -23,6 +23,7 @@ function TopNav() {
   const searchRef                   = useRef(null);   // ← ref pour détecter clic extérieur
 
   const navigate   = useNavigate();
+  const isSubscribed = localStorage.getItem("isSubscribed") === "true";
 
   // Charger les produits une seule fois
   useEffect(() => {
@@ -117,7 +118,14 @@ function TopNav() {
           <p><a href="/CategoryPage" onClick={() => setMenuOpen(false)}>Filtrage</a></p>
           <p><a href="#"             onClick={() => setMenuOpen(false)}>Contact</a></p>
           {localStorage.getItem("generatedJWT_Token") && (
-            <p><a href="/SellerPortal" onClick={() => setMenuOpen(false)}>Vendres</a></p>
+            <p>
+              <a
+                href={isSubscribed ? "/SellerPortal" : "/subscription"}
+                onClick={() => setMenuOpen(false)}
+              >
+                {isSubscribed ? "Vendres" : "Devenir vendeur"}
+              </a>
+            </p>
           )}
         </div>
 

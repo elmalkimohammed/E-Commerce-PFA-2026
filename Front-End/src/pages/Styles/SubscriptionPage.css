@@ -1,0 +1,254 @@
+/* SubscriptionPage.css */
+
+.subscription-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: calc(100vh - 200px);
+  background: #f8f9fa;
+}
+
+.subscription-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.subscription-header h1 {
+  font-size: 2.5rem;
+  color: #1a1a2e;
+  margin-bottom: 10px;
+}
+
+.subscription-header p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.plans-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+
+.plan-card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  width: 300px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  position: relative;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.plan-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.plan-card.selected {
+  border-color: #0d6efd;
+  background: linear-gradient(135deg, #fff 0%, #f0f7ff 100%);
+  transform: scale(1.02);
+}
+
+.plan-card.popular {
+  border-color: #ffc107;
+  box-shadow: 0 10px 30px rgba(255,193,7,0.2);
+}
+
+.popular-badge {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: #ffc107;
+  color: #1a1a2e;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.plan-name {
+  font-size: 1.5rem;
+  color: #1a1a2e;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.plan-price {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.plan-price .currency {
+  font-size: 1.2rem;
+  vertical-align: top;
+}
+
+.plan-price .price {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #0d6efd;
+}
+
+.plan-price .period {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plan-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.plan-features li i {
+  color: #198754;
+  font-size: 1rem;
+}
+
+.subscription-action {
+  text-align: center;
+}
+
+.subscribe-btn {
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.subscribe-btn:hover:not(.disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(13,110,253,0.3);
+}
+
+.subscribe-btn.disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Payment Section */
+.payment-section {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.payment-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.payment-summary {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.total-amount {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #0d6efd;
+}
+
+.payment-methods {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.payment-methods label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payment-methods label.active {
+  border-color: #0d6efd;
+  background: #f0f7ff;
+}
+
+.payment-methods label i {
+  font-size: 1.2rem;
+}
+
+.card-details input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.card-row {
+  display: flex;
+  gap: 10px;
+}
+
+.card-row input {
+  flex: 1;
+}
+
+.confirm-payment-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #198754, #157347);
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.confirm-payment-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(25,135,84,0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .plans-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .plan-card {
+    width: 100%;
+    max-width: 350px;
+  }
+}
