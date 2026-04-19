@@ -14,7 +14,7 @@ function CrudPage() {
     const [ currentPage , setCurrentPage ] = useState("users")
 
     return(
-    <>
+    <div className="CrudParent">
         <TopNavAdmin/>
         <div className="containerBox">
             <OpsSideBar onSwitch={setCurrentPage} />
@@ -24,7 +24,7 @@ function CrudPage() {
             { currentPage == "SubbedUsers" && <AllSubbedUsers/> }
             { currentPage == "createUser" && <CreateUser/> }
         </div>
-    </>
+    </div>
 )
 }
 

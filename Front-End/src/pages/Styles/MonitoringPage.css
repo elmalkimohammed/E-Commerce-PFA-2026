@@ -2,7 +2,7 @@
     padding: 0;
     margin: 0;
 }
-.containerBox {
+.MonitoringParent .containerBox, .CrudParent .containerBox {
     display: flex;
     flex-direction: row;
     width: 100%;

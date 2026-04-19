@@ -16,7 +16,7 @@ function MonitoringPage() {
     const [ currentPage , setCurrentPage ] = useState("cmds")
 
     return(
-    <>
+    <div className="MonitoringParent">
         <TopNavAdmin/>
         <div className="containerBox">
             <MonitSideBar onSwitch={setCurrentPage} />
@@ -26,7 +26,7 @@ function MonitoringPage() {
             { currentPage == "createdUsers" && <CreatedUsers/> }
             { currentPage == "SubbedUsers" && <SubbedUsers/> }
         </div>
-    </>
+    </div>
     )
 }
 
