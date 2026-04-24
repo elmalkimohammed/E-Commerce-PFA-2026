@@ -173,7 +173,7 @@ function TopNav() {
           <p><a onClick={() => { setMenuOpen(false); displaySpan(); }} className="categoryList">Catègories</a></p>
           <p><a href="#"             onClick={() => setMenuOpen(false)}>À propos</a></p>
           <p><a href="/CategoryPage" onClick={() => setMenuOpen(false)}>Filtrage</a></p>
-          <p><a href="#"             onClick={() => setMenuOpen(false)}>Contact</a></p>
+          <p><a href="/repport"             onClick={() => setMenuOpen(false)}>Contact</a></p>
           {localStorage.getItem("generatedJWT_Token") && (
             <p><a href="/SellerPortal" onClick={() => setMenuOpen(false)}>Vendres</a></p>
           )}
@@ -260,7 +260,7 @@ function TopNav() {
                           onClick={() => {
                             setSearchOpen(false);
                             setSearchLine("");
-                            navigate(`/ProductPage/${p.id}`);
+                            navigate(`/Product/${p.id}`);
                           }}
                         >
                           <div className="search-item-info">
@@ -268,7 +268,7 @@ function TopNav() {
                             <span className="search-item-cat">{p.category}</span>
                           </div>
                           <span className="search-item-price">
-                            {new Intl.NumberFormat("fr-FR").format(p.price)} FCFA
+                            {new Intl.NumberFormat("fr-FR").format(p.price)} MAD
                           </span>
                         </li>
                       ))}
