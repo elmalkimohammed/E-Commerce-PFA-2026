@@ -46,6 +46,7 @@ function App() {
           <Route path="/CartPage" element={ <CartPage/> }/>
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/paymentForm" element={<PaymentPage/>}/>
+          
           <Route path="/subscription" element={<SubscriptionPage />} />
           <Route path="/subscription/status" element={<SubscriptionStatus />} />
         </Routes>
