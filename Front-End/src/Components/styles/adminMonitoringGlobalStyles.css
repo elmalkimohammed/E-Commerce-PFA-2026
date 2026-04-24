@@ -1,0 +1,36 @@
+.MonitoringGlobalStyles {
+    width: fit-content;
+    display: flex;
+    gap: 2em;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border-radius: 25px;
+    overflow: auto;
+    font-weight: bold;
+    text-align: center;
+    background-color: #f8f9fa;
+}
+.MonitoringGlobalStyles tr:first-child {
+    background: linear-gradient(135deg, #2d3748 0%, #1a365d 100%);
+    color: #ffffff;
+    width: 100%;
+}
+.MonitoringGlobalStyles tbody td {
+    padding: 25px;
+}
+.acionsBtn {
+    padding: 5px;
+    margin: 5px;
+    width: 100%;
+    border: 2px solid #143a63;
+    border-radius: 25px;
+    padding: 5px;
+    font-weight: bold;
+    transition: 0.5s;
+}
+.acionsBtn:hover {
+    cursor: pointer;
+    border: none;
+    margin-left: 10px;
+    background-color: #143a63;
+    color: white;
+}

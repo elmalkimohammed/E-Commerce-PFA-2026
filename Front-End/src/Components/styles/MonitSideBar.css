@@ -1,0 +1,22 @@
+.sideBar {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 25px;
+    border: #143a63 2px solid;
+    border-radius: 25px;
+}
+.sideBar p {
+    border: 2px solid #143a63;
+    border-radius: 25px;
+    padding: 20px;
+    font-weight: bold;
+    transition: 0.5s;
+}
+.sideBar p:hover {
+    cursor: pointer;
+    border: none;
+    margin-left: 10px;
+    background-color: #143a63;
+    color: white;
+}
