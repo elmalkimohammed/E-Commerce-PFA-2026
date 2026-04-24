@@ -124,6 +124,11 @@ function TopNav() {
       ? navigate("/ProfilePage")
       : navigate("/Authentication");
   };
+  const checkjwt = () => {
+  if (!localStorage.getItem("generatedJWT_Token")) {
+    navigate("/Authentication");
+  }
+  };
 
   // Catégories
   useEffect(() => { getCategories(); }, []);
@@ -181,45 +186,46 @@ function TopNav() {
 
         <div className="user-icons">
           
-          <div className="notif-wrapper" ref={NotifRef}>
-            <i
-              className="bi bi-bell-fill"
-              onClick={() => setNotif((prev) => !prev)}
-              style={{ cursor: "pointer" }}
-            ></i>
+          {localStorage.getItem("generatedJWT_Token") && (
+              <div className="notif-wrapper" ref={NotifRef}>
+                <i
+                  className="bi bi-bell-fill"
+                  onClick={() => setNotif((prev) => !prev)}
+                  style={{ cursor: "pointer" }}
+                ></i>
 
-            {notif && (
-              <div className="notif-dropdown">
-                {lastFiveNotifications.length === 0 ? (
-                  <p className="notif-empty">Aucune notification</p>
-                ) : (
-                  <ul>
-                    {lastFiveNotifications.map((n) => (
-                      <li
-                        key={n.id}
-                        className={n.status === "Non lu" ? "unread" : "read"}
-                        onClick={() => {
-                          setNotification((prev) =>
-                            prev.map((x) =>
-                              x.id === n.id ? { ...x, status: "Lu" } : x
-                            )
-                          );
-                        }}
-                      >
-                        <strong>{n.titre}</strong>
-                        <p>{n.description}</p>
-                        <small>{n.date_ajout}</small>
-                      </li>
-                    ))}
-                    <li className="notif-see-all">
-                      <Link to="/notification">voir tous</Link>
-                    </li>
-                  </ul>
-
+                {notif && (
+                  <div className="notif-dropdown">
+                    {lastFiveNotifications.length === 0 ? (
+                      <p className="notif-empty">Aucune notification</p>
+                    ) : (
+                      <ul>
+                        {lastFiveNotifications.map((n) => (
+                          <li
+                            key={n.id}
+                            className={n.status === "Non lu" ? "unread" : "read"}
+                            onClick={() => {
+                              setNotification((prev) =>
+                                prev.map((x) =>
+                                  x.id === n.id ? { ...x, status: "Lu" } : x
+                                )
+                              );
+                            }}
+                          >
+                            <strong>{n.titre}</strong>
+                            <p>{n.description}</p>
+                            <small>{n.date_ajout}</small>
+                          </li>
+                        ))}
+                        <li className="notif-see-all">
+                          <Link to="/notification">voir tous</Link>
+                        </li>
+                      </ul>
+                    )}
+                  </div>
                 )}
               </div>
             )}
-          </div>
 
           {/* ── Barre de recherche ── */}
           <div className="search-wrapper" ref={searchRef}>
