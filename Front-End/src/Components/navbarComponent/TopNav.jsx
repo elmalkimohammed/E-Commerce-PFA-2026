@@ -11,6 +11,45 @@ import axios from "axios"
 
 import "../../pages/Styles/TopNavStyle.css";
 
+
+// ───────── JWT DECODE ─────────
+const decodeJWT = (token) => {
+  try {
+    const base64Url = token.split('.')[1]
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+    const jsonPayload = decodeURIComponent(
+      atob(base64).split('').map(c =>
+        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+      ).join('')
+    )
+    return JSON.parse(jsonPayload)
+  } catch (error) {
+    console.error('Error decoding JWT:', error)
+    return null
+  }
+}
+
+// ───────── CHECK SUBSCRIPTION ─────────
+const checkSubscription = async (userId, token) => {
+  try {
+    const res = await fetch(`http://localhost:5005/api/subscription/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    if (res.status === 404) return false
+
+    if (!res.ok) throw new Error("Error checking subscription")
+
+    const data = await res.json()
+    return data
+  } catch (err) {
+    console.error(err)
+    return false
+  }
+}
+
 function TopNav() {
   const [menuOpen, setMenuOpen]     = useState(false);
   const [categories, setCategories] = useState([]);
@@ -23,8 +62,7 @@ function TopNav() {
   const searchRef                   = useRef(null);   // ← ref pour détecter clic extérieur
 
   const navigate   = useNavigate();
-  const isSubscribed = localStorage.getItem("isSubscribed") === "true";
-
+  const [isSubscribed, setIsSubscribed] = useState(false)
   // Charger les produits une seule fois
   useEffect(() => {
     fetch(prodAPI)
@@ -32,6 +70,27 @@ function TopNav() {
       .then(setProducts)
       .catch(console.error);
   }, []);
+
+  useEffect(() => {
+  const token = localStorage.getItem("generatedJWT_Token")
+
+  if (!token) return
+
+  const decoded = decodeJWT(token)
+  if (!decoded?.sub) return
+
+  checkSubscription(decoded.sub, token).then((res) => {
+    if (res) {
+      setIsSubscribed(true)
+      localStorage.setItem("isSubscribed", "true")
+      localStorage.setItem("subscriptionData", JSON.stringify(res))
+    } else {
+      setIsSubscribed(false)
+      localStorage.removeItem("isSubscribed")
+      localStorage.removeItem("subscriptionData")
+    }
+  })
+}, [])
 
   // Fermer le dropdown si clic en dehors
   useEffect(() => {
