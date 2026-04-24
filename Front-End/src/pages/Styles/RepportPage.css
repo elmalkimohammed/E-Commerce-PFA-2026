@@ -1,0 +1,20 @@
+/* PAGE WRAPPER */
+.report-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 25px;
+  padding: 40px 60px; /* top/bottom | left/right */
+  background: #ffffff;
+  max-width: 900px;
+  margin: 50px auto 0; /* keeps space from TopNav too */
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* TITLE */
+.report-title {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 20px;
+  color: #333;
+}

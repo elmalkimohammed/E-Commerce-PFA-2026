@@ -11,6 +11,9 @@ import CartPage from "./pages/CartPage.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import ProductDetail from './pages/ProductDetail';
 import PaymentPage from "./pages/PaymentPage.jsx";
+import RepportPage from "./pages/RepportPage.jsx";
+import Notification from "./pages/NotificationPage.jsx";
+import NotificationDetail from "./pages/NotificationDetailPage.jsx";
 
 function NotFound() {
   return (
@@ -37,6 +40,9 @@ function App() {
           <Route path="/CategoryPage" element={ <CategoryPage/> }/>
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/paymentForm" element={<PaymentPage/>}/>
+          <Route path="/repport" element={<RepportPage/>}/>
+          <Route path="/notification" element={<Notification/>}/>
+          <Route path="/notificationDetail" element={<NotificationDetail/>}/>
         </Routes>
     </BrowserRouter>
     </Provider>

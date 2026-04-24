@@ -354,3 +354,117 @@ a:hover {
     font-size: 13px;
   }
 }
+/* ===== Notification Dropdown ===== */
+
+.notif-wrapper {
+  position: relative;
+}
+
+/* Container */
+.notif-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 300px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  z-index: 100;
+  padding: 8px;
+}
+
+/* List */
+.notif-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #f9f9f9;
+  color: #666;
+}
+
+/* Item */
+.notif-dropdown li {
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover effect */
+.notif-dropdown li:hover {
+  background: #eef2ff;
+  transform: translateX(3px);
+}
+
+/* UNREAD (highlighted 🔵) */
+.notif-dropdown li.Link {
+  background: #e0e7ff;
+  color: #3b82f6;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* READ (soft gray) */
+.read {
+  background: #f9f9f9;
+  color: #666;
+}
+
+/* Text styling */
+.notif-dropdown strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.notif-dropdown p {
+  font-size: 13px;
+  margin: 2px 0;
+}
+
+.notif-dropdown small {
+  font-size: 11px;
+  color: #888;
+}
+
+/* Empty state */
+.notif-empty {
+  text-align: center;
+  padding: 10px;
+  color: #999;
+}
+
+/* Badge */
+.notif-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #e53935;
+  color: white;
+  border-radius: 50%;
+  font-size: 10px;
+  padding: 2px 6px;
+}
+/* "Voir tous" item */
+.notif-see-all {
+  text-align: center;
+  padding: 10px;
+  margin-top: 6px;
+  border-top: 1px solid #e5e5e5;
+  background: #fff;
+}
+
+.notif-see-all a {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3b82f6;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.notif-see-all a:hover {
+  color: #1d4ed8;
+  transform: translateY(-1px);
+}
