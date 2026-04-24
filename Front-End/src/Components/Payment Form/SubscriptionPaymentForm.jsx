@@ -1,162 +1,47 @@
-import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import axios from "axios"
-import Cookies from "js-cookie"
-
-import { orderAPI } from "../../services/servicesAPI"
+import { useState } from "react"
 import "../styles/paymentForm.css"
 
-function SubscriptionPaymentForm() {
+function SubscriptionPaymentForm({ onConfirm }) {
 
-    const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
+    const [error,   setError]   = useState(null)
 
-    const [cartItems, setCartItems] = useState([])
-    const [loading,   setLoading]   = useState(false)
-    const [error,     setError]     = useState(null)
-    const [success,   setSuccess]   = useState(false)
-
-    /* ── Champs du formulaire (même champs que tu avais) ── */
     const [formData, setFormData] = useState({
-        cardName:  "",
-        cardNum:   "",
-        phoneNum:  "",
-        expDate:   "",
-        natId:     "",
-        address:   "",
-        city:      "",
-        country:   ""
+        cardName: "",
+        cardNum:  "",
+        phoneNum: "",
+        expDate:  "",
+        natId:    "",
+        address:  "",
+        city:     "",
+        country:  ""
     })
-
-    /* ── Récupérer le panier depuis le cookie ── */
-    useEffect(() => {
-        const cookie = Cookies.get("pendingCart")
-        if (cookie) {
-            setCartItems(JSON.parse(cookie))
-        } else {
-            // Pas de panier → retour au cart
-            navigate("/cart")
-        }
-    }, [])
 
     const handleChange = (e) => {
         setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
-    /* ── Calcul total ── */
-    const totalPrice = cartItems.reduce(
-        (acc, item) => acc + item.price * item.quantity, 0
-    )
-
-    /* ── Annuler La Commande ── */
     const handleAnnuler = () => {
-        Cookies.remove("pendingCart")
-        navigate("/cartPage")
+        localStorage.removeItem("subscriptionPlan")
+        window.history.back()
     }
 
-    /* ── Valider La Commande ── */
-
-    // Helper Function For Decoding JWTs
-    const decodeJWT = (token) => {
-        try {
-            const base64Url = token.split('.')[1]
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-            }).join(''))
-            
-            return JSON.parse(jsonPayload)
-        } catch (error) {
-            console.error('Error decoding JWT:', error)
-            return null
-        }
-    }
     const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
+        e.preventDefault()
+        setLoading(true)
+        setError(null)
 
-    try {
-        const token = localStorage.getItem("generatedJWT_Token")
-        
-        if (!token) {
-            setError("Token non trouvé. Veuillez vous reconnecter.")
-            setLoading(false)
-            return
-        }
-        
-        const decodedToken = decodeJWT(token)
-        
-        if (!decodedToken || !decodedToken.sub) {
-            setError("Token invalide. Pas d'ID utilisateur trouvé.")
-            setLoading(false)
-            return
-        }
-        
-        const userId = decodedToken.sub
-        
-        if (!cartItems || cartItems.length === 0) {
-            setError("Panier vide")
-            setLoading(false)
-            return
-        }
-
-        // IMPORTANT: Use the EXACT format that works in your .http test
-        const requestBody = {
-            userId: userId,                    // camelCase - NOT UserId
-            items: cartItems.map(item => ({    // camelCase - NOT Items
-                productId: item.productId,     // camelCase - NOT ProductId
-                productName: item.productName, // camelCase - NOT ProductName
-                quantity: Number(item.quantity),
-                unitPrice: Number(item.price)  // camelCase - NOT UnitPrice
-            }))
-        }
-
-        console.log("Sending request body:", JSON.stringify(requestBody, null, 2))
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
+        try {
+            await onConfirm(formData)
+        } catch (err) {
+            if (err.message) {
+                setError(`Erreur: ${err.message}`)
+            } else {
+                setError("Une erreur est survenue. Veuillez réessayer.")
             }
+        } finally {
+            setLoading(false)
         }
-
-        // NO 'dto' wrapper - send directly
-        const response = await axios.post(`${orderAPI}/cart`, requestBody, config)
-        
-        console.log("Response:", response.data)
-
-        Cookies.remove("pendingCart")
-        setSuccess(true)
-        setTimeout(() => navigate("/"), 2000)
-
-    } catch (err) {
-        console.error("Error response:", err.response?.data)
-        
-        if (err.response?.data?.errors) {
-            const errorMessages = Object.entries(err.response.data.errors)
-                .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`)
-                .join('; ')
-            setError(`Erreur de validation: ${errorMessages}`)
-        } else if (err.response?.data?.message) {
-            setError(`Erreur: ${err.response.data.message}`)
-        } else {
-            setError("Une erreur est survenue. Veuillez réessayer.")
-        }
-    } finally {
-        setLoading(false)
-    }
-}
-
-    /* ── Succès ── */
-    if (success) {
-        return (
-            <div className="containerBox">
-                <div className="header">
-                    <h1>✅ Commande passée avec succès !</h1>
-                    <p>Vous allez être redirigé vers l'accueil...</p>
-                </div>
-            </div>
-        )
     }
 
     return (
@@ -165,6 +50,7 @@ function SubscriptionPaymentForm() {
                 <h1>Validation du paiement</h1>
                 <p>Valider votre commande après le remplissage de ces informations</p>
             </div>
+
             <form onSubmit={handleSubmit} className="payForm">
                 <div>
                     <label htmlFor="cardName">Nom du carte: </label>
@@ -274,19 +160,17 @@ function SubscriptionPaymentForm() {
                     />
                 </div>
 
-                {/* ── Erreur ── */}
                 {error && (
                     <p style={{ color: "red", textAlign: "center" }}>{error}</p>
                 )}
 
                 <footer>
-                    {/* ── Annuler → nettoyer cookie + redirect /cart ── */}
                     <a onClick={handleAnnuler} style={{ cursor: "pointer" }}>
                         Annuler Le Payement
                     </a>
                     <input
                         type="submit"
-                        value={loading ? "En cours..." : "Confimer Le Payement"}
+                        value={loading ? "En cours..." : "Confirmer Le Payement"}
                         disabled={loading}
                     />
                 </footer>
