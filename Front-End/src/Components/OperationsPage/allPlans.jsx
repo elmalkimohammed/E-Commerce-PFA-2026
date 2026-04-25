@@ -3,7 +3,36 @@ import AllPlansRow from "./Inside Components/allPlansRow"
 
 import "../styles/adminMonitoringGlobalStyles.css"
 
+import { useState , useEffect } from "react"
+import axios from "axios"
+import { subsAPI } from "../../services/servicesAPI"
+
 function AllPlans() {
+
+    const  [ plans , setPlans ] = useState([])
+    const [ loading , setLoading ] = useState(false)
+
+    useEffect(() => { 
+        fetchPlans()
+        setLoading(true)
+    }, []);
+
+    const fetchPlans = async () => {
+        try {
+            setPlans((await axios.get(`${subsAPI}/plans`)).data);
+        } catch (error) {
+            alert(error.response?.data || "An Internal Error Happened While Trying To Fetch The Plans.....");
+        }
+    };
+
+    if ( !loading ) {
+        return(
+            <>
+                <div>Loading.........</div>
+            </>
+        )
+    }
+
     return(
         <table className="MonitoringGlobalStyles">
             <tbody>
@@ -15,15 +44,10 @@ function AllPlans() {
                     <td>Produits Maximale</td>
                     <td>Actions</td>
                 </tr>
-                <AllPlansRow planId={1} planName={"basic"} planPrice={"24.99"}
-                        planDuration={"30days"} planProdMax={50}
-                />
-                <AllPlansRow planId={2} planName={"premium"} planPrice={"49.99"}
-                    planDuration={"60days"} planProdMax={100}
-                />
-                <AllPlansRow planId={3} planName={"entreprise"} planPrice={"90.99"}
-                    planDuration={"90days"} planProdMax={1000}
-                />
+                { plans.map( ( eachPlan ) => {
+                    return <AllPlansRow planId={eachPlan.planId} planName={eachPlan.name} planPrice={eachPlan.price}
+                    planDuration={eachPlan.duration} planProdMax={eachPlan.maxProducts}/>
+                } ) }
             </tbody>
         </table>
     )
