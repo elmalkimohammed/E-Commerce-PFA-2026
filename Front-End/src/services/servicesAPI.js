@@ -8,5 +8,6 @@ const prodAPI = "http://localhost:5002/TechStore/ProductService"
 const userAPI = "http://localhost:5004/api/UserProfile"
 
 const orderAPI = "http://localhost:5006/api/orders"
+const repportAPI = "http://localhost:5008/repport"
 
-export { cartAPI , authAPI , prodAPI , userAPI , orderAPI }  ;
+export { cartAPI , authAPI , prodAPI , userAPI , orderAPI, repportAPI }  ;
