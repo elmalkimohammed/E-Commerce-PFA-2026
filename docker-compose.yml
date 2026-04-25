@@ -162,6 +162,24 @@ services:
       start_period: 10s
     networks:
       - ecommerce-network
+  RepportServiceDB:
+    image: mysql:8.0
+    ports:
+      - "3313:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: ReportServiceDB
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - RepportServiceDB-data:/var/lib/mysql
+      - ./Back-End/RepportsService/initial/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ecommerce-network
   #___Micro-Services___
   AuthServiceAPI:
     build: 
@@ -300,6 +318,27 @@ services:
         condition: service_healthy
     networks:
       - ecommerce-network
+  repportservice-api:
+    build:
+      context: ./Back-End/RepportsService/initial
+      dockerfile: Dockerfile
+    image: repportservice-api:latest
+    container_name: repportservice-api
+    ports:
+      - "5008:8081"
+    depends_on:
+      RepportServiceDB:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://RepportServiceDB:3306/ReportServiceDB
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8081
+    volumes:
+      - ./logs/repport:/app/logs
+    networks:
+      - ecommerce-network
 
 volumes:
   AuthServiceDB-data: 
@@ -315,6 +354,8 @@ volumes:
   OrderServiceDB-data:
     driver: local
   postgres_data:
+    driver: local
+  RepportServiceDB-data:
     driver: local
 networks:
   ecommerce-network:
