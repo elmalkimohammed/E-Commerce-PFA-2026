@@ -14,7 +14,13 @@ const arrayToDict = (arr) =>
 
 export default function EditProductModal({ product, onSave, onClose }) {
   const [form, setForm] = useState({ ...product });
-  const [images, setImages] = useState(product.images || []);
+  const [images, setImages] = useState(
+    (product.images || []).map(img => ({
+      id_Image: img.id_Image,
+      url: img.image && img.mimetype ? `data:${img.mimetype};base64,${img.image}` : null,
+      name: img.filename || 'image',
+    }))
+  );
   const [attributes, setAttributes] = useState(dictToArray(product.attributes));
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef();

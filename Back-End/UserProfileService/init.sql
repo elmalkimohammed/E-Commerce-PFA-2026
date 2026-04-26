@@ -7,6 +7,6 @@ CREATE TABLE `UserProfile` (
   `Address` VARCHAR(150) DEFAULT NULL,
   `Sex` ENUM('Male','Female') DEFAULT NULL,
   `DateOfBirth` DATE DEFAULT NULL,
-  `ProfileImage` TEXT DEFAULT NULL,
+  `ProfileImage` MEDIUMTEXT DEFAULT NULL,
   PRIMARY KEY (`UserId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

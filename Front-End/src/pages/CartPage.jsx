@@ -118,6 +118,8 @@ function CartPage() {
                                             productDescription={prod.description}
                                             productPrice={prod.price}
                                             productMaxStock={prod.stock}
+                                            productImage={prod.images?.[0]?.image}
+                                            productMimeType={prod.images?.[0]?.mimetype}
                                             onQuantityChange={handleQuantityChange}
                                             stockchoix={fullCart.items.find(item => item.productId === prod.id)?.stock || 0}
                                         />

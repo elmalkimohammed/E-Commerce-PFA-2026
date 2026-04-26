@@ -4,9 +4,12 @@ import axios from "axios"
 
 import "../styles/ProductBox.css"
 
-function ProductBox( { productId , productMimeType , productImage , productName , productDescription , productPrice , productMaxStock, onQuantityChange , stockchoix } ) {  
-    
-    const imgSrc = `data:${ productMimeType };base64,${ productImage }`
+function ProductBox( { productId , productMimeType , productImage , productName , productDescription , productPrice , productMaxStock, onQuantityChange , stockchoix } ) {
+
+    const [imageError, setImageError] = useState(false)
+    const imgSrc = productImage && productMimeType && !imageError
+        ? `data:${ productMimeType };base64,${ productImage }`
+        : null
 
     /* Recovering The JWT As It's Needed To Clear The Cart From Items */
         const token = localStorage.getItem("generatedJWT_Token")
@@ -50,7 +53,11 @@ function ProductBox( { productId , productMimeType , productImage , productName 
         <div className="prodBoxContainer" style={ { height: "fit-content" } }>
             <div className="leftSide">
                 <div className="imageProd">
-                    <img src={ imgSrc } alt="Product's Image" />
+                    {imgSrc ? (
+                        <img src={ imgSrc } alt="Product's Image" onError={() => setImageError(true)} />
+                    ) : (
+                        <i className="bi bi-image" style={{ fontSize: "2.5rem", color: "#aaa" }} />
+                    )}
                 </div>
                 <div className="description">
                     <h1>{ productName }</h1>

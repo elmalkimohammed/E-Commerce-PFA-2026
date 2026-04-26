@@ -1,4 +1,4 @@
-﻿namespace TicketProductApi.Model
+namespace TicketProductApi.Model
 {
     public class ProductAndImage
     {
@@ -8,16 +8,10 @@
         public decimal Price { get; set; }
         public int Stock { get; set; }
 
-        // JSON column (attributs dynamiques)
         public Dictionary<string, object> Attributes { get; set; } = new();
         public string Category { get; set; } = null!;
         public Guid UserId { get; set; }
 
-        public int Id_Image { get; set; }
-        public int Product_Id { get; set; }   // FK -> product.Id
-
-        public byte[] Image { get; set; } = Array.Empty<byte>();   // longblob
-        public string Mimetype { get; set; } = null!;
-        public string Filename { get; set; } = null!;
+        public List<ProductImage> Images { get; set; } = new();
     }
 }

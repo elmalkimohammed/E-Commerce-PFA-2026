@@ -109,8 +109,8 @@ namespace TicketProductApi.Controllers
             Product product = ProductMapper.PostDtoToProduct(obj);
             try
             {
-                _productHandler.AddProduct(product);
-                return Ok();
+                int newId = _productHandler.AddProduct(product);
+                return Ok(new { id = newId });
             }
             catch
             {

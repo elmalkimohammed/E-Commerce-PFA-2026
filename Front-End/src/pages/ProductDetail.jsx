@@ -10,11 +10,12 @@ const ProductDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const [product,   setProduct]   = useState(null)
-  const [quantity,  setQuantity]  = useState(1)
-  const [activeImg, setActiveImg] = useState(0)
-  const [cartMsg,   setCartMsg]   = useState(null)  // message succès/erreur
-  const [loading,   setLoading]   = useState(false)
+  const [product,    setProduct]    = useState(null)
+  const [quantity,   setQuantity]   = useState(1)
+  const [activeImg,  setActiveImg]  = useState(0)
+  const [cartMsg,    setCartMsg]    = useState(null)
+  const [loading,    setLoading]    = useState(false)
+  const [imgError,   setImgError]   = useState(false)
 
   useEffect(() => {
     fetch(`${prodAPI}/${id}`)
@@ -22,6 +23,7 @@ const ProductDetail = () => {
       .then(data => {
         setProduct(data)
         setActiveImg(0)
+        setImgError(false)
       })
       .catch(err => console.error(err))
   }, [id])
@@ -34,7 +36,7 @@ const ProductDetail = () => {
 
   const images = product.images?.length > 0
     ? product.images
-    : [{ image: product.image, mimetype: product.mimetype, id_Image: 0 }]
+    : []
 
   const handleQuantityChange = (action) => {
     if (action === "increment" && quantity < product.stock) setQuantity(q => q + 1)
@@ -117,12 +119,19 @@ const ProductDetail = () => {
         {/* LEFT — Gallery */}
         <div className="product-gallery">
           <div className="main-image-container">
-            <img
-              key={activeImg}
-              src={`data:${images[activeImg].mimetype};base64,${images[activeImg].image}`}
-              alt={product.name}
-              className="main-image"
-            />
+            {images.length > 0 && images[activeImg]?.image && images[activeImg]?.mimetype && !imgError ? (
+              <img
+                key={activeImg}
+                src={`data:${images[activeImg].mimetype};base64,${images[activeImg].image}`}
+                alt={product.name}
+                className="main-image"
+                onError={() => setImgError(true)}
+              />
+            ) : (
+              <div className="main-image" style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#f5f5f5" }}>
+                <i className="bi bi-image" style={{ fontSize: "5rem", color: "#ccc" }} />
+              </div>
+            )}
           </div>
 
           {images.length > 1 && (
@@ -131,12 +140,16 @@ const ProductDetail = () => {
                 <button
                   key={img.id_Image ?? index}
                   className={`thumbnail-btn ${activeImg === index ? "active" : ""}`}
-                  onClick={() => setActiveImg(index)}
+                  onClick={() => { setActiveImg(index); setImgError(false) }}
                 >
-                  <img
-                    src={`data:${img.mimetype};base64,${img.image}`}
-                    alt={`${product.name} view ${index + 1}`}
-                  />
+                  {img.image && img.mimetype ? (
+                    <img
+                      src={`data:${img.mimetype};base64,${img.image}`}
+                      alt={`${product.name} view ${index + 1}`}
+                    />
+                  ) : (
+                    <i className="bi bi-image" style={{ fontSize: "1.5rem", color: "#ccc" }} />
+                  )}
                 </button>
               ))}
             </div>

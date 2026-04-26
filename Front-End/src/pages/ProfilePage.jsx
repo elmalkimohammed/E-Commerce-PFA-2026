@@ -186,9 +186,12 @@ const SavePublicInfo = async () => {
       showToast("L'image ne doit pas dépasser 2 Mo", "error");
       return;
     }
-    const url = URL.createObjectURL(file);
-    setUser((u) => ({ ...u, avatar: url }));
-    showToast("Photo de profil mise à jour");
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setUser((u) => ({ ...u, avatar: event.target.result }));
+      showToast("Photo de profil mise à jour");
+    };
+    reader.readAsDataURL(file);
   };
 
   const validatePrivateInfo = () => {
@@ -253,7 +256,7 @@ const SavePublicInfo = async () => {
             <div style={styles.userName}>{user.firstName} {user.lastName}</div>
             <div style={styles.userEmail}>{priv.email}</div>
           </div>
-          <button style={styles.logoutButton} onClick={logout}>🚪 Logout</button>
+          <button style={styles.logoutButton} onClick={logout}> Logout</button>
         </aside>
 
         <main style={styles.main}>
