@@ -64,6 +64,10 @@ const ProfilePage = () => {
     setLoading(false)
     
   }, []);
+  const logout = () => {
+    localStorage.removeItem("generatedJWT_Token");
+    window.location.href = "/";
+  }
   const SavePrivateInfo = async () => {
 
   // 🟢 CAS 1 : aucun changement de mot de passe
@@ -244,10 +248,12 @@ const SavePublicInfo = async () => {
             </button>
             <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleAvatar} />
           </div>
+          
           <div style={styles.userInfo}>
             <div style={styles.userName}>{user.firstName} {user.lastName}</div>
             <div style={styles.userEmail}>{priv.email}</div>
           </div>
+          <button style={styles.logoutButton} onClick={logout}>🚪 Logout</button>
         </aside>
 
         <main style={styles.main}>

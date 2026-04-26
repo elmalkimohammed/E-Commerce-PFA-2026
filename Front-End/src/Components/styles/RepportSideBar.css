@@ -1,0 +1,51 @@
+.repport-sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    padding: 24px 16px;
+    height: fit-content;
+    position: sticky;
+    top: 24px;
+    box-sizing: border-box;
+}
+
+.repport-sidebar .sidebar-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 12px 0;
+    padding: 0 8px;
+}
+
+.repport-sidebar .sidebar-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    background: transparent;
+    color: #475569;
+    text-align: left;
+    margin-bottom: 4px;
+    transition: all 0.15s ease;
+}
+
+.repport-sidebar .sidebar-btn:hover {
+    background: #f1f5f9;
+    color: #1e3a8a;
+}
+
+.repport-sidebar .sidebar-btn.active {
+    background: #e8edf7;
+    color: #1e3a8a;
+    font-weight: 600;
+}

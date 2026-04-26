@@ -179,6 +179,20 @@ export const styles = {
     overflow: "hidden",
     boxShadow: "0 1px 3px #0001",
   },
+  logoutButton: {
+    width: "100%",
+    marginTop: "16px",
+    padding: "10px 0",
+    borderRadius: "8px",
+    border: "1px solid #fecaca",
+    background: "rgba(255, 245, 245, 0.15)",
+    color: "#fca5a5",
+    fontSize: "14px",
+    fontWeight: 600,
+    cursor: "pointer",
+    fontFamily: "'DM Sans', sans-serif",
+    transition: "background 0.15s",
+  },
 
   cardHeader: {
     padding: "16px 24px",

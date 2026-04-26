@@ -4,14 +4,15 @@ import TopNavAdmin from "../Components/navbarComponent/TopNavAdmin";
 import RepportSideBar from "../Components/AdminRepport/RepportSideBar";
 import AllRepports from "../Components/AdminRepport/AllRepports";
 import RecentRepports from "../Components/AdminRepport/RecentRepports";
-import "./Styles/MonitoringPage.css";
+import LogsViewer from "../Components/AdminRepport/LogsViewer";
+import "./Styles/AdminRepportPage.css";
 
 function AdminRepportPage() {
     const [currentPage, setCurrentPage] = useState("reclamations");
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("generatedJWT_Token");
         if (!token) { navigate("/"); return; }
         try {
             const payload = JSON.parse(atob(token.split(".")[1]));
@@ -21,12 +22,15 @@ function AdminRepportPage() {
     }, []);
 
     return (
-        <div className="MonitoringParent">
+        <div className="repport-parent">
             <TopNavAdmin />
-            <div className="containerBox">
-                <RepportSideBar onSwitch={setCurrentPage} />
-                {currentPage === "reclamations" && <AllRepports />}
-                {currentPage === "reclamationsCreees" && <RecentRepports />}
+            <div className="repport-container">
+                <RepportSideBar currentPage={currentPage} onSwitch={setCurrentPage} />
+                <main className="repport-main">
+                    {currentPage === "reclamations" && <AllRepports />}
+                    {currentPage === "reclamationsCreees" && <RecentRepports />}
+                    {currentPage === "logs" && <LogsViewer />}
+                </main>
             </div>
         </div>
     );

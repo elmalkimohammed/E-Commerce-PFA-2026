@@ -70,3 +70,30 @@ Title     : Test Report
 Desc      : This is a test description
 CreatedAt : 2026-04-25 20:14:48
 -----------------------------
+-----------------------------
+Time      : 2026-04-26 16:07:07
+RepportId : 64716775-20ad-4ef8-90bf-05655a53964d
+UserID    : 123e4567-e89b-12d3-a456-426614174000
+Email     : test@example.com
+Title     : Test Report
+Desc      : This is a test description
+CreatedAt : 2026-04-26 16:07:07
+-----------------------------
+-----------------------------
+Time      : 2026-04-26 16:12:32
+RepportId : a7193275-bdbb-4641-975d-f0fbf742ed6e
+UserID    : d7853c83-8cba-40ac-8b92-64c626ab15cd
+Email     : aminebouchadad04@gmail.com
+Title     : rfghj
+Desc      : 123456
+CreatedAt : 2026-04-26 16:12:32
+-----------------------------
+-----------------------------
+Time      : 2026-04-26 16:23:20
+RepportId : 9b36c581-9fe5-4c52-b518-f3990f4087ea
+UserID    : d7853c83-8cba-40ac-8b92-64c626ab15cd
+Email     : aminebouchadad04@gmail.com
+Title     : 12345
+Desc      : test
+CreatedAt : 2026-04-26 16:23:20
+-----------------------------

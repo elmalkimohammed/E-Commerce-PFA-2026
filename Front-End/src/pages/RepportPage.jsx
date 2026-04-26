@@ -9,7 +9,7 @@ function RepportPage() {
     const [myRepports, setMyRepports] = useState([]);
     const navigate = useNavigate();
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("generatedJWT_Token");
     let userID = null;
     let role = null;
     if (token) {
@@ -21,7 +21,9 @@ function RepportPage() {
     }
 
     useEffect(() => {
-        if (!token || role !== "HelpCenter") navigate("/");
+        
+        if (!token) navigate("/");
+        
     }, []);
 
     const fetchMyRepports = () => {

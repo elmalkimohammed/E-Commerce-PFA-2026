@@ -1,12 +1,26 @@
-import "../styles/MonitSideBar.css";
+import "../styles/RepportSideBar.css";
 
-function RepportSideBar({ onSwitch }) {
+const navItems = [
+    { key: "reclamations", label: "Réclamations", icon: "bi bi-list" },
+    { key: "reclamationsCreees", label: "Réclamations Créées", icon: "bi bi-clock" },
+    { key: "logs", label: "Logs", icon: "bi bi-file-earmark-text" },
+];
+
+function RepportSideBar({ currentPage, onSwitch }) {
     return (
-        <div className="sideBar">
-            <h1 style={{ textAlign: "center" }}>Side Bar</h1>
-            <p onClick={() => onSwitch("reclamations")}>Réclamations</p>
-            <p onClick={() => onSwitch("reclamationsCreees")}>Réclamations Créées</p>
-        </div>
+        <aside className="repport-sidebar">
+            <p className="sidebar-label">Navigation</p>
+            {navItems.map(item => (
+                <button
+                    key={item.key}
+                    className={`sidebar-btn ${currentPage === item.key ? "active" : "" } ${item.icon ? " bi " + item.icon : ""}`}
+                    onClick={() => onSwitch(item.key)}
+                >
+                    
+                    {item.label}
+                </button>
+            ))}
+        </aside>
     );
 }
 
