@@ -95,4 +95,21 @@ public class SubscriptionRepository : ISubscriptionRepository
     {
         return await _context.SaveChangesAsync() > 0;
     }
+
+    public async Task<List<SubscribedUser>> GetSubbedUsers()
+    {
+        return await this._context.SubscribedUsers.Include( s => s.SubscriptionPlan ).ToListAsync();
+    }
+
+    public async Task<bool> DeleteSubscriptionAsync(int subId)
+    {
+        var chosenSub = await this._context.SubscribedUsers.FindAsync(subId);
+        if( chosenSub == null )
+        {
+            return false; 
+        }
+
+        this._context.SubscribedUsers.Remove(chosenSub);
+        return true;
+    }
 }

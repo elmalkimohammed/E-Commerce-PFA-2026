@@ -1,4 +1,5 @@
 using SubscriptionService.DTOs;
+using SubscriptionService.Models;
 
 namespace SubscriptionService.Services;
 
@@ -11,4 +12,6 @@ public interface ISubscriptionService
     Task<SubscriptionResponse> RegisterSubscriptionAsync(SubscriptionRequest request);
     Task<SubscriptionResponse?> GetUserSubscriptionAsync(Guid userId);
     Task<bool> CancelSubscriptionAsync(int subId);
+    Task<List<AllSubbedUsersDto>> GetAllSubbedUsrs();
+    Task<bool> DeleteSubscriptionAsync(int subId);
 }

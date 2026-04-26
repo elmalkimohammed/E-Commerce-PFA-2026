@@ -130,4 +130,38 @@ public class subscriptionService : ISubscriptionService
             _ => startDate.AddDays(30) // Default to 30 days
         };
     }
+    public async Task<List<AllSubbedUsersDto>> GetAllSubbedUsrs()
+    {
+        var subbed = await _repository.GetSubbedUsers();
+
+        if (subbed == null || !subbed.Any())
+        {
+            return new List<AllSubbedUsersDto>();
+        }
+
+        return subbed.Select(s => new AllSubbedUsersDto
+        {
+            SubId = s.SubId,
+            UserId = s.UserId,
+            PlanId = s.PlanId,
+            PlanName = s.SubscriptionPlan?.Name,
+            StartDate = s.StartDate,
+            EndDate = s.EndDate,
+            Status = s.Status,
+            MaxProducts = s.SubscriptionPlan?.MaxProducts ?? 0
+        }).ToList();
+    }
+    public async Task<bool> DeleteSubscriptionAsync(int subId)
+    {
+        var exists = await _repository.SubscriptionExistsAsync(subId);
+        if (!exists)
+        {
+            throw new KeyNotFoundException($"Subscription with ID {subId} not found");
+        }
+
+        var result = await _repository.DeleteSubscriptionAsync(subId);
+        await _repository.SaveChangesAsync();
+
+        return result;
+    }
 }

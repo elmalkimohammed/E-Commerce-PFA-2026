@@ -126,4 +126,56 @@ public class SubscriptionController : ControllerBase
             return StatusCode(500, new { message = "An error occurred while cancelling subscription" });
         }
     }
+
+    /// <summary>
+    /// Get a list of the subbed users
+    /// </summary>
+    [HttpGet]
+    [Route("getAllSubbedUsers")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> SubbedUsers()
+    {
+        try
+        {
+            var result = await _subscriptionService.GetAllSubbedUsrs();
+
+            if (result == null || !result.Any())
+            {
+                return NotFound(new { message = "There's no subbed users currently..." });
+            }
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while getting the list for the subbed users" });
+        }
+    }
+
+    /// <summary>
+    /// Delete the subscription
+    /// </summary>
+    [HttpDelete]
+    [Route("deleteSubscription/{subId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteSubscription( int subId )
+    {
+        try
+        {
+            var result = await _subscriptionService.DeleteSubscriptionAsync(subId);
+
+            if ( !result )
+            {
+                return NotFound(new { message = "The id is unavailable...." });
+            }
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while deleting the subscription...." });
+        }
+    }
 }

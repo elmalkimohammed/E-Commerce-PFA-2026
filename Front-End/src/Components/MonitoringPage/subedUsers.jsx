@@ -2,7 +2,36 @@
 import SubbedUsersRow from "./Inside Components/subbedUsersRow"
 import "../styles/adminMonitoringGlobalStyles.css"
 
+import { useState , useEffect } from "react"
+import axios from "axios"
+import { subsAPI } from "../../services/servicesAPI"
+
 function SubbedUsers() {
+
+    const  [ subbed , setSubbed ] = useState([])
+    const [ loading , setLoading ] = useState(false)
+
+    useEffect(() => { 
+        fetchSubbed()
+        setLoading(true)
+    }, []);
+
+    const fetchSubbed = async () => {
+        try {
+            setSubbed((await axios.get(`${subsAPI}/getAllSubbedUsers`)).data);
+        } catch (error) {
+            alert(error.response?.data || "An Internal Error Happened While Trying To Fetch The Subbed Users.....");
+        }
+    };
+
+    if ( !loading ) {
+        return(
+            <>
+                <div>Loading.........</div>
+            </>
+        )
+    }
+
     return(
         <table className="MonitoringGlobalStyles">
             <tbody>
@@ -14,15 +43,10 @@ function SubbedUsers() {
                     <td style={ { textTransform: "capitalize" } } >état</td>
                     <td>Plan Choisie</td>
                 </tr>
-                <SubbedUsersRow subId={1} userId={1} planId={2} endDate={"15-09-2024"}
-                    status={"Cancelled"} subscriptionPlan={"Premium"}
-                />
-                <SubbedUsersRow subId={1} userId={1} planId={2} endDate={"15-09-2024"}
-                    status={"Cancelled"} subscriptionPlan={"Premium"}
-                />
-                <SubbedUsersRow subId={1} userId={1} planId={2} endDate={"15-09-2024"}
-                    status={"Cancelled"} subscriptionPlan={"Premium"}
-                />
+                { subbed.map( (user) => {
+                    return <SubbedUsersRow subId={user.subId} userId={user.userId} planId={user.planId} endDate={user.endDate}
+                    status={user.status} subscriptionPlan={user.planName}/>
+                } ) }
             </tbody>
         </table>
     )

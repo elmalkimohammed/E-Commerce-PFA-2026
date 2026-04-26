@@ -17,7 +17,9 @@ public interface ISubscriptionRepository
     Task<bool> CancelSubscriptionAsync(int subId);
     Task<bool> SubscriptionExistsAsync(int subId);
     Task<bool> UserHasActiveSubscriptionAsync(Guid userId);
-    
+    Task<List<SubscribedUser>> GetSubbedUsers() ;
+    Task<bool> DeleteSubscriptionAsync(int subId);
+
     // Save changes
     Task<bool> SaveChangesAsync();
 }

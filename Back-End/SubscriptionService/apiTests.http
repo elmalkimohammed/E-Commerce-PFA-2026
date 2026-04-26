@@ -32,3 +32,7 @@ Accept: application/json
 ###
 GET {{hostAddress}}api/Subscription/d9da38af-25e0-4561-b1a4-5a1413747268
 Accept: application/json
+
+###
+GET {{hostAddress}}api/Subscription/getAllSubbedUsers
+Accept: application/json
