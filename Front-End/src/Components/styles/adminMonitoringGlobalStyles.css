@@ -1,36 +1,59 @@
 .MonitoringGlobalStyles {
-    width: fit-content;
-    display: flex;
-    gap: 2em;
+    width: 100%;
+    border-collapse: collapse;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     border-radius: 25px;
     overflow: auto;
     font-weight: bold;
     text-align: center;
     background-color: #f8f9fa;
+    margin: 20px 0;
 }
-.MonitoringGlobalStyles tr:first-child {
+
+.MonitoringGlobalStyles thead tr:first-child {
     background: linear-gradient(135deg, #2d3748 0%, #1a365d 100%);
     color: #ffffff;
-    width: 100%;
 }
+
+.MonitoringGlobalStyles thead th, 
 .MonitoringGlobalStyles tbody td {
-    padding: 25px;
+    padding: 15px 10px;
+    border: 1px solid #ddd;
 }
+
+/* Apply truncation to all cells EXCEPT the last one (Actions) */
+.MonitoringGlobalStyles tbody td:not(:last-child) {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Actions column gets special treatment */
+.MonitoringGlobalStyles tbody td:last-child {
+    min-width: 160px; /* Enough space for buttons */
+    white-space: nowrap;
+}
+
+.MonitoringGlobalStyles tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
 .acionsBtn {
-    padding: 5px;
+    padding: 8px 12px;
     margin: 5px;
-    width: 100%;
     border: 2px solid #143a63;
     border-radius: 25px;
-    padding: 5px;
     font-weight: bold;
-    transition: 0.5s;
-}
-.acionsBtn:hover {
+    transition: 0.3s;
+    background-color: white;
     cursor: pointer;
-    border: none;
-    margin-left: 10px;
+    display: inline-block; /* Ensure buttons are visible */
+}
+
+.acionsBtn:hover {
     background-color: #143a63;
     color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }

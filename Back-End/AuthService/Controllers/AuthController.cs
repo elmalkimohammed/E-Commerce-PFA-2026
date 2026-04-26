@@ -111,10 +111,10 @@ namespace AuthService.Controllers
 
         // Checking The Existance Of The UserId
         [HttpGet("verify-userId/{userId}")]
-        public async Task<IActionResult> UserIdVerification( Guid userId )
+        public async Task<IActionResult> UserIdVerification(Guid userId)
         {
             // Validating The Incoming Request
-            if ( !ModelState.IsValid )
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState); // 400 Status Code
             }
@@ -123,11 +123,26 @@ namespace AuthService.Controllers
             try
             {
                 var exists = await this._authService.UserId_Existance(userId);
-                if ( !exists ) return NotFound( new { message = "UserId Not Found!" } ); // 404 Status Code
+                if (!exists) return NotFound(new { message = "UserId Not Found!" }); // 404 Status Code
                 return Ok(); // 200 Status Code
-            } catch ( Exception e )
+            }
+            catch (Exception e)
             {
                 return BadRequest(e.Message); // 400 Status Code
+            }
+        }
+
+        [HttpDelete("deleteUser/{userId}")]
+        public async Task<IActionResult> UserDeletion(Guid userId)
+        {
+            try
+            {
+                this._authService.UserDeletion(userId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Unable to delete user {userId}");
             }
         }
     }

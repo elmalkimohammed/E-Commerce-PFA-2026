@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
+﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using MySqlConnector;
+using System.Collections.Concurrent;
 using System.Reflection.Emit;
 using UserProfileService.Enums;
 using UserProfileService.Model;
@@ -17,7 +18,7 @@ namespace UserProfileService.Repository
             connection = coon.GetConnectionString("DefaultConnection");
             AuthConnection = coon.GetConnectionString("AuthConnection");
         }
-        public void AddRegistered(UserRegisteredEvent user)
+        public async Task AddRegistered(UserRegisteredEvent user)
         {
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
@@ -187,6 +188,84 @@ namespace UserProfileService.Repository
             cmd.Parameters.AddWithValue("@UserId", user.UserId);
             cmd.CommandText = sql;
             cmd.ExecuteNonQuery();
+        }
+        public async Task<List<UserFullInfo>> GetUsersFullInfos()
+        {
+            List<string> userIds = new List<string>();
+
+            // First, get all UserIds
+            using (MySqlConnection authConn = new MySqlConnection(AuthConnection))
+            {
+                await authConn.OpenAsync();
+
+                string sql = @"SELECT UserId FROM Users;";
+                using MySqlCommand cmd = new MySqlCommand(sql, authConn);
+                using MySqlDataReader rd = await cmd.ExecuteReaderAsync();
+
+                while (await rd.ReadAsync())
+                {
+                    userIds.Add(rd.GetGuid("UserId").ToString());
+                }
+            }
+
+            // Process users in parallel for better performance
+            var users = new ConcurrentBag<UserFullInfo>();
+
+            await Task.Run(() =>
+            {
+                Parallel.ForEach(userIds, userId =>
+                {
+                    try
+                    {
+                        UserFullInfo user = FullInfo(userId);
+                        users.Add(user);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error
+                        Console.WriteLine($"Error fetching user {userId}: {ex.Message}");
+                    }
+                });
+            });
+
+            return users.ToList();
+        }
+        public async Task DeleteUserProfile(Guid userId)
+        {
+            try
+            {
+                Console.WriteLine($"=== 🗑️ DELETE USER PROFILE ===");
+                Console.WriteLine($"Looking for UserId: {userId}");
+
+                using var connection = new MySqlConnection(this.connection);
+                await connection.OpenAsync();
+
+                // First check if the user exists
+                var checkCmd = new MySqlCommand("SELECT COUNT(*) FROM UserProfile WHERE UserId = @userId", connection);
+                checkCmd.Parameters.AddWithValue("@userId", userId.ToString());
+                int exists = Convert.ToInt32(await checkCmd.ExecuteScalarAsync());
+                Console.WriteLine($"User exists in UserProfile table: {exists > 0}");
+
+                if (exists == 0)
+                {
+                    Console.WriteLine($"⚠️ User {userId} not found in UserProfile table");
+                    return;
+                }
+
+                // Delete the user
+                var deleteCmd = new MySqlCommand("DELETE FROM UserProfile WHERE UserId = @userId", connection);
+                deleteCmd.Parameters.AddWithValue("@userId", userId.ToString());
+                int rowsAffected = await deleteCmd.ExecuteNonQueryAsync();
+
+                Console.WriteLine($"✅ Rows affected: {rowsAffected}");
+                Console.WriteLine($"✅ User {userId} deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Database error: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                throw;
+            }
         }
     }
 }

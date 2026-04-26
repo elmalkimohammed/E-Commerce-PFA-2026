@@ -97,5 +97,13 @@ namespace AuthService.Repository
                 CreatedAt = reader.GetDateTime(4)
             };
         }
+        public async Task DeleteUser(Guid userId)
+        {
+            using var connection = new MySqlConnection(this._connectionString);
+            await connection.OpenAsync();
+            var cmd = new MySqlCommand("DELETE FROM Users WHERE UserId = @userId", connection);
+            cmd.Parameters.AddWithValue("@userId", userId);
+            cmd.ExecuteNonQuery();
+        }
     }
 }

@@ -136,5 +136,24 @@ namespace AuthService.Services
                 return false;
             }
         }
+        public async Task<bool> UserDeletion(Guid userId)
+        {
+            try
+            {
+                await this._userRepository.DeleteUser(userId);
+                var userDeletedEvent = new UserDeletedEvent
+                {
+                    UserId = userId,
+                    DeletedAt = DateTime.UtcNow,
+                    DeletedBy = "user", // Or get from current context if available
+                    PermanentDelete = true
+                };
+                await this._kafkaProducerService.AsyncPublish("user-deleted", userDeletedEvent);
+                return true;
+            }
+            catch (Exception ex) {
+                return false;
+            }
+        }
     }
 }

@@ -40,5 +40,15 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "UserProfileService.Controllers.UserProfileController",
+    "Method": "GetAllUsersFullInfo",
+    "RelativePath": "api/UserProfile/fetchALLFullUsrsInfos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   }
 ]

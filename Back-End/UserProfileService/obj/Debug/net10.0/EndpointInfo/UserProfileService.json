@@ -6,9 +6,6 @@
   },
   "servers": [
     {
-      "url": "https://localhost:7240"
-    },
-    {
       "url": "http://localhost:5008"
     }
   ],
@@ -78,6 +75,18 @@
           },
           "required": true
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/UserProfile/fetchALLFullUsrsInfos": {
+      "get": {
+        "tags": [
+          "UserProfile"
+        ],
         "responses": {
           "200": {
             "description": "OK"

@@ -62,5 +62,18 @@ namespace UserProfileService.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("fetchALLFullUsrsInfos")]
+        public async Task<IActionResult> GetAllUsersFullInfo()
+        {
+            try
+            {
+                var users = await this._UserHandler.GetUsersFullInfos();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while fetching users" });
+            }
+        }
     }
 }
