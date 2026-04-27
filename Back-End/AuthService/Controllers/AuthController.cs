@@ -3,6 +3,7 @@ using AuthService.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace AuthService.Controllers
 {
@@ -143,6 +144,27 @@ namespace AuthService.Controllers
             catch (Exception e)
             {
                 return BadRequest($"Unable to delete user {userId}");
+            }
+        }
+
+        [HttpPost("adminCreateUser")]
+        public async Task<IActionResult> UserCreationAdminSide(FullNewUser user)
+        {
+            // Validating the incoming request
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // 400 Status Code
+            }
+
+            // Handling The registration process and catching any exceptions that may occur
+            try
+            {
+                await this._authService.FullyCreateUser(user);
+                return Created(); // 201 Status Code
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message); // 400 Status Code
             }
         }
     }

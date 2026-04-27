@@ -96,6 +96,51 @@ namespace AuthService.Services
             await this._kafkaProducerService.AsyncPublish("user-created", userLogEvent);
         }
 
+        public async Task FullyCreateUser(FullNewUser request)
+        {
+            // Verify If The User Already Exists
+            var existingUser = await this._userRepository.GetThroughEmail(request.Email);
+            if (existingUser != null)
+            {
+                throw new Exception("User Already Exists");
+            }
+
+            // Hashing The Given Password
+            var hashedPassword = PasswordHasher.HashPassword(request.Password);
+
+            // Creating A New User Entity And Saving It To The Database
+            var newUser = new User
+            {
+                UserId = Guid.NewGuid(),
+                Email = request.Email,
+                PasswordHash = hashedPassword,
+                Role = request.Role,
+                CreatedAt = DateTime.UtcNow
+            };
+            await this._userRepository.CreateUser(newUser);
+
+            // Creating An Event Object To Be Published To Kafka Sending Only The Id, As It's The Only Needed Info For The Other Service (UserProfileService)
+            var userEvent = new UserRegisteredEvent
+            {
+                UserId = newUser.UserId
+            };
+
+            // Publishing The User Getting Registered As An Event To Kafka
+            await this._kafkaProducerService.AsyncPublish("user-registered", userEvent);
+
+            // Creating An Event Object To Be Published To Kafka Sending The User's Infos To Be Prepared To Be Stored In The Logs
+            var userLogEvent = new UserCreatedEvent
+            {
+                UserId = newUser.UserId,
+                Email = newUser.Email,
+                Role = newUser.Role,
+                RegisteredAt = DateTime.UtcNow
+            };
+
+            // Publishing The User Getting Regitered As Kafka Event For The Logs Micro-Service
+            await this._kafkaProducerService.AsyncPublish("user-created", userLogEvent);
+        }
+
         // The Method That Handles The Email Existence Verification Process
         public async Task<String> VerifyEmailExistence(EmailVerificationRequest request)
         {

@@ -1,41 +1,42 @@
 
 import "../styles/globalAuthForm.css"
 
+import { useState , useEffect } from "react"
+
+import axios from "axios"
+
+import { authAPI } from "../../services/servicesAPI"
+
 function CreateUser() {
+
+    const [ Email , setEmail ] = useState("")
+    const [ Password , setPassword ] = useState("")
+    const [ Role , setRole ] = useState("")
+
+    const createUser = async (e) => {
+        try {
+            e.preventDefault()
+            await axios.post( `${authAPI}/adminCreateUser`, { Email , Password , Role } )
+            alert("L'utilisateur a étre créer")
+        } catch (error) {
+            alert( error.response?.data || "User Creation Failed" )
+        }
+    }
+
     return(
         <div className="containerBox"  style={{ width:"fit-content",  height:"fit-content"}}>
-            <form style={{ display: "flex", flexDirection: "column" }}>
+            <form style={{ display: "flex", flexDirection: "column" }} onSubmit={ createUser } >
                 <div className="inputsSenderBox" style={{ display: "flex", flexDirection: "row", gap: "3em" }}>
                     <div className="privateInfos">
-                        <h1 className="header" style={{ borderRadius: "12px" }}>Confidential Informations</h1>
-                        <label htmlFor="emailInput">Email: </label>
-                        <input type="email"id="emailInput" required/>
-                        <label htmlFor="passwInput">Password: </label>
-                        <input type="password"id="passwInput" required/>
+                        <h1 className="header" style={{ borderRadius: "12px" }}>Créer Un Utilisateur</h1>
+                        <label htmlFor="emailInput" >Email: </label>
+                        <input type="email"id="emailInput" required onChange={ (e) => { setEmail(e.target.value) } } />
+                        <label htmlFor="passwInput" >Mot De Pass: </label>
+                        <input type="password"id="passwInput" onChange={ (e) => { setPassword(e.target.value) } } required/>
                         <label htmlFor="roleInput" >Role: </label>
-                        <input type="text"id="roleInput" required/>
-                    </div>
-                    <div className="publicInfos">
-                        <h1 className="header" style={{ borderRadius: "12px" }}>Public Informations</h1>
-                        <label htmlFor="fstNameInput">Premiere Nom: </label>
-                        <input type="text"id="fstNameInput" />
-                        <label htmlFor="secNameInput">Dèrnière Nom: </label>
-                        <input type="text"id="secNameInput" />
-                        <label htmlFor="phoneInput">Téléphone: </label>
-                        <input type="number"id="phoneInput" />
-                        <label htmlFor="addrInput">Addresse: </label>
-                        <input type="text"id="addrInput" />
-                        <label htmlFor="sexInput">Gendre: </label>
-                        <select id="sexInput" style={{ borderStyle: "none", padding: "10px", width: "100%", borderRadius: "12px", border: "#e2e8f0 solid 2px" }}>
-                            <option value="Homme">Homme</option>
-                            <option value="Femme">Femme</option>
-                        </select>
-                        <label htmlFor="dOfBInput">Date De Naissance: </label>
-                        <input type="date" id="dOfBInput" />
+                        <input type="text"id="roleInput" onChange={ (e) => { setRole(e.target.value) } } required/>
                     </div>
                 </div>
-                { /* Départ Du Traitement d'image */ }
-                { /* Fin Du Traitement d'image */ }
                 <input type="submit" value="Creer" />
             </form>
         </div>
