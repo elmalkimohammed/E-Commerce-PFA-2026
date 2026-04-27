@@ -300,6 +300,23 @@ services:
         condition: service_healthy
     networks:
       - ecommerce-network
+  AdminLogsServiceAPI:
+    build:
+      context: ./Back-End/AdminLogsService
+      dockerfile: Dockerfile
+    image: adminlogsservice-api:latest
+    container_name: adminlogsservice-api
+    ports:
+      - "5008:5026"
+    depends_on:
+      kafka:
+        condition: service_started
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=http://+:5026  
+        - Kafka__BootstrapServers=kafka:29092
+    networks:
+      - ecommerce-network
 
 volumes:
   AuthServiceDB-data: 

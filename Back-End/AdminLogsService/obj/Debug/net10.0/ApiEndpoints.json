@@ -1,0 +1,48 @@
+[
+  {
+    "ContainingType": "UserAuditLoggingService.Controllers.AuditController",
+    "Method": "ExportToCsv",
+    "RelativePath": "api/Audit/export/csv",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "UserAuditLoggingService.Controllers.AuditController",
+    "Method": "GetStatistics",
+    "RelativePath": "api/Audit/statistics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "UserAuditLoggingService.Controllers.AuditController",
+    "Method": "GetAllUsers",
+    "RelativePath": "api/Audit/users",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "UserAuditLoggingService.Controllers.AuditController",
+    "Method": "GetUserById",
+    "RelativePath": "api/Audit/users/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

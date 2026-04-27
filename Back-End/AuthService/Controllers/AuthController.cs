@@ -137,7 +137,7 @@ namespace AuthService.Controllers
         {
             try
             {
-                this._authService.UserDeletion(userId);
+                await this._authService.UserDeletion(userId);
                 return Ok();
             }
             catch (Exception e)

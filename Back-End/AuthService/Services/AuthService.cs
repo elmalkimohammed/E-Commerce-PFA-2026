@@ -82,6 +82,18 @@ namespace AuthService.Services
 
             // Publishing The User Getting Registered As An Event To Kafka
             await this._kafkaProducerService.AsyncPublish("user-registered", userEvent);
+
+            // Creating An Event Object To Be Published To Kafka Sending The User's Infos To Be Prepared To Be Stored In The Logs
+            var userLogEvent = new UserCreatedEvent
+            {
+                UserId = newUser.UserId,
+                Email = newUser.Email,
+                Role = newUser.Role,
+                RegisteredAt = DateTime.UtcNow
+            };
+
+            // Publishing The User Getting Regitered As Kafka Event For The Logs Micro-Service
+            await this._kafkaProducerService.AsyncPublish("user-created", userLogEvent);
         }
 
         // The Method That Handles The Email Existence Verification Process
