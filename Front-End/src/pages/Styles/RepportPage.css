@@ -1,20 +1,151 @@
-/* PAGE WRAPPER */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap');
+
+/* ── PAGE WRAPPER ── */
 .report-container {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 25px;
-  padding: 40px 60px; /* top/bottom | left/right */
-  background: #ffffff;
-  max-width: 900px;
-  margin: 50px auto 0; /* keeps space from TopNav too */
-  border-radius: 14px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  font-family: 'Barlow', sans-serif;
+  background: #f5f5f5;
+  min-height: 100vh;
+  padding: 48px 24px 80px;
+  max-width: 860px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
-/* TITLE */
+/* ── TITLES ── */
 .report-title {
-  text-align: center;
-  font-size: 26px;
-  margin-bottom: 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(24px, 4vw, 38px);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: #000;
+  margin: 0 0 28px;
+}
+
+/* ── FORM CARD ── */
+.report-container form {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  padding: 32px;
+  margin-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── LABELS ── */
+.report-container form label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #767677;
+  margin-bottom: 6px;
+  margin-top: 20px;
+}
+.report-container form label:first-child {
+  margin-top: 0;
+}
+
+/* ── INPUTS ── */
+.report-container form input,
+.report-container form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e8e8e8;
+  background: #f5f5f5;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  color: #000;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+.report-container form input:focus,
+.report-container form textarea:focus {
+  border-color: #000;
+  background: #fff;
+}
+.report-container form input::placeholder,
+.report-container form textarea::placeholder {
+  color: #aaa;
+}
+.report-container form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* ── SUBMIT BUTTON ── */
+.report-container form button[type="submit"] {
+  margin-top: 28px;
+  align-self: flex-start;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 14px 36px;
+  background: #000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.report-container form button[type="submit"]:hover {
+  background: #e31837;
+}
+
+/* ── MY REPORTS TABLE ── */
+.repport-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+}
+
+.repport-table thead tr {
+  background: #000;
+}
+.repport-table thead th {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 14px 20px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.repport-table tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.15s;
+}
+.repport-table tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+.repport-table tbody tr:hover {
+  background: #f5f5f5;
+}
+.repport-table tbody td {
+  font-size: 14px;
   color: #333;
+  padding: 14px 20px;
+  vertical-align: middle;
+}
+.repport-table tbody tr td:first-child {
+  font-weight: 500;
+  color: #000;
+}
+
+/* empty state */
+.repport-table tbody td[colspan] {
+  text-align: center;
+  color: #767677;
+  padding: 40px;
+  font-size: 14px;
 }

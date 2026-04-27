@@ -2,12 +2,13 @@ import "../styles/RepportForm.css";
 import { repportAPI } from "../../services/servicesAPI";
 import { useState } from "react";
 
-function RepportForm({ userID, onSubmitSuccess }) {
+function RepportForm({ userID, onSubmitSuccess, onError }) {
     const [form, setForm] = useState({
         SourceEmail: "",
         Title: "",
         Description: ""
     });
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.id]: e.target.value });
@@ -15,49 +16,59 @@ function RepportForm({ userID, onSubmitSuccess }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
-            await fetch(repportAPI, {
+            const res = await fetch(repportAPI, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...form, UserID: userID })
             });
-            alert("Réclamation envoyée avec succès");
+
+            if (!res.ok) throw new Error(`Erreur ${res.status}`);
+
             setForm({ SourceEmail: "", Title: "", Description: "" });
-            onSubmitSuccess();
+            onSubmitSuccess?.();
         } catch (err) {
-            alert("Erreur lors de l'envoi");
+            onError?.();
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <label htmlFor="SourceEmail">Email:</label>
+            <label htmlFor="SourceEmail">Email</label>
             <input
                 type="email"
                 id="SourceEmail"
-                placeholder="Email"
+                placeholder="votre@email.com"
                 value={form.SourceEmail}
                 onChange={handleChange}
                 required
             />
-            <label htmlFor="Title">Titre:</label>
+
+            <label htmlFor="Title">Titre</label>
             <input
                 type="text"
                 id="Title"
-                placeholder="Titre"
+                placeholder="Objet de votre réclamation"
                 value={form.Title}
                 onChange={handleChange}
                 required
             />
-            <label htmlFor="Description">Description:</label>
+
+            <label htmlFor="Description">Description</label>
             <textarea
                 id="Description"
-                placeholder="Description"
+                placeholder="Décrivez votre réclamation en détail..."
                 value={form.Description}
                 onChange={handleChange}
                 required
             />
-            <button type="submit">Soumettre</button>
+
+            <button type="submit" disabled={loading}>
+                {loading ? "Envoi en cours..." : "Soumettre"}
+            </button>
         </form>
     );
 }

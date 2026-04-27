@@ -72,7 +72,7 @@ namespace TicketProductApi.Repo
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
             string sql = @"SELECT p.*, pi.*
-                           FROM (SELECT * FROM product ORDER BY Id DESC LIMIT 5) AS p
+                           FROM (SELECT * FROM product ORDER BY Id DESC LIMIT 10) AS p
                            LEFT JOIN productsImage pi ON pi.Product_Id = p.Id
                            ORDER BY p.Id DESC;";
             MySqlCommand cmd = new MySqlCommand(sql, coon);
