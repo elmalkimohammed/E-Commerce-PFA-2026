@@ -1,21 +1,47 @@
-
+import axios from "axios"
 import UsersRow from "./Inside Components/usersRow"
+
+import { useState , useEffect } from "react"
 
 import "../styles/adminMonitoringGlobalStyles.css"
 
 function CreatedUsers() {
+
+    const [ userLogs , setUserLogs ] = useState([])
+    const [ loading , setLoading ] = useState(false)
+
+    useEffect( () => {
+        fetchUserLogs()
+        setLoading(true)
+    }, [] )
+
+    const fetchUserLogs = async () => {
+        const response = await axios.get("http://localhost:5008/api/audit/users")
+        const usersArray = Object.values(response.data)
+        setUserLogs( usersArray )
+    }
+
+    if ( !loading ) {
+        return(
+            <div>
+                Loading.....
+            </div>
+        )
+    }
+
     return(
         <table className="MonitoringGlobalStyles">
             <tbody>
                 <tr>
                     <td>Id D'utilisateur</td>
                     <td>Email</td>
-                    <td>Mot De Pass</td>
+                    <td>Role</td>
                     <td>Date Du Création</td>
+                    <td>Statue</td>
                 </tr>
-                <UsersRow userId={1} email={"elmalki@gmail.com"} password={"test123"} creationDate={"15-02-2025"} />
-                <UsersRow userId={2} email={"mohammed@gmail.com"} password={"test456"} creationDate={"02-04-2026"} />
-                <UsersRow userId={3} email={"amine@gmail.com"} password={"test789"} creationDate={"9-12-2010"} />
+                { userLogs[3] ? userLogs[3].map( ( user ) => {
+                    return <UsersRow userId={user.userId} email={user.email} role={user.role} creationDate={user.createdAt} status={user.status} />
+                } ) : <tr><td colSpan="5">Nothing to show</td></tr> }
             </tbody>
         </table>
     )

@@ -1,11 +1,12 @@
 
-function UsersRow( { userId , email , password , creationDate } ) {
+function UsersRow( { userId , email , role , creationDate , status } ) {
     return(
         <tr>
             <td>{ userId }</td>
             <td>{ email }</td>
-            <td>{ password }</td>
+            <td>{ role }</td>
             <td>{ creationDate }</td>
+            <td>{ status }</td>
         </tr>
     )
 }
