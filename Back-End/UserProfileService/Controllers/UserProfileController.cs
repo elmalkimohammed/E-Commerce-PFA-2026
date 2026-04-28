@@ -75,5 +75,37 @@ namespace UserProfileService.Controllers
                 return StatusCode(500, new { error = "An error occurred while fetching users" });
             }
         }
+        /* Admin Endpoints */
+        [HttpPut("admin/updatePrivateInfo")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult AdminUpdatePrivateInfo(PutPrivateInfoDtoRequest dto)
+        {
+            try
+            {
+                UserProfilePrivateInfo user = UserPrivateInfoMapper.PrivateInfoDtoToModel(dto);
+                _UserHandler.UpdatePrivateInfo(user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPatch("admin/updatePublicInfo")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult AdminUpdatePublicInfo([FromBody] PutPublicInfoDtoRequest dto)
+        {
+            try
+            {
+                UserProfilePublicInfo user = UserPublicInfoMapper.PublicInfoDtoToModel(dto);
+                _UserHandler.UpdatePublicInfo(user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
