@@ -4,12 +4,14 @@ import AllUsersRow from "./Inside Components/allUsersRow"
 import "../styles/adminMonitoringGlobalStyles.css"
 
 import { useEffect , useState } from "react"
+import { useNavigate } from "react-router-dom"
 import axios from "axios"
 
 function AllUsers() {
 
     const [ usersFullInfos , setUsersFullInfos ] = useState([])
     const [ loading , setLoading ] = useState(false)
+    const navigate = useNavigate()
 
     useEffect( () => {
         fetchAllInfos()

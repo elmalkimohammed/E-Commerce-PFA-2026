@@ -19,7 +19,7 @@ function AllSubbedRow( { subId , userId , planId , endDate , status , subscripti
             <td>{ endDate }</td>
             <td>{ status }</td>
             <td>{ subscriptionPlan }</td>
-            <td> <button className="acionsBtn">Edit</button> <button className="acionsBtn" onClick={deleteSub}>Delete</button> </td>
+            <td> <button className="acionsBtn" onClick={deleteSub}>Delete</button> </td>
         </tr>
     )
 }

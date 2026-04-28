@@ -12,13 +12,45 @@ function LoginForm( { onSwitch } ) {
 
     const navigate = useNavigate()
 
+    // Helper function to decode JWT and get user role
+    const getUserRole = (token) => {
+        try {
+            const base64Url = token.split('.')[1]
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+            const jsonPayload = decodeURIComponent(
+                atob(base64)
+                    .split('')
+                    .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                    .join('')
+            )
+            const decodedToken = JSON.parse(jsonPayload)
+            return decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+        } catch (error) {
+            console.error("Error decoding token:", error)
+            return null
+        }
+    }
+
     const loginSubmit = async (e) => {
         try {
             e.preventDefault()
-            const token = await axios.post( `${authAPI}/login`, { email , password } )
-            localStorage.setItem("generatedJWT_Token", token.data)
-            navigate("/")
-            console.log(token.data)
+            const response = await axios.post( `${authAPI}/login`, { email , password } )
+            const token = response.data // Make sure this is the token string
+            
+            localStorage.setItem("generatedJWT_Token", token)
+            console.log("Token stored:", token)
+            
+            // Decode token and check role
+            const userRole = getUserRole(token)
+            console.log("User role:", userRole)
+            
+            // Redirect based on role
+            if (userRole === "Admin") {
+                navigate("/adminMonitoring") // or navigate("/MonitoringPage")
+            } else {
+                navigate("/") // Regular user home page
+            }
+            
         } catch (error) {
             alert( error.response?.data || "Login Failed" )
         }
