@@ -10,6 +10,28 @@
   --font-display: 'Barlow Condensed', sans-serif;
   --font-body: 'Barlow', sans-serif;
 }
+/* ── BRAND ── */
+/* ── BRAND ── */
+.top-nav .brand {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  color: var(--black);
+  margin: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.top-nav .brand img {
+  height: 140px;  /* Increased from 40px to 50px */
+  width: auto;
+  object-fit: contain;
+  margin: 100px;
+}
 
 /* ── NAV CONTAINER ── */
 .top-nav {
@@ -39,6 +61,9 @@
   flex-shrink: 0;
 }
 .top-nav .brand span { color: var(--accent); }
+.brand img:hover {
+  cursor: pointer;
+}
 
 /* ── NAV LINKS ── */
 .top-nav .redirect {

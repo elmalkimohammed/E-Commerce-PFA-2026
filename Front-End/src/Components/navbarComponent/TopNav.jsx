@@ -11,6 +11,7 @@ import { setChosenCategory } from "../../store/categorySlicer.js"
 import axios from "axios" 
 
 import "../../pages/Styles/TopNavStyle.css";
+import logo from "../../assets/AutoNova_Logo.png"
 
 function TopNav() {
   const [menuOpen, setMenuOpen]     = useState(false);
@@ -158,10 +159,16 @@ function TopNav() {
     dispatcher( setChosenCategory(value) )
   }
 
+  const sendToHome = () => {
+    navigate("/")
+  }
+
   return (
     <>
       <nav className="top-nav">
-        <p className="brand">GearGrit</p>
+        <p className="brand">
+          <img src={logo} alt="test" onClick={sendToHome}/>
+        </p>
 
         <button
           type="button"
