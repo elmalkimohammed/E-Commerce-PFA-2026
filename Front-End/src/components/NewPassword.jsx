@@ -29,7 +29,7 @@ function NewPassword( { onSwitch } ) {
                 <h1>Réinitialiser le mot de passe</h1>
                 <p>Email Trouvé! Entrez le nouveau mot de pass, et souvenez-vous-en bien!</p>
             </div>
-            <span style={{ color: "#2b6cb0", cursor: "pointer" }} onClick={ () => onSwitch("login") }>← Retour à la connexion</span>
+            <span className="backLink" onClick={ () => onSwitch("login") }>← Retour à la connexion</span>
             <form onSubmit={ updatedPasswordSubmit } method="post">
                 <div className="updatedpasswSection">
                     <label htmlFor="updatedPassw">Nouveau mot de pass</label>
