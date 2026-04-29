@@ -17,6 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService1>();
+builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 // Configure The CORS Policy To Accept Our React App (Cross-Origin)

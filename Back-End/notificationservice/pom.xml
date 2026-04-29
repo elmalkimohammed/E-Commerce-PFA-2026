@@ -20,6 +20,7 @@
     </properties>
 
     <dependencies>
+
         <!-- Web REST API -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -45,7 +46,11 @@
             <scope>runtime</scope>
         </dependency>
 
-
+        <!-- Kafka -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
 
         <!-- Tests -->
         <dependency>
@@ -53,6 +58,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>

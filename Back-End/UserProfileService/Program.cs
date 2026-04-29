@@ -18,6 +18,7 @@ namespace UserProfileService
             
             builder.Services.AddHostedService<KafkaConsumerService>();
             builder.Services.AddScoped<IUserProfileHandler, UserProfileHandler>();
+            builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(
