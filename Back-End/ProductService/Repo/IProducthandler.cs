@@ -8,7 +8,7 @@ namespace TicketProductApi.Repo
         public List<ProductAndImage> Get_fiveProducts();
         public List<ProductAndImage> GetAllProducts();
          public ProductAndImage GetProductById(int id);
-        public void AddProduct(Product product);
+        public int AddProduct(Product product);
          public void AddImage(ProductImage image);
         public void UpdateProductAndImage(ProductAndImage product);
         public void UpdateProduct(Product product);

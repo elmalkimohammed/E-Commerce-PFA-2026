@@ -1,11 +1,15 @@
+import { useState } from "react"
 import "../styles/productRow.css"
 import { useNavigate } from "react-router-dom"
 
 function ProductRow({ prodId , prodName , prodCateg , prodPrice , prodImage , prodMime }) {
 
     const navigate = useNavigate()
+    const [imageError, setImageError] = useState(false)
 
-    const imgSrc = `data:${prodMime};base64,${prodImage}`
+    const imgSrc = prodImage && prodMime && !imageError
+        ? `data:${prodMime};base64,${prodImage}`
+        : null
 
     const goToDetails = () => {
         navigate(`/product/${prodId}`)
@@ -18,7 +22,11 @@ function ProductRow({ prodId , prodName , prodCateg , prodPrice , prodImage , pr
 
             <div className="leftInfos">
 
-                <img src={imgSrc} alt="Image De Produit" />
+                {imgSrc ? (
+                    <img src={imgSrc} alt="Image De Produit" onError={() => setImageError(true)} />
+                ) : (
+                    <i className="bi bi-image" style={{ fontSize: "2.5rem", color: "#aaa" }} />
+                )}
 
                 <div className="desc_name">
                     <h1>{prodName}</h1>

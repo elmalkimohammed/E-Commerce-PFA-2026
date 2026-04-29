@@ -149,17 +149,36 @@ export default function SellerPortal() {
     });
   };
 
+  const uploadImage = (file, productId) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const base64 = e.target.result.split(',')[1];
+        try {
+          const res = await fetch(`${API_BASE_URL}/AddImage`, {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({
+              product_Id: productId,
+              image: base64,
+              mimetype: file.type,
+              filename: file.name
+            })
+          });
+          if (!res.ok) throw new Error('Image upload failed');
+          resolve();
+        } catch (err) { reject(err); }
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
   const handleAddProduct = async (productData) => {
     const userId = getUserIdFromToken();
-    if (!userId) {
-      setError("Authentication required");
-      return;
-    }
-
+    if (!userId) { setError("Authentication required"); return; }
     setError(null);
-    
+
     try {
-      // Create the product
       const productPayload = {
         name: productData.name,
         description: productData.description,
@@ -176,18 +195,22 @@ export default function SellerPortal() {
         body: JSON.stringify(productPayload)
       });
 
-      if (productResponse.status === 401) {
-        setError("Your session has expired. Please log in again.");
-        return;
+      if (productResponse.status === 401) { setError("Your session has expired. Please log in again."); return; }
+      if (!productResponse.ok) throw new Error('Failed to add product');
+
+      // Parse the new product ID from the response (requires backend restart after last change)
+      const responseText = await productResponse.text();
+      const newProductId = responseText ? JSON.parse(responseText).id : null;
+
+      if (newProductId && productData.images?.length > 0) {
+        for (const img of productData.images) {
+          if (img.file) await uploadImage(img.file, newProductId);
+        }
+      } else if (!newProductId && productData.images?.length > 0) {
+        setError("Product created but images were not uploaded — please restart the ProductService backend.");
       }
 
-      if (!productResponse.ok) {
-        throw new Error('Failed to add product');
-      }
-
-      // Refresh products list
       await fetchProducts();
-
     } catch (err) {
       setError(err.message);
       console.error('Error adding product:', err);
@@ -196,15 +219,10 @@ export default function SellerPortal() {
 
   const handleSaveEdit = async (updatedProduct) => {
     const userId = getUserIdFromToken();
-    if (!userId) {
-      setError("Authentication required");
-      return;
-    }
-
+    if (!userId) { setError("Authentication required"); return; }
     setError(null);
-    
+
     try {
-      // Update product details
       const productPayload = {
         id: updatedProduct.id,
         name: updatedProduct.name,
@@ -222,13 +240,25 @@ export default function SellerPortal() {
         body: JSON.stringify(productPayload)
       });
 
-      if (response.status === 401) {
-        setError("Your session has expired. Please log in again.");
-        return;
+      if (response.status === 401) { setError("Your session has expired. Please log in again."); return; }
+      if (!response.ok) throw new Error('Failed to update product');
+
+      // Delete images the user removed in the modal
+      const keptIds = new Set(
+        (updatedProduct.images || []).filter(img => img.id_Image).map(img => img.id_Image)
+      );
+      for (const orig of (editingProduct?.images || [])) {
+        if (!keptIds.has(orig.id_Image)) {
+          await fetch(`${API_BASE_URL}/DeleteImage/${orig.id_Image}`, {
+            method: 'DELETE',
+            headers: getAuthHeaders()
+          });
+        }
       }
 
-      if (!response.ok) {
-        throw new Error('Failed to update product');
+      // Upload new images the user added in the modal
+      for (const img of (updatedProduct.images || [])) {
+        if (img.file) await uploadImage(img.file, updatedProduct.id);
       }
 
       await fetchProducts();

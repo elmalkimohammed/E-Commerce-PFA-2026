@@ -17,6 +17,7 @@ import NotificationDetail from "./pages/NotificationDetailPage.jsx";
 import MonitoringPage from "./pages/MonitoringPage.jsx";
 import CrudPage from "./pages/CrudPage.jsx";
 import AdminProfilePage from "./pages/adminProfilePage.jsx";
+import AdminRepportPage from "./pages/AdminRepportPage.jsx";
 
 function NotFound() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/adminProfilePage" element={<AdminProfilePage/>}/>
           <Route path="/adminMonitoring" element={<MonitoringPage/>}/>
           <Route path="/adminCrudPage" element={<CrudPage/>}/>
+          <Route path="/adminRepport" element={<AdminRepportPage/>}/>
         </Routes>
       </BrowserRouter>
     </Provider>

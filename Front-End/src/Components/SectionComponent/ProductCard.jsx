@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function ProductCard({ product }) {
   const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
-  
+
   const {
     id,
     name,
@@ -13,13 +13,12 @@ function ProductCard({ product }) {
     price,
     stock,
     attributes,
-    image,
-    mimetype,
-    filename
+    images = []
   } = product;
 
-  const imageUrl = image && mimetype && !imageError
-    ? `data:${mimetype};base64,${image}`
+  const firstImage = images[0];
+  const imageUrl = firstImage?.image && firstImage?.mimetype && !imageError
+    ? `data:${firstImage.mimetype};base64,${firstImage.image}`
     : null;
 
   const hasDiscount = attributes && attributes['discount'];
@@ -41,11 +40,11 @@ function ProductCard({ product }) {
         {badge && (
           <span className={`product-badge ${badge.variant}`}>{badge.label}</span>
         )}
-        
+
         {imageUrl ? (
-          <img 
-            src={imageUrl} 
-            alt={filename || name}
+          <img
+            src={imageUrl}
+            alt={firstImage.filename || name}
             onError={() => setImageError(true)}
           />
         ) : (
@@ -64,7 +63,7 @@ function ProductCard({ product }) {
             <span className="price">{price} MAD</span>
             {oldPrice && <span className="old-price">{Math.round(oldPrice)} MAD</span>}
           </div>
-          <button 
+          <button
             onClick={() => navigate(`/product/${id}`)}
             disabled={stock === 0}
             className={stock === 0 ? 'disabled' : ''}

@@ -294,12 +294,13 @@ function TopNav() {
       {/* Hidden Categories HTML Span */}
       { spanState &&
       <span className="hiddenCategories" style={{ position: "sticky", top: "56.8px", zIndex: "51" }}>
-        { 
-          categories.map( (foundCategory) => 
-          <span 
-          style={{ color: "white", cursor: "pointer", padding: "5px" }} ><a onClick={ (e) => { storeCategory(e.target.innerText); navigate("/CategoryPage") } } >{ foundCategory }</a>
-          </span> ) 
-        }
+        { categories.map((foundCategory) => 
+          <span key={foundCategory} className="hiddenCategories-item">
+            <a onClick={() => { storeCategory(foundCategory); navigate("/CategoryPage"); }}>
+              {foundCategory}
+            </a>
+          </span>
+        )}
       </span>
       }
     </>

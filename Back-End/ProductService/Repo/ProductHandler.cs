@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
-using System.Collections;
 using System.Text.Json;
-using System.Xml.Linq;
 using TicketProductApi.Model;
 
 namespace TicketProductApi.Repo
@@ -14,227 +11,137 @@ namespace TicketProductApi.Repo
         {
             connection = coonString.GetConnectionString("DefaultConnection");
         }
-        
+
+        private static ProductAndImage ReadProductRow(MySqlDataReader rd)
+        {
+            return new ProductAndImage
+            {
+                Id          = rd.GetInt32("Id"),
+                Name        = rd.GetString("Name"),
+                Description = rd.GetString("Description"),
+                Price       = rd.GetDecimal("price"),
+                Stock       = rd.GetInt32("Stock"),
+                Category    = rd.GetString("Category"),
+                Attributes  = rd.IsDBNull(rd.GetOrdinal("Attributes"))
+                    ? new Dictionary<string, object>()
+                    : JsonSerializer.Deserialize<Dictionary<string, object>>(rd.GetString("Attributes"))!
+                        ?? new Dictionary<string, object>(),
+                UserId = rd.GetGuid("UserId"),
+                Images = new List<ProductImage>()
+            };
+        }
+
+        private static ProductImage? ReadImageRow(MySqlDataReader rd)
+        {
+            if (rd.IsDBNull(rd.GetOrdinal("Id_Image"))) return null;
+            return new ProductImage
+            {
+                Id_Image   = rd.GetInt32("Id_Image"),
+                Product_Id = rd.GetInt32("Product_Id"),
+                Image      = (byte[])rd["Image"],
+                Mimetype   = rd.GetString("Mimetype"),
+                Filename   = rd.GetString("Filename")
+            };
+        }
+
         public List<ProductAndImage> GetAllProducts()
         {
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
-            String sql = "SELECT p.*, pi.* FROM product p LEFT JOIN productsImage pi ON pi.Product_Id = p.Id;";
+            string sql = "SELECT p.*, pi.* FROM product p LEFT JOIN productsImage pi ON pi.Product_Id = p.Id ORDER BY p.Id;";
             MySqlCommand cmd = new MySqlCommand(sql, coon);
             MySqlDataReader rd = cmd.ExecuteReader();
-            List<ProductAndImage> list = new List<ProductAndImage>();
-            
+
+            var dict = new Dictionary<int, ProductAndImage>();
             while (rd.Read())
             {
-                ProductAndImage product = new ProductAndImage();
-                product.Id = rd.GetInt32("Id");
-                product.Name = rd.GetString("Name");
-                product.Description = rd.GetString("Description");
-                product.Price = rd.GetDecimal("price");
-                product.Stock = rd.GetInt32("Stock");
-                product.Category = rd.GetString("Category");
-                
-                // Handle NULL Attributes
-                product.Attributes = rd.IsDBNull(rd.GetOrdinal("Attributes")) 
-                    ? new Dictionary<string, object>() 
-                    : JsonSerializer.Deserialize<Dictionary<string, object>>(rd.GetString("Attributes"))!
-                        ?? new Dictionary<string, object>();
-                
-                product.UserId = rd.GetGuid("UserId");
-
-                // Handle NULL image fields
-                if (!rd.IsDBNull(rd.GetOrdinal("Id_Image")))
+                int productId = rd.GetInt32("Id");
+                if (!dict.TryGetValue(productId, out var product))
                 {
-                    product.Id_Image = rd.GetInt32("Id_Image");
-                    product.Product_Id = rd.GetInt32("Product_Id");
-                    product.Image = (byte[])rd["Image"];
-                    product.Mimetype = rd.GetString("Mimetype");
-                    product.Filename = rd.GetString("Filename");
+                    product = ReadProductRow(rd);
+                    dict[productId] = product;
                 }
-                else
-                {
-                    // Set default values for products without images
-                    product.Id_Image = 0;
-                    product.Product_Id = product.Id;
-                    product.Image = null;
-                    product.Mimetype = null;
-                    product.Filename = null;
-                }
-                
-                list.Add(product);
+                var img = ReadImageRow(rd);
+                if (img != null) product.Images.Add(img);
             }
-            
-            coon.Close();
-            return list;
+            return dict.Values.ToList();
         }
-        
+
         public List<ProductAndImage> Get_fiveProducts()
         {
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
-            String sql = "SELECT p.*, pi.* FROM product p LEFT JOIN productsImage pi ON pi.Product_Id = p.Id ORDER BY p.Id DESC LIMIT 5;";
+            string sql = @"SELECT p.*, pi.*
+                           FROM (SELECT * FROM product ORDER BY Id DESC LIMIT 10) AS p
+                           LEFT JOIN productsImage pi ON pi.Product_Id = p.Id
+                           ORDER BY p.Id DESC;";
             MySqlCommand cmd = new MySqlCommand(sql, coon);
             MySqlDataReader rd = cmd.ExecuteReader();
-            List<ProductAndImage> list = new List<ProductAndImage>();
-            
+
+            var dict = new Dictionary<int, ProductAndImage>();
             while (rd.Read())
             {
-                ProductAndImage product = new ProductAndImage();
-                product.Id = rd.GetInt32("Id");
-                product.Name = rd.GetString("Name");
-                product.Description = rd.GetString("Description");
-                product.Price = rd.GetDecimal("price");
-                product.Stock = rd.GetInt32("Stock");
-                product.Category = rd.GetString("Category");
-                
-                // Handle NULL Attributes
-                product.Attributes = rd.IsDBNull(rd.GetOrdinal("Attributes")) 
-                    ? new Dictionary<string, object>() 
-                    : JsonSerializer.Deserialize<Dictionary<string, object>>(rd.GetString("Attributes"))!
-                        ?? new Dictionary<string, object>();
-                
-                product.UserId = rd.GetGuid("UserId");
-
-                // Handle NULL image fields
-                if (!rd.IsDBNull(rd.GetOrdinal("Id_Image")))
+                int productId = rd.GetInt32("Id");
+                if (!dict.TryGetValue(productId, out var product))
                 {
-                    product.Id_Image = rd.GetInt32("Id_Image");
-                    product.Product_Id = rd.GetInt32("Product_Id");
-                    product.Image = (byte[])rd["Image"];
-                    product.Mimetype = rd.GetString("Mimetype");
-                    product.Filename = rd.GetString("Filename");
+                    product = ReadProductRow(rd);
+                    dict[productId] = product;
                 }
-                else
-                {
-                    // Set default values for products without images
-                    product.Id_Image = 0;
-                    product.Product_Id = product.Id;
-                    product.Image = null;
-                    product.Mimetype = null;
-                    product.Filename = null;
-                }
-                
-                list.Add(product);
+                var img = ReadImageRow(rd);
+                if (img != null) product.Images.Add(img);
             }
-            
-            coon.Close();
-            return list;
+            return dict.Values.ToList();
         }
-        
+
         public ProductAndImage GetProductById(int id)
         {
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
-            String sql = "SELECT p.*, pi.* FROM product p LEFT JOIN productsImage pi ON pi.Product_Id = p.Id WHERE p.Id = @id; ";
+            string sql = "SELECT p.*, pi.* FROM product p LEFT JOIN productsImage pi ON pi.Product_Id = p.Id WHERE p.Id = @id;";
             using MySqlCommand cmd = new MySqlCommand(sql, coon);
             cmd.Parameters.AddWithValue("@id", id);
             MySqlDataReader rd = cmd.ExecuteReader();
-            
-            ProductAndImage product = new ProductAndImage();
-            
-            if (!rd.Read())
-            {
-                return null!;
-            }
-            
-            product.Id = rd.GetInt32("Id");
-            product.Name = rd.GetString("Name");
-            product.Description = rd.GetString("Description");
-            product.Price = rd.GetDecimal("price");
-            product.Stock = rd.GetInt32("Stock");
-            product.Category = rd.GetString("Category");
-            
-            // Handle NULL Attributes
-            product.Attributes = rd.IsDBNull(rd.GetOrdinal("Attributes")) 
-                ? new Dictionary<string, object>() 
-                : JsonSerializer.Deserialize<Dictionary<string, object>>(rd.GetString("Attributes"))!
-                    ?? new Dictionary<string, object>();
-            
-            product.UserId = rd.GetGuid("UserId");
 
-            // Handle NULL image fields
-            if (!rd.IsDBNull(rd.GetOrdinal("Id_Image")))
+            ProductAndImage? product = null;
+            while (rd.Read())
             {
-                product.Id_Image = rd.GetInt32("Id_Image");
-                product.Product_Id = rd.GetInt32("Product_Id");
-                product.Image = (byte[])rd["Image"];
-                product.Mimetype = rd.GetString("Mimetype");
-                product.Filename = rd.GetString("Filename");
+                if (product == null) product = ReadProductRow(rd);
+                var img = ReadImageRow(rd);
+                if (img != null) product.Images.Add(img);
             }
-            else
-            {
-                // Set default values for products without images
-                product.Id_Image = 0;
-                product.Product_Id = product.Id;
-                product.Image = null;
-                product.Mimetype = null;
-                product.Filename = null;
-            }
-            
-            return product;
+            return product!;
         }
-        
+
         public List<ProductAndImage> GetProductsByUserId(Guid userId)
         {
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
-            String sql = "SELECT p.*, pi.* FROM product p LEFT JOIN productsImage pi ON pi.Product_Id = p.Id WHERE p.UserId = @userId;";
+            string sql = "SELECT p.*, pi.* FROM product p LEFT JOIN productsImage pi ON pi.Product_Id = p.Id WHERE p.UserId = @userId ORDER BY p.Id;";
             using MySqlCommand cmd = new MySqlCommand(sql, coon);
             cmd.Parameters.AddWithValue("@userId", userId);
-            
             MySqlDataReader rd = cmd.ExecuteReader();
-            List<ProductAndImage> list = new List<ProductAndImage>();
-            
+
+            var dict = new Dictionary<int, ProductAndImage>();
             while (rd.Read())
             {
-                ProductAndImage product = new ProductAndImage();
-                product.Id = rd.GetInt32("Id");
-                product.Name = rd.GetString("Name");
-                product.Description = rd.GetString("Description");
-                product.Price = rd.GetDecimal("price");
-                product.Stock = rd.GetInt32("Stock");
-                product.Category = rd.GetString("Category");
-                
-                // Handle NULL Attributes
-                product.Attributes = rd.IsDBNull(rd.GetOrdinal("Attributes")) 
-                    ? new Dictionary<string, object>() 
-                    : JsonSerializer.Deserialize<Dictionary<string, object>>(rd.GetString("Attributes"))!
-                        ?? new Dictionary<string, object>();
-                
-                product.UserId = rd.GetGuid("UserId");
-
-                // Handle NULL image fields
-                if (!rd.IsDBNull(rd.GetOrdinal("Id_Image")))
+                int productId = rd.GetInt32("Id");
+                if (!dict.TryGetValue(productId, out var product))
                 {
-                    product.Id_Image = rd.GetInt32("Id_Image");
-                    product.Product_Id = rd.GetInt32("Product_Id");
-                    product.Image = (byte[])rd["Image"];
-                    product.Mimetype = rd.GetString("Mimetype");
-                    product.Filename = rd.GetString("Filename");
+                    product = ReadProductRow(rd);
+                    dict[productId] = product;
                 }
-                else
-                {
-                    // Set default values for products without images
-                    product.Id_Image = 0;
-                    product.Product_Id = product.Id;
-                    product.Image = null;
-                    product.Mimetype = null;
-                    product.Filename = null;
-                }
-                
-                list.Add(product);
+                var img = ReadImageRow(rd);
+                if (img != null) product.Images.Add(img);
             }
-            
-            coon.Close();
-            return list;
+            return dict.Values.ToList();
         }
-        
-        public void AddProduct(Product product)
+
+        public int AddProduct(Product product)
         {
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
-            string Sql = "INSERT INTO product (Name, Description, Price, Stock, Attributes, Category, UserId) VALUES (@Name, @Description, @Price, @Stock, @Attributes, @Category, @UserId)";
-            using MySqlCommand cmd = new MySqlCommand(Sql, coon);
+            string sql = "INSERT INTO product (Name, Description, Price, Stock, Attributes, Category, UserId) VALUES (@Name, @Description, @Price, @Stock, @Attributes, @Category, @UserId); SELECT LAST_INSERT_ID();";
+            using MySqlCommand cmd = new MySqlCommand(sql, coon);
             cmd.Parameters.AddWithValue("@Name", product.Name);
             cmd.Parameters.AddWithValue("@Description", product.Description);
             cmd.Parameters.AddWithValue("@Price", product.Price);
@@ -242,88 +149,53 @@ namespace TicketProductApi.Repo
             cmd.Parameters.AddWithValue("@Attributes", JsonSerializer.Serialize(product.Attributes));
             cmd.Parameters.AddWithValue("@Category", product.Category);
             cmd.Parameters.AddWithValue("@UserId", product.UserId);
-            cmd.ExecuteNonQuery();
+            return Convert.ToInt32(cmd.ExecuteScalar());
         }
-        
+
         public List<String> GetCategories()
         {
-            /* Declaring The List That Will Contain The All Of The Existing Categories */
-            List<String> Categories_List = new List<String>() ;
-            /* The Sql Process */
+            List<String> list = new List<String>();
             using MySqlConnection conn = new MySqlConnection(connection);
             conn.Open();
             MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT Category FROM product", conn);
             MySqlDataReader rd = cmd.ExecuteReader();
-            while ( rd.Read() )
-            {
-                Categories_List.Add( rd[0].ToString() );
-            }
-            /* The Returned List */
-            return Categories_List;
+            while (rd.Read()) list.Add(rd[0].ToString()!);
+            return list;
         }
+
         public void AddImage(ProductImage image)
         {
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
-            string Sql = "INSERT INTO productsImage (Product_Id, Image, Mimetype, Filename) VALUES (@Product_Id, @Image, @Mimetype, @Filename)";
-            using MySqlCommand cmd = new MySqlCommand(Sql, coon);
+            string sql = "INSERT INTO productsImage (Product_Id, Image, Mimetype, Filename) VALUES (@Product_Id, @Image, @Mimetype, @Filename)";
+            using MySqlCommand cmd = new MySqlCommand(sql, coon);
             cmd.Parameters.AddWithValue("@Product_Id", image.Product_Id);
             cmd.Parameters.AddWithValue("@Image", image.Image);
             cmd.Parameters.AddWithValue("@Mimetype", image.Mimetype);
             cmd.Parameters.AddWithValue("@Filename", image.Filename);
             cmd.ExecuteNonQuery();
         }
-        
+
         public void DeleteProduct(int id)
         {
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
-            string Sql = "DELETE FROM product WHERE Id = @Id ";
-            using MySqlCommand cmd = new MySqlCommand(Sql, coon);
+            string sql = "DELETE FROM product WHERE Id = @Id";
+            using MySqlCommand cmd = new MySqlCommand(sql, coon);
             cmd.Parameters.AddWithValue("@Id", id);
             cmd.ExecuteNonQuery();
-
-            coon.Close();
         }
-        
+
         public void DeleteImage(int id)
         {
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
-            string Sql = "DELETE FROM productsImage WHERE Id_Image = @Id";
-            using MySqlCommand cmd = new MySqlCommand(Sql, coon);
+            string sql = "DELETE FROM productsImage WHERE Id_Image = @Id";
+            using MySqlCommand cmd = new MySqlCommand(sql, coon);
             cmd.Parameters.AddWithValue("@Id", id);
             cmd.ExecuteNonQuery();
-            coon.Close();
         }
-        
-        public void UpdateProductAndImage(ProductAndImage product) 
-        { 
-            using MySqlConnection coon = new MySqlConnection(connection);
-            coon.Open();
-            string sql = "UPDATE product SET Name = @Name, Description = @Description, Price = @Price, Stock = @Stock, Attributes = @Attributes, Category = @Category, UserId = @UserId WHERE Id = @Id";
-            using MySqlCommand cmd = new MySqlCommand(sql, coon);
-            cmd.Parameters.AddWithValue("@Name", product.Name);
-            cmd.Parameters.AddWithValue("@Description", product.Description);
-            cmd.Parameters.AddWithValue("@Price", product.Price);
-            cmd.Parameters.AddWithValue("@Stock", product.Stock);
-            cmd.Parameters.AddWithValue("@Attributes", JsonSerializer.Serialize(product.Attributes));
-            cmd.Parameters.AddWithValue("@Category", product.Category);
-            cmd.Parameters.AddWithValue("@UserId", product.UserId);
-            cmd.Parameters.AddWithValue("@Id", product.Id);
-            cmd.ExecuteNonQuery();
-            
-            string imagequerry = "UPDATE productsImage SET Image = @Image, Mimetype = @Mimetype, Filename = @Filename WHERE Product_Id = @Id";
-            using MySqlCommand cmdImage = new MySqlCommand(imagequerry, coon);
-            cmdImage.Parameters.AddWithValue("@Image", product.Image);
-            cmdImage.Parameters.AddWithValue("@Mimetype", product.Mimetype);
-            cmdImage.Parameters.AddWithValue("@Filename", product.Filename);
-            cmdImage.Parameters.AddWithValue("@Id", product.Id);
-            cmdImage.ExecuteNonQuery();
-            
-            coon.Close();
-        }
-        
+
         public void UpdateProduct(Product product)
         {
             using MySqlConnection coon = new MySqlConnection(connection);
@@ -340,7 +212,7 @@ namespace TicketProductApi.Repo
             cmd.Parameters.AddWithValue("@Id", product.Id);
             cmd.ExecuteNonQuery();
         }
-        
+
         public void UpdateImage(ProductImage image)
         {
             using MySqlConnection coon = new MySqlConnection(connection);
@@ -352,7 +224,35 @@ namespace TicketProductApi.Repo
             cmd.Parameters.AddWithValue("@Filename", image.Filename);
             cmd.Parameters.AddWithValue("@ProductId", image.Product_Id);
             cmd.ExecuteNonQuery();
-            coon.Close();
+        }
+
+        public void UpdateProductAndImage(ProductAndImage product)
+        {
+            using MySqlConnection coon = new MySqlConnection(connection);
+            coon.Open();
+            string sql = "UPDATE product SET Name = @Name, Description = @Description, Price = @Price, Stock = @Stock, Attributes = @Attributes, Category = @Category, UserId = @UserId WHERE Id = @Id";
+            using MySqlCommand cmd = new MySqlCommand(sql, coon);
+            cmd.Parameters.AddWithValue("@Name", product.Name);
+            cmd.Parameters.AddWithValue("@Description", product.Description);
+            cmd.Parameters.AddWithValue("@Price", product.Price);
+            cmd.Parameters.AddWithValue("@Stock", product.Stock);
+            cmd.Parameters.AddWithValue("@Attributes", JsonSerializer.Serialize(product.Attributes));
+            cmd.Parameters.AddWithValue("@Category", product.Category);
+            cmd.Parameters.AddWithValue("@UserId", product.UserId);
+            cmd.Parameters.AddWithValue("@Id", product.Id);
+            cmd.ExecuteNonQuery();
+
+            var first = product.Images.FirstOrDefault();
+            if (first != null)
+            {
+                string imageQuery = "UPDATE productsImage SET Image = @Image, Mimetype = @Mimetype, Filename = @Filename WHERE Product_Id = @Id";
+                using MySqlCommand cmdImage = new MySqlCommand(imageQuery, coon);
+                cmdImage.Parameters.AddWithValue("@Image", first.Image);
+                cmdImage.Parameters.AddWithValue("@Mimetype", first.Mimetype);
+                cmdImage.Parameters.AddWithValue("@Filename", first.Filename);
+                cmdImage.Parameters.AddWithValue("@Id", product.Id);
+                cmdImage.ExecuteNonQuery();
+            }
         }
     }
 }

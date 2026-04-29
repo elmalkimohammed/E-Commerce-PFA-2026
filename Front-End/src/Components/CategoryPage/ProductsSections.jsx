@@ -61,8 +61,8 @@ function ProductsSection({ productsList , desiredCategory , desiredPrice }) {
                         prodName={prod.name}
                         prodCateg={prod.category}
                         prodPrice={prod.price}
-                        prodImage={prod.image}
-                        prodMime={prod.mimetype}
+                        prodImage={prod.images?.[0]?.image}
+                        prodMime={prod.images?.[0]?.mimetype}
                     />
 
                 ))}

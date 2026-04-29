@@ -1,88 +1,66 @@
 .features-bar {
-  background: var(--surface);
-  padding: 34px 24px 48px;
+  background: #fff;
+  border-top: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 0 24px;
+  font-family: 'Barlow', sans-serif;
 }
 
 .features-grid {
-  max-width: 1100px;
-  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .feature-item {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 14px;
-  text-align: left;
-  padding: 12px 10px;
+  padding: 24px 20px;
+  border-right: 1px solid #e8e8e8;
+  transition: background 0.2s;
 }
+.feature-item:last-child { border-right: none; }
+.feature-item:hover { background: #f5f5f5; }
 
 .feature-icon {
-  width: 42px;
-  height: 42px;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--primary);
-  font-size: 28px;
+}
+.feature-icon i {
+  font-size: 22px;
+  color: #000;
 }
 
 .feature-text h4 {
-  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
   font-size: 14px;
-  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #000;
+  margin: 0 0 2px;
 }
-
 .feature-text p {
-  margin-top: 4px;
   font-size: 12px;
-  color: var(--muted);
+  color: #767677;
+  margin: 0;
 }
 
-/* Responsive FeaturesBar */
 @media (max-width: 768px) {
-  .features-bar {
-    padding: 24px 16px 32px;
-  }
-
-  .features-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-
-  .feature-item {
-    flex-direction: column;
-    text-align: center;
-    padding: 16px 10px;
-  }
-
-  .feature-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 24px;
-  }
-
-  .feature-text h4 {
-    font-size: 13px;
-  }
-
-  .feature-text p {
-    font-size: 11px;
-  }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .feature-item:nth-child(2) { border-right: none; }
+  .feature-item { border-bottom: 1px solid #e8e8e8; }
+  .feature-item:nth-child(3),
+  .feature-item:nth-child(4) { border-bottom: none; }
 }
-
 @media (max-width: 480px) {
-  .features-bar {
-    padding: 20px 12px 28px;
-  }
-
-  .features-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
+  .features-grid { grid-template-columns: 1fr; }
+  .feature-item { border-right: none; border-bottom: 1px solid #e8e8e8; }
+  .feature-item:last-child { border-bottom: none; }
 }
-
-

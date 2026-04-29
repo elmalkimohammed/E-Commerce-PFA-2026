@@ -1,0 +1,22 @@
+.repport-parent {
+    min-height: 100vh;
+    background: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+}
+
+.repport-container {
+    display: flex;
+    flex: 1;
+    gap: 24px;
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.repport-main {
+    flex: 1;
+    min-width: 0;
+}
