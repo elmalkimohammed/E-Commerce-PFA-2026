@@ -1,34 +1,107 @@
 .cmdDescContainer {
-    background-color: #f8f9fa;
+    background-color: #ffffff;
     position: sticky;
     display: flex;
     flex-direction: column;
-    gap: 2em;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    gap: 0;
+    padding: 0;
+    border-radius: 16px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+}
+.cmdDescContainer h1 {
+    padding: 24px 24px 20px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0;
+}
+.cmdDescContainer hr {
+    margin: 0;
+    border: none;
+    border-top: 1px solid #e5e7eb;
+}
+.headerRes {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.headerRes p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+.delivery {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+}
+.delivery p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #374151;
+}
+.delivery p:last-child {
+    color: #059669;
+    font-weight: 600;
 }
 .footerRes {
     display: flex;
     flex-direction: column;
-    gap: 1em;
+    gap: 0;
+    background-color: #f9fafb;
+    padding: 24px;
 }
-.totalPrice , .delivery {
+.totalPrice {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.totalPrice p {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+.totalPrice span {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a1a2e;
 }
 .buttons {
     display: flex;
-    gap: 1em;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
 }
 .cmdDescContainer button {
-    width: fit-content;
+    width: 100%;
     align-self: center;
-    padding:10px;
-    background-color: rgb(72, 187, 120);
+    padding: 14px 20px;
     border-style: none;
-    border-radius: 5px;
-    color: #fff;
-    font-weight: bold;
+    border-radius: 8px;
+    font-weight: 600;
     cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+.buttons button:first-child {
+    background-color: transparent;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+}
+.buttons button:first-child:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+.buttons button:last-child {
+    background-color: #059669;
+    color: #ffffff;
+}
+.buttons button:last-child:hover {
+    background-color: #047857;
 }
