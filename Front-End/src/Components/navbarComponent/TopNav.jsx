@@ -161,7 +161,7 @@ function TopNav() {
   return (
     <>
       <nav className="top-nav">
-        <p className="brand">TechStore</p>
+        <p className="brand">GearGrit</p>
 
         <button
           type="button"
