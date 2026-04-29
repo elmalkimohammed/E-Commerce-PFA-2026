@@ -279,16 +279,7 @@ const SavePublicInfo = async () => {
                 <InputField label="Adresse" value={user.address ?? ""} onChange={updateUser("address")} placeholder="Votre adresse complète" />
               </div>
 
-              <div style={styles.photoSection}>
-                <Avatar src={user.avatar} name={`${user.firstName ?? ""} ${user.lastName ?? ""}`} size={56} />
-                <div style={styles.photoInfo}>
-                  <div style={styles.photoTitle}>Photo de profil</div>
-                  <div style={styles.photoSubtitle}>Formats JPG, PNG. Max 2 Mo.</div>
-                  <button onClick={() => fileRef.current.click()} style={styles.photoButton}>
-                    Changer la photo
-                  </button>
-                </div>
-              </div>
+              
 
               {/* Inline save button replacing ActionButtons */}
               <div style={styles.actionButtons}>
