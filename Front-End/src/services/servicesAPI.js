@@ -11,5 +11,6 @@ const orderAPI = "http://localhost:5006/api/orders"
 const repportAPI = "http://localhost:5008/repport"
 
 const subsAPI = "http://localhost:5005/api/Subscription"
+const reviewAPI = "http://localhost:5007/api/reviews"
 
-export { cartAPI , authAPI , prodAPI , userAPI , orderAPI , subsAPI , repportAPI }  ;
+export { cartAPI , authAPI , prodAPI , userAPI , orderAPI , subsAPI , repportAPI , reviewAPI };  ;
