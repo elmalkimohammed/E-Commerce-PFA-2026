@@ -180,6 +180,26 @@ services:
       - ./Back-End/RepportsService/initial/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - ecommerce-network
+  mysql:
+    image: mysql:8.0
+    container_name: notification-db
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: notificationdb
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3014:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./Back-End/notificationservice/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - ecommerce-network
   #___Micro-Services___
   AuthServiceAPI:
     build: 
@@ -354,6 +374,24 @@ services:
       - ./logs/repport:/app/logs
     networks:
       - ecommerce-network
+  notification-service:
+    build:
+      context: ./Back-End/notificationservice
+      dockerfile: Dockerfile
+    container_name: notification-service
+    ports:
+      - "5010:8086"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/notificationdb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: mysql
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - ecommerce-network
 
 volumes:
   AuthServiceDB-data: 
@@ -371,6 +409,8 @@ volumes:
   postgres_data:
     driver: local
   RepportServiceDB-data:
+    driver: local
+  mysql_data:
     driver: local
 networks:
   ecommerce-network:
