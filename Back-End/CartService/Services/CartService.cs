@@ -38,7 +38,29 @@ namespace CartService.Services
                 throw new Exception("The Product Already Exists In The Cart!");
             }
         }
-
+        public async Task<List<CartResponse.AllCartResponse>> GetAllCartsAsync()
+        {
+            // Récupérer tous les paniers depuis le repository
+            var allCarts = await _cartRepository.GetAllCartsAsync();
+            
+            // Si aucun panier n'existe, retourner une liste vide
+            if (allCarts == null || !allCarts.Any())
+            {
+                return new List<CartResponse.AllCartResponse>();
+            }
+            
+            // Mapper chaque panier vers le DTO de réponse
+            return allCarts.Select(cart => new CartResponse.AllCartResponse
+            {
+                CartId = cart.CartId,
+                UserId = cart.UserId,
+                Items = cart.Items?.Select(item => new CartResponse.CartItemDto
+                {
+                    ProductId = item.ProductId,
+                    Stock = item.Stock
+                }).ToList() ?? new List<CartResponse.CartItemDto>()
+            }).ToList();
+        }
         public async Task ClearAll_OfCart(Guid userId)
         {
             // Gathering The Cart for the user

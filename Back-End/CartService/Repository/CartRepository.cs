@@ -62,6 +62,53 @@ namespace CartService.Repository
             // Return The Entire Cart
             return cart;
         }
+        // Get All Carts For All Users
+        public async Task<List<Cart>> GetAllCartsAsync()
+        {
+            // Initializing The Database Connection
+            using var conn = new MySqlConnection(this._connString);
+            await conn.OpenAsync();
+            
+            // MySql Query To Get All Carts
+            var cmdCarts = new MySqlCommand("SELECT * FROM Carts ORDER BY CreatedAt DESC", conn);
+            var carts = new List<Cart>();
+            
+            using var reader = await cmdCarts.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                var cart = new Cart
+                {
+                    CartId = Guid.Parse(reader["CartId"].ToString()!),
+                    UserId = Guid.Parse(reader["UserId"].ToString()!),
+                    CreatedAt = Convert.ToDateTime(reader["CreatedAt"]),
+                    Items = new List<CartItem>()
+                };
+                carts.Add(cart);
+            }
+            reader.Close();
+            
+            // Get Items For Each Cart
+            foreach (var cart in carts)
+            {
+                var cmdItems = new MySqlCommand("SELECT * FROM CartItems WHERE CartId = @cartId", conn);
+                cmdItems.Parameters.AddWithValue("@cartId", cart.CartId.ToString());
+                
+                using var itemsReader = await cmdItems.ExecuteReaderAsync();
+                while (await itemsReader.ReadAsync())
+                {
+                    cart.Items.Add(new CartItem
+                    {
+                        CartItemId = Guid.Parse(itemsReader["CartItemId"].ToString()!),
+                        CartId = Guid.Parse(itemsReader["CartId"].ToString()!),
+                        ProductId = Convert.ToInt32(itemsReader["ProductId"]),
+                        Stock = Convert.ToInt32(itemsReader["Quantity"])
+                    });
+                }
+                await itemsReader.CloseAsync();
+            }
+            
+            return carts;
+        }
         // Create A Cart For The User
         public async Task<Cart> CreateCart_ForUser(Guid userId)
         {

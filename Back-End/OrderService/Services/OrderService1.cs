@@ -31,6 +31,11 @@ public class OrderService1 : IOrderService
         var created = await _repository.CreateAsync(order);
         return MapToDto(created);
     }
+    public async Task<IEnumerable<OrderResponseDto>> GetAllOrdersAsync()
+    {
+        var orders = await _repository.GetAllOrdersAsync();
+        return orders.Select(MapToDto);
+    }
 
     public async Task<OrderResponseDto> CreateSingleProductOrderAsync(Guid userId, OrderItemDto item)
     {

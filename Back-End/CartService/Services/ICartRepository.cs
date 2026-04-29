@@ -10,5 +10,6 @@ namespace CartService.Services
         Task UpdateStock_ForCartItem(Guid cartId, UpdateStockRequest req);  
         Task RemoveItem_FromCart(Guid cartId, int productId);   
         Task RemoveAll_FromCart(Guid cartId);   
+        Task<List<Cart>> GetAllCartsAsync();
     }
 }

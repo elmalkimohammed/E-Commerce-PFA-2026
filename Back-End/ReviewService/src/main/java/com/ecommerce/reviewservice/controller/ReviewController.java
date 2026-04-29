@@ -1,7 +1,6 @@
 package com.ecommerce.reviewservice.controller;
 
 import com.ecommerce.reviewservice.dto.*;
-import com.ecommerce.reviewservice.entity.Review;
 import com.ecommerce.reviewservice.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/reviews")
 @RequiredArgsConstructor
@@ -16,34 +16,34 @@ public class ReviewController {
 
     private final ReviewService service;
 
-    
     @PostMapping
-    public Review create(@RequestBody @Valid CreateReviewDto dto) {
+    public GetReviewDto create(@RequestBody @Valid CreateReviewDto dto) {
         return service.create(dto);
     }
-
+    
+    @GetMapping("/all")
+    public List<GetReviewDto> getAll() {
+        return service.getAll();
+    }
     
     @GetMapping("/product/{productId}")
-    public List<Review> getByProduct(@PathVariable UUID productId) {
+    public List<GetReviewDto> getByProduct(@PathVariable int productId) {
         return service.getByProduct(productId);
     }
 
-    
+
     @GetMapping("/product/{productId}/rating")
-    public double getRating(@PathVariable UUID productId) {
+    public double getRating(@PathVariable int productId) {
         return service.getRating(productId);
     }
 
-    
     @PutMapping("/{id}")
-    public Review update(@PathVariable UUID id,
-                         @RequestBody UpdateReviewDto dto) {
+    public GetReviewDto update(@PathVariable Long id, @RequestBody UpdateReviewDto dto) {
         return service.update(id, dto);
     }
-
-    
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
+
 }

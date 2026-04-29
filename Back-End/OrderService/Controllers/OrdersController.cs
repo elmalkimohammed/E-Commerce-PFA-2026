@@ -40,7 +40,12 @@ public class OrdersController(IOrderService orderService) : ControllerBase
         catch (KeyNotFoundException ex) { return NotFound(new { message = ex.Message }); }
         catch (ArgumentException ex) { return BadRequest(new { message = ex.Message }); }
     }
-
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAllOrders()
+    {
+        var orders = await orderService.GetAllOrdersAsync();
+        return Ok(orders);
+    }
     [HttpDelete("{orderId}")]
     public async Task<IActionResult> CancelOrder(Guid orderId)
     {

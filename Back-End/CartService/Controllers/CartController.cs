@@ -51,6 +51,13 @@ namespace CartService.Controllers
             await this._cartService.AddItem_ToCart(userId, request);
             return Ok( new { message = "Product Added To The Cart Successfully!" } );
         }
+        [HttpGet("all")]
+        [AllowAnonymous] // or keep [Authorize] with admin role
+        public async Task<IActionResult> GetAllCarts()
+        {
+            var carts = await _cartService.GetAllCartsAsync();
+            return Ok(carts);
+        }
         [HttpPut("updateStock")]
         public async Task<IActionResult> UpdateQuantity(UpdateStockRequest request)
         {
