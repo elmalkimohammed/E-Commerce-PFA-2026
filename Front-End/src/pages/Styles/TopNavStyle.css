@@ -24,6 +24,7 @@
   padding: 0 24px;
   height: 64px;
   font-family: var(--font-body);
+  color: var(--black);          /* base color for the whole nav */
   gap: 16px;
 }
 
@@ -69,22 +70,41 @@
   border-bottom-color: var(--accent);
 }
 
-/* ── USER ICONS ── */
+/* ── USER ICONS WRAPPER ── */
 .top-nav .user-icons {
   display: flex;
   align-items: center;
   gap: 4px;
   flex-shrink: 0;
+  color: var(--black);
 }
-.top-nav .user-icons i {
+
+/* Direct children icons (person, cart, bell) */
+.top-nav .user-icons > i,
+.top-nav .user-icons > .cart-icon > i,
+.top-nav .user-icons .notif-wrapper > i {
+  display: inline-block;
   font-size: 20px;
   padding: 8px;
   cursor: pointer;
   color: var(--black);
-  transition: color 0.2s;
+  background: transparent;
   line-height: 1;
+  transition: color 0.2s;
 }
-.top-nav .user-icons i:hover { color: var(--accent); }
+
+.top-nav .user-icons > i:hover,
+.top-nav .user-icons > .cart-icon > i:hover,
+.top-nav .user-icons .notif-wrapper > i:hover {
+  color: var(--accent);
+}
+
+/* Force the icon glyph itself (Bootstrap Icons render via ::before) */
+.top-nav .user-icons > i::before,
+.top-nav .user-icons > .cart-icon > i::before,
+.top-nav .user-icons .notif-wrapper > i::before {
+  color: inherit;
+}
 
 .cart-icon { position: relative; }
 
@@ -96,12 +116,12 @@
   font-size: 22px;
   cursor: pointer;
   padding: 6px;
+  color: var(--black);
 }
 
 /* ── SEARCH WRAPPER ── */
-.search-wrapper {
-  position: relative;
-}
+.search-wrapper { position: relative; }
+
 .search-input-row {
   display: flex;
   align-items: center;
@@ -117,7 +137,15 @@
   border-color: var(--black);
   background: var(--white);
 }
-.search-icon { font-size: 14px !important; padding: 0 !important; color: var(--gray-text) !important; }
+
+/* Search icon stays gray — explicitly scoped, no !important needed */
+.top-nav .search-input-row .search-icon {
+  font-size: 14px;
+  padding: 0;
+  color: var(--gray-text);
+  background: transparent;
+}
+
 .search-input {
   border: none;
   background: transparent;
@@ -128,6 +156,7 @@
   color: var(--black);
 }
 .search-input::placeholder { color: var(--gray-text); }
+
 .search-clear {
   background: none;
   border: none;
@@ -178,10 +207,11 @@
   font-family: var(--font-display);
   font-size: 14px;
   font-weight: 700;
+  color: var(--black);
   white-space: nowrap;
   flex-shrink: 0;
 }
-.search-mark { background: #fff3cd; padding: 0; }
+.search-mark { background: #fff3cd; padding: 0; color: var(--black); }
 .search-empty {
   padding: 16px 14px;
   font-size: 13px;
@@ -207,9 +237,10 @@
   border-bottom: 1px solid var(--gray-mid);
   cursor: pointer;
   transition: background 0.15s;
+  color: var(--black);
 }
 .notif-dropdown li:hover { background: var(--gray-light); }
-.notif-dropdown li strong { display: block; font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.notif-dropdown li strong { display: block; font-size: 13px; font-weight: 600; margin-bottom: 2px; color: var(--black); }
 .notif-dropdown li p { font-size: 12px; color: var(--gray-text); margin: 0 0 2px; }
 .notif-dropdown li small { font-size: 11px; color: var(--gray-text); }
 .notif-dropdown li.unread { border-left: 3px solid var(--accent); }
@@ -239,14 +270,15 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.75) !important;
+  color: rgba(255,255,255,0.75);
   text-decoration: none;
   padding: 4px 12px;
   border: 1px solid rgba(255,255,255,0.15);
   transition: color 0.2s, border-color 0.2s, background 0.2s;
+  cursor: pointer;
 }
 .hiddenCategories a:hover {
-  color: var(--white) !important;
+  color: var(--white);
   border-color: var(--white);
   background: rgba(255,255,255,0.1);
 }

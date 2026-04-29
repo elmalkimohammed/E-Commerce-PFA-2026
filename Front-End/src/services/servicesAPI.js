@@ -9,5 +9,6 @@ const userAPI = "http://localhost:5004/api/UserProfile"
 
 const orderAPI = "http://localhost:5006/api/orders"
 const repportAPI = "http://localhost:5008/repport"
+const reviewAPI = "http://localhost:5007/api/reviews"
 
-export { cartAPI , authAPI , prodAPI , userAPI , orderAPI, repportAPI }  ;
+export { cartAPI , authAPI , prodAPI , userAPI , orderAPI, repportAPI, reviewAPI }  ;
