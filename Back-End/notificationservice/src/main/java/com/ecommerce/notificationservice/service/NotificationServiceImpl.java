@@ -32,6 +32,13 @@ public class NotificationServiceImpl implements INotificationService {
                 .map(NotificationMapper::toResponse)
                 .collect(Collectors.toList());
     }
+    @Override
+    public NotificationResponse getNotification(UUID notifId) {
+        Notification notification = notificationRepository.findById(notifId)
+                .orElseThrow(() -> new NotificationNotFoundException(
+                        "Notification not found with ID: " + notifId));
+        return NotificationMapper.toResponse(notification);
+    }
 
     // ─── [POST] Welcome Notification ───
     @Override

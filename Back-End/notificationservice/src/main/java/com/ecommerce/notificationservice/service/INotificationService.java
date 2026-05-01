@@ -9,6 +9,8 @@ public interface INotificationService {
 
     // [GET] Récupérer toutes les notifications visibles d'un utilisateur
     List<NotificationResponse> getUserNotifications(UUID userId);
+        // [GET] Récupérer une notification spécifique
+    NotificationResponse getNotification(UUID notifId);
 
     // [POST] Créer une notification Welcome (nouveau compte)
     NotificationResponse createWelcomeNotification(UUID userId);

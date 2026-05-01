@@ -22,10 +22,16 @@ public class NotificationController {
     // ─── [GET] Récupérer toutes les notifications d'un utilisateur ───
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<NotificationResponse>> getUserNotifications(
-            @PathVariable UUID userId) {
+            @PathVariable UUID usegit rId) {
         List<NotificationResponse> notifications =
                 notificationService.getUserNotifications(userId);
         return ResponseEntity.ok(notifications); // 200
+    }
+    @GetMapping("/user/notif/{notifId}")
+    public ResponseEntity<NotificationResponse> getNotification(
+            @PathVariable UUID notifId) {
+        NotificationResponse notification = notificationService.getNotification(notifId);
+        return ResponseEntity.ok(notification); // 200
     }
 
     // ─── [POST] Welcome Notification ───
