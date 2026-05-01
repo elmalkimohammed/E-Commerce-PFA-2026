@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap');
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --gray-light: #f5f5f5;
+  --gray-mid: #e8e8e8;
+  --gray-text: #767677;
+  --accent: #e31837;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+}
+
+/* Inventory Sidebar Styles */
+.inventory-sidebar {
+  width: 260px;
+  background: var(--white);
+  padding: 20px;
+  border: 1px solid var(--gray-mid);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.sidebar-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--black);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--accent);
+  text-align: left;
+}
+
+.sidebar-table-btn {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  background: var(--gray-light);
+  color: var(--black);
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  text-align: left;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-table-btn i {
+  font-size: 16px;
+  width: 24px;
+  color: var(--gray-text);
+}
+
+.sidebar-table-btn:hover {
+  background: var(--gray-mid);
+  transform: translateX(4px);
+}
+
+.sidebar-table-btn.active {
+  background: var(--accent);
+  color: var(--white);
+  border-left: 3px solid var(--accent);
+}
+
+.sidebar-table-btn.active i {
+  color: var(--white);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .inventory-sidebar {
+    width: 100%;
+    position: static;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar-table-btn {
+    text-align: center;
+    justify-content: center;
+  }
+}

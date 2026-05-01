@@ -33,6 +33,13 @@ export async function getAllOrders() {
   }
 }
 
+// ---------------- CREATE ORDER (ADD THIS) ----------------
+export function createOrder(payload) {
+  return axios.post(orderAPI, payload, {
+    headers: getAuthHeaders(),
+  });
+}
+
 // ---------------- CARTS ----------------
 export async function getAllCarts() {
   try {

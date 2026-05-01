@@ -1,0 +1,407 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap');
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --gray-light: #f5f5f5;
+  --gray-mid: #e8e8e8;
+  --gray-text: #767677;
+  --accent: #e31837;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+}
+
+/* Inventory Manager Container */
+.inventory-manager-container {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--white);
+}
+
+/* Content Area */
+.inventory-manager-content {
+  padding: 32px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Title */
+.inventory-manager-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--black);
+  margin-bottom: 28px;
+  margin-top: 8px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--accent);
+  display: inline-block;
+}
+
+/* Layout with Sidebar */
+.inventory-manager-layout {
+  display: flex;
+  gap: 32px;
+  min-height: calc(100vh - 200px);
+}
+
+/* Main Content Area */
+.inventory-manager-main {
+  flex: 1;
+  background: var(--white);
+  padding: 24px;
+  border: 1px solid var(--gray-mid);
+  overflow-x: auto;
+}
+
+/* Table Header Styles */
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--gray-mid);
+}
+
+.table-header h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--black);
+  margin: 0;
+}
+
+.table-count {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--gray-text);
+  background: var(--gray-light);
+  padding: 6px 14px;
+  border-radius: 2px;
+  margin: 0;
+}
+
+/* Table Styles */
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+}
+
+.inventory-table th {
+  background: var(--gray-light);
+  color: var(--black);
+  padding: 14px 12px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--gray-mid);
+}
+
+.inventory-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--gray-mid);
+  color: var(--gray-text);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.inventory-table tr:hover {
+  background: var(--gray-light);
+}
+
+/* Action Buttons */
+.action-edit {
+  background: transparent;
+  color: var(--black);
+  border: 1px solid var(--gray-mid);
+  padding: 6px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  margin-right: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  transition: all 0.2s ease;
+}
+
+.action-edit:hover {
+  background: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
+}
+
+.action-delete {
+  background: transparent;
+  color: var(--black);
+  border: 1px solid var(--gray-mid);
+  padding: 6px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  transition: all 0.2s ease;
+}
+
+.action-delete:hover {
+  background: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
+}
+
+/* Loading Container */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--gray-text);
+}
+
+/* Message Popup */
+.message-success {
+  padding: 12px 20px;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  background: #d4edda;
+  color: #155724;
+  border-left: 4px solid #28a745;
+  animation: fadeOut 3s ease-in-out forwards;
+}
+
+.message-error {
+  padding: 12px 20px;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  background: #f8d7da;
+  color: #721c24;
+  border-left: 4px solid var(--accent);
+  animation: fadeOut 3s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; display: none; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .inventory-manager-content {
+    padding: 20px;
+  }
+  
+  .inventory-manager-layout {
+    flex-direction: column;
+  }
+  
+  .inventory-manager-title {
+    font-size: 28px;
+  }
+  
+  .table-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .inventory-table th,
+  .inventory-table td {
+    padding: 8px;
+    font-size: 12px;
+  }
+  
+  .action-edit,
+  .action-delete {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+}
+/* Create Form Styles */
+.create-page h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--black);
+}
+
+.create-buttons {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--gray-mid);
+  padding-bottom: 16px;
+}
+
+.create-btn {
+  background: transparent;
+  color: var(--black);
+  border: 1px solid var(--gray-mid);
+  padding: 10px 24px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.create-btn:hover {
+  background: var(--gray-light);
+}
+
+.create-btn.active {
+  background: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
+}
+
+.create-form {
+  border: 1px solid var(--gray-mid);
+  padding: 28px;
+  max-width: 550px;
+  background: var(--white);
+}
+
+.create-form h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--black);
+}
+
+.create-form input,
+.create-form select,
+.create-form textarea {
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid var(--gray-mid);
+  font-family: var(--font-body);
+  font-size: 14px;
+  background: var(--white);
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.create-form input:focus,
+.create-form select:focus,
+.create-form textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.create-form button {
+  background: var(--accent);
+  color: var(--white);
+  border: none;
+  padding: 12px 28px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: opacity 0.2s ease;
+  margin-top: 8px;
+}
+
+.create-form button:hover {
+  opacity: 0.9;
+}
+
+.create-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Logs Page Styles */
+.logs-page h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--black);
+}
+
+.logs-buttons {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--gray-mid);
+  padding-bottom: 16px;
+}
+
+.logs-btn {
+  background: transparent;
+  color: var(--black);
+  border: 1px solid var(--gray-mid);
+  padding: 10px 24px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.logs-btn:hover {
+  background: var(--gray-light);
+}
+
+.logs-btn.active {
+  background: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
+}
+
+.logs-container {
+  background: var(--gray-light);
+  border: 1px solid var(--gray-mid);
+  padding: 20px;
+  font-family: 'Courier New', monospace;
+  max-height: 600px;
+  overflow-y: auto;
+  font-size: 13px;
+}
+
+.logs-header {
+  border-bottom: 1px solid var(--gray-mid);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.logs-header h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--black);
+}
+
+.logs-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin: 0;
+  line-height: 1.5;
+  color: var(--gray-text);
+}

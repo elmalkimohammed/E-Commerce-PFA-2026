@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap');
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --gray-light: #f5f5f5;
+  --gray-mid: #e8e8e8;
+  --gray-text: #767677;
+  --accent: #e31837;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+}
+
+/* Top Navigation for Inventory Manager */
+.inventoryNav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-mid);
+  padding: 0 40px;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.inventory-nav-btn {
+  background: transparent;
+  color: var(--black);
+  border: none;
+  padding: 0 16px;
+  height: 64px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.inventory-nav-btn:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.inventory-nav-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.profile-icon {
+  margin-left: auto;
+  font-size: 20px;
+  text-decoration: none;
+  color: var(--black);
+  padding: 0 16px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.profile-icon:hover {
+  color: var(--accent);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .inventoryNav {
+    padding: 0 20px;
+    gap: 4px;
+    overflow-x: auto;
+  }
+  
+  .inventory-nav-btn {
+    padding: 0 12px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  
+  .profile-icon {
+    padding: 0 12px;
+  }
+}

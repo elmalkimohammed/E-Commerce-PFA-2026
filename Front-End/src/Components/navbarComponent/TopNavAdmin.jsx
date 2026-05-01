@@ -7,6 +7,7 @@ function TopNavAdmin() {
             <nav className="adminNav">
                 <a href="/adminMonitoring">Surveillance</a>
                 <a href="/adminCrudPage">Opérations/Controlle</a>
+                <a href="/inventoryManager">Inventory Manager</a>
                 <a href="/adminProfilePage" className="bi bi-person"></a>
             </nav>
         </div>

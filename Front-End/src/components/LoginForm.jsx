@@ -47,7 +47,11 @@ function LoginForm( { onSwitch } ) {
             // Redirect based on role
             if (userRole === "Admin") {
                 navigate("/adminMonitoring") // or navigate("/MonitoringPage")
-            } else {
+            }
+            if ( userRole === "Invet" ) {
+                navigate("/inventoryManager") // or navigate("/inventoryManager")
+            }
+            else {
                 navigate("/") // Regular user home page
             }
             
