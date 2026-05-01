@@ -272,3 +272,16 @@
   .top-nav .redirect a { line-height: 1; padding: 12px 24px; width: 100%; border-bottom: none; }
   .search-input-row { width: 160px; }
 }
+.notif-see-all {
+  text-align: center;
+  padding: 10px;
+  font-size: 13px;
+  color: #007bff;
+  cursor: pointer;
+  border-top: 1px solid #eee;
+  list-style: none;
+}
+
+.notif-see-all:hover {
+  background-color: #f0f4ff;
+}

@@ -382,13 +382,18 @@ services:
     ports:
       - "5010:8086"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/notificationdb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/notificationdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: mysql
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092          # ← ajout
+      SPRING_KAFKA_CONSUMER_GROUP_ID: notification-service-group  # ← ajout
+      SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET: earliest    # ← ajout
     depends_on:
       mysql:
         condition: service_healthy
+      kafka:
+        condition: service_started
     restart: on-failure
     networks:
       - ecommerce-network

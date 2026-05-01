@@ -16,6 +16,7 @@ function TopNav() {
   const [menuOpen, setMenuOpen]     = useState(false);
   const [categories, setCategories] = useState([]);
   const [spanState, setSpanState]   = useState(false);
+  const [notification, setNotification] = useState([]);
 
   // ── États search (manquaient dans ton fichier) ──
   const [products, setProducts]     = useState([]);
@@ -23,51 +24,27 @@ function TopNav() {
   const [searchOpen, setSearchOpen] = useState(false);
   const searchRef                   = useRef(null);   // ← ref pour détecter clic extérieur
   const [notif, setNotif] = useState(false);
-  const [notification, setNotification] = useState([
-  {
-    id: 1,
-    titre: "Notification 1",
-    description: "Description de la notification 1",
-    status: "Non lu",
-    date_ajout: "2024-05-01",
-  },
-  {
-    id: 2,
-    titre: "Notification 2",
-    description: "bonjour test 2",
-    status: "Lu",
-    date_ajout: "2024-06-01",
-  },
-  {
-    id: 3,
-    titre: "Notification 3",
-    description: "more than 1000 3",
-    status: "non lu",
-    date_ajout: "2024-06-02",
-  },
-  {
-    id: 4,
-    titre: "Notification 4",
-    description: "more than 1000 4",
-    status: "lu",
-    date_ajout: "2024-06-02",
-  },
-  {
-    id: 5,
-    titre: "Notification 5",
-    description: "more than 1000 5",
-    status: "non lu",
-    date_ajout: "2024-06-02",
-  },
-  {
-    id: 6,
-    titre: "Notification 6",
-    description: "more than 1000 6",
-    status: "lu",
-    date_ajout: "2024-06-02",
-  }
-  ]);
-  const lastFiveNotifications = notification.slice(0, 5);
+
+  useEffect(() => {
+  const getUserId = () => {
+    try {
+      const token = localStorage.getItem("generatedJWT_Token");
+      if (!token) return null;
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      return payload.sub || payload.userId || payload.id || null;
+    } catch { return null; }
+  };
+
+  const userId = getUserId();
+  if (!userId) return;
+
+  axios.get(`http://localhost:5010/api/notifications/user/${userId}`)
+    .then((res) => setNotification(res.data))
+    .catch(() => {});   // silencieux dans la navbar
+}, []);
+
+// Adapter le rendu — les champs viennent maintenant de l'API
+const lastFiveNotifications = notification.slice(0, 5);
   const NotifRef = useRef(null);
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -202,23 +179,26 @@ function TopNav() {
                       <ul>
                         {lastFiveNotifications.map((n) => (
                           <li
-                            key={n.id}
-                            className={n.status === "Non lu" ? "unread" : "read"}
+                            key={n.notificationId}
+                            className={n.status === "SENT" ? "unread" : "read"}
                             onClick={() => {
+                              axios.patch(`http://localhost:5010/api/notifications/${n.notificationId}/read`);
                               setNotification((prev) =>
                                 prev.map((x) =>
-                                  x.id === n.id ? { ...x, status: "Lu" } : x
+                                  x.notificationId === n.notificationId ? { ...x, status: "READ" } : x
                                 )
                               );
                             }}
                           >
-                            <strong>{n.titre}</strong>
-                            <p>{n.description}</p>
-                            <small>{n.date_ajout}</small>
+                            <strong>{n.title}</strong>
+                            <p>{n.message}</p>
+                            <small>{new Date(n.createdAt).toLocaleDateString("fr-FR")}</small>
                           </li>
                         ))}
-                        <li className="notif-see-all">
-                          <Link to="/notification">voir tous</Link>
+
+                        {/* ── Voir tous ── */}
+                        <li className="notif-see-all" onClick={() => { setNotif(false); navigate("/notification"); }}>
+                          Voir toutes les notifications ({notification.length})
                         </li>
                       </ul>
                     )}
