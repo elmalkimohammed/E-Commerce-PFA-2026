@@ -255,12 +255,12 @@
   align-items: center;
   gap: 4px;
   background: var(--black);
-  padding: 10px 24px;
+  padding: 20px 24px;
   width: 100%;
 }
 .hiddenCategories a {
   font-family: var(--font-display);
-  font-size: 12px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -269,6 +269,7 @@
   padding: 4px 12px;
   border: 1px solid rgba(255,255,255,0.15);
   transition: color 0.2s, border-color 0.2s, background 0.2s;
+  margin: 0 10px;
 }
 .hiddenCategories a:hover {
   color: var(--white) !important;

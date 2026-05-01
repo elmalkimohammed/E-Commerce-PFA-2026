@@ -183,7 +183,6 @@ function TopNav() {
         <div className={`redirect ${menuOpen ? "open" : ""}`}>
           <p><a href="/"             onClick={() => setMenuOpen(false)}>Accueil</a></p>
           <p><a onClick={() => { setMenuOpen(false); displaySpan(); }} className="categoryList">Catègories</a></p>
-          <p><a href="#"             onClick={() => setMenuOpen(false)}>À propos</a></p>
           <p><a href="/CategoryPage" onClick={() => setMenuOpen(false)}>Filtrage</a></p>
           <p><a href="/repport"             onClick={() => setMenuOpen(false)}>Contact</a></p>
           {localStorage.getItem("generatedJWT_Token") && (
@@ -300,7 +299,7 @@ function TopNav() {
       </nav>
       {/* Hidden Categories HTML Span */}
       { spanState &&
-      <span className="hiddenCategories" style={{ position: "sticky", top: "56.8px", zIndex: "51" }}>
+      <span className="hiddenCategories" style={{ position: "sticky", top: "56.8px", zIndex: "51", justifyContent: "center" }}>
         { categories.map((foundCategory) => 
           <span key={foundCategory} className="hiddenCategories-item">
             <a onClick={() => { storeCategory(foundCategory); navigate("/CategoryPage"); }}>

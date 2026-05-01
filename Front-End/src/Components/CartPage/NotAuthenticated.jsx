@@ -14,7 +14,7 @@ function NotAuthenticated() {
             gap: "1.5em",
             textAlign: "center"
         }}>
-            <h2>🔒 Accès Refusé</h2>
+            <h2 style={{ color: "#dc2626" }}>🔒 Accès Refusé</h2>
             <p style={{ fontSize: "1.2rem" }}>
                 Vous devez être connecté pour accéder au panier.
             </p>
@@ -22,7 +22,7 @@ function NotAuthenticated() {
                 onClick={() => navigate("/Authentication")}
                 style={{
                     padding: "0.8em 2em",
-                    backgroundColor: "#143a63",
+                    backgroundColor: "#000",
                     color: "white",
                     border: "none",
                     borderRadius: "8px",
