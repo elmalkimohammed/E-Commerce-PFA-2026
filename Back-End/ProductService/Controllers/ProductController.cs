@@ -6,6 +6,8 @@ using TicketProductApi.Dto;
 using TicketProductApi.Mapper;
 using TicketProductApi.Model;
 using TicketProductApi.Repo;
+using ProductService.Service;
+using ProductService.Events;
 
 namespace TicketProductApi.Controllers
 {
@@ -14,10 +16,12 @@ namespace TicketProductApi.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProducthandler _productHandler;
+        private readonly IKafkaProducerService _kafkaProducer;
 
-        public ProductController(IProducthandler productHandler)
+        public ProductController(IProducthandler productHandler, IKafkaProducerService kafkaProducer)
         {
             _productHandler = productHandler;
+            _kafkaProducer = kafkaProducer;
         }
 
         [HttpGet]
@@ -100,7 +104,7 @@ namespace TicketProductApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult addProduct(PostDtoRequest obj)
+        public async Task<IActionResult> addProduct(PostDtoRequest obj)
         {
             if (!ModelState.IsValid)
             {
@@ -110,6 +114,21 @@ namespace TicketProductApi.Controllers
             try
             {
                 int newId = _productHandler.AddProduct(product);
+                
+                // Send Kafka event
+                var productEvent = new ProductEvent
+                {
+                    ProductId = newId,
+                    ProductName = product.Name,
+                    Description = product.Description,
+                    Price = (float)product.Price,
+                    Stock = product.Stock,
+                    UserId = product.UserId.ToString(),
+                    Category = product.Category
+                };
+                
+                await _kafkaProducer.AsyncPublish("product-created", productEvent);
+                
                 return Ok(new { id = newId });
             }
             catch

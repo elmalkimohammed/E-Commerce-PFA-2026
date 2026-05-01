@@ -1,6 +1,7 @@
 
 using MySqlConnector;
 using TicketProductApi.Repo;
+using ProductService.Service;
 
 namespace TicketProductApi
 {
@@ -25,6 +26,7 @@ namespace TicketProductApi
             new MySqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"))
             );
             builder.Services.AddScoped<IProducthandler, ProductHandler>();
+            builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
 
             var app = builder.Build();
 

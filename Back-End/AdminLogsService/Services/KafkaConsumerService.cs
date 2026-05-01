@@ -36,9 +36,9 @@ namespace UserAuditLoggingService.Services
 
             using var consumer = new ConsumerBuilder<string, string>(config).Build();
 
-            consumer.Subscribe(new[] { "user-created", "user-deleted" });
+            consumer.Subscribe(new[] { "user-created", "user-deleted", "product-created" });
 
-            _logger.LogInformation("✅ Subscribed to topics: user-created, user-deleted");
+            _logger.LogInformation("✅ Subscribed to topics: user-created, user-deleted, product-created");
 
             try
             {
@@ -57,6 +57,10 @@ namespace UserAuditLoggingService.Services
                         else if (result.Topic == "user-deleted")
                         {
                             await HandleUserDeleted(result.Message.Value);
+                        }
+                        else if (result.Topic == "product-created")
+                        {
+                            await HandleProductCreated(result.Message.Value);
                         }
 
                         consumer.Commit(result);
@@ -132,6 +136,33 @@ namespace UserAuditLoggingService.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error handling user-deleted event");
+            }
+        }
+
+        private async Task HandleProductCreated(string messageValue)
+        {
+            try
+            {
+                _logger.LogInformation("📝 Processing product-created event");
+
+                var productEvent = JsonSerializer.Deserialize<ProductCreatedEvent>(messageValue);
+                if (productEvent == null)
+                {
+                    _logger.LogError("Failed to deserialize product-created event");
+                    return;
+                }
+
+                _logger.LogInformation("Product created: {ProductId}, {ProductName}", productEvent.ProductId, productEvent.ProductName);
+
+                using var scope = _scopeFactory.CreateScope();
+                var storage = scope.ServiceProvider.GetRequiredService<IAuditFileStorage>();
+                await storage.SaveProductCreation(productEvent);
+
+                _logger.LogInformation("✅ Saved product creation for {ProductId}", productEvent.ProductId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error handling product-created event");
             }
         }
     }
