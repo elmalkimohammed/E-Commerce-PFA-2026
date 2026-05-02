@@ -154,30 +154,6 @@ namespace AdminLogsService.Services
             });
         }
 
-        // ✅ Implement SaveProductCreation
-        public async Task SaveProductCreation(ProductCreatedEvent productEvent)
-        {
-            await Task.Run(() =>
-            {
-                try
-                {
-                    _logger.LogInformation("Saving product creation for {ProductId}", productEvent.ProductId);
-
-                    var logPath = Path.Combine(_auditDirectory, "products.txt");
-                    var logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] PRODUCT CREATED - ProductId: {productEvent.ProductId}, Name: {productEvent.ProductName}, Price: {productEvent.Price}, Stock: {productEvent.Stock}, Category: {productEvent.Category}, UserId: {productEvent.UserId}{Environment.NewLine}";
-                    
-                    File.AppendAllText(logPath, logEntry);
-
-                    _logger.LogInformation("✅ Saved product creation for {ProductId}", productEvent.ProductId);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error saving product creation");
-                    throw;
-                }
-            });
-        }
-
         // ✅ Implement GetUserById
         public Task<UserCreationAudit?> GetUserById(Guid userId)
         {

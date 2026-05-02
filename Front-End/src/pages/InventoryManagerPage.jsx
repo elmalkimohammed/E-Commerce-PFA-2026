@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import TopNavInventory from "../Components/navbarComponent/TopNavInventory";
 import InventorySideBar from "../Components/InventoryPage/InventorySideBar";
 import InventoryPage from "../Components/InventoryPage/InventoryPage";
@@ -67,7 +67,6 @@ function InventoryManagerPage() {
         <h1 className="inventory-manager-title">Inventory Manager</h1>
         
         <div className="inventory-manager-layout">
-          {/* Sidebar with table buttons - only shows on inventory page */}
           {activePage === "inventory" && (
             <InventorySideBar 
               currentTable={currentTable}

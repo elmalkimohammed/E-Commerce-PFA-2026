@@ -1,0 +1,1 @@
+[2026-05-02 22:00:10] PRODUCT UPDATED - ProductId: 32, Name: kafka test, Price: 90, Stock: 25, Category: Electronics, UserId: 19517445-ee47-4329-9034-2931cd05c0cd, UPDATEDBy: Unknown

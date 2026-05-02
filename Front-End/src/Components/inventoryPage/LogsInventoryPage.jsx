@@ -1,112 +1,134 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function LogsInventoryPage() {
-  const [logType, setLogType] = useState("product"); // "product", "cart", "review"
+  const [logType, setLogType] = useState("product");
   const [logs, setLogs] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [stats, setStats] = useState(null);
 
-  const loadLogs = (type) => {
-    setLogType(type);
+  const fetchLogs = async () => {
+    setLoading(true);
+    setError("");
     
-    // Simulate loading different log files
-    const logData = {
-      product: `[2026-05-01 09:15:22] ========== PRODUCT CREATED LOGS ==========
-[2026-05-01 09:15:22] Product Created: iPhone 15 Pro (ID: 1)
-[2026-05-01 09:15:22]   - Price: $1299.99, Stock: 50
-[2026-05-01 10:30:45] Product Created: Laptop Pro X (ID: 3)
-[2026-05-01 10:30:45]   - Price: $1299.99, Stock: 15
-[2026-05-01 11:45:10] Product Created: Casque Audio BT (ID: 5)
-[2026-05-01 11:45:10]   - Price: $79.99, Stock: 50
-[2026-05-01 16:00:00] Product Created: Gaming Mouse RGB (ID: 18)
-[2026-05-01 16:00:00]   - Price: $49.99, Stock: 100
-==========================================`,
-
-      cart: `[2026-05-01 09:20:00] ========== CART CREATED LOGS ==========
-[2026-05-01 09:20:00] Cart Created: Cart #1001
-[2026-05-01 09:20:00]   - User ID: user123
-[2026-05-01 10:15:00] Cart Created: Cart #1002
-[2026-05-01 10:15:00]   - User ID: user456
-[2026-05-01 14:30:00] Cart Created: Cart #1003
-[2026-05-01 14:30:00]   - User ID: user789
-==========================================`,
-
-      review: `[2026-05-01 10:00:00] ========== REVIEW CREATED LOGS ==========
-[2026-05-01 10:00:00] Review Created: Review #R1
-[2026-05-01 10:00:00]   - Product ID: 1, User ID: user123
-[2026-05-01 10:00:00]   - Rating: 5/5
-[2026-05-01 11:30:00] Review Created: Review #R2
-[2026-05-01 11:30:00]   - Product ID: 3, User ID: user456
-[2026-05-01 11:30:00]   - Rating: 4/5
-[2026-05-01 15:45:00] Review Created: Review #R3
-[2026-05-01 15:45:00]   - Product ID: 5, User ID: user789
-[2026-05-01 15:45:00]   - Rating: 5/5
-==========================================`
-    };
-    
-    setLogs(logData[type] || "No logs available");
+    try {
+      const token = localStorage.getItem("generatedJWT_Token");
+      const baseUrl = "http://localhost:5000"; // Change to your backend port
+      
+      let endpoint = "";
+      switch(logType) {
+        case "product":
+          endpoint = `${baseUrl}/api/inventory/products/logs`;
+          break;
+        case "cart":
+          endpoint = `${baseUrl}/api/inventory/carts/logs`;
+          break;
+        case "review":
+          endpoint = `${baseUrl}/api/inventory/reviews/logs`;
+          break;
+        default:
+          endpoint = `${baseUrl}/api/inventory/products/logs`;
+      }
+      
+      const response = await fetch(endpoint, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to load logs: ${response.status}`);
+      }
+      
+      const text = await response.text();
+      setLogs(text || "No logs available");
+      
+      // Fetch statistics for products
+      if (logType === "product") {
+        const statsResponse = await fetch(`${baseUrl}/api/inventory/products/statistics`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (statsResponse.ok) {
+          const statsData = await statsResponse.json();
+          setStats(statsData);
+        }
+      } else {
+        setStats(null);
+      }
+      
+    } catch (err) {
+      console.error("Error fetching logs:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Load default logs on mount
-  useState(() => {
-    loadLogs("product");
-  }, []);
+  useEffect(() => {
+    fetchLogs();
+  }, [logType]);
 
   const logButtons = [
-    { id: "product", label: "📦 Produit Crée" },
-    { id: "cart", label: "🛒 Pannier Crée" },
-    { id: "review", label: "⭐ Review Crée" },
+    { id: "product", label: "📦 PRODUCT LOGS" },
+    { id: "cart", label: "🛒 CART LOGS" },
+    { id: "review", label: "⭐ REVIEW LOGS" },
   ];
 
   return (
-    <div>
-      <h2>📝 Logs Inventory</h2>
+    <div className="logs-page">
+      <h2>Logs Inventory</h2>
       
-      {/* Log Filter Buttons */}
-      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+      {stats && logType === "product" && (
+        <div className="stats-cards">
+          <div className="stat-card">
+            <span className="stat-value">{stats.totalCreated}</span>
+            <span className="stat-label">Products Created</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-value">{stats.totalDeleted}</span>
+            <span className="stat-label">Products Deleted</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-value">{stats.totalEvents}</span>
+            <span className="stat-label">Total Events</span>
+          </div>
+        </div>
+      )}
+      
+      <div className="logs-tabs">
         {logButtons.map(btn => (
           <button
             key={btn.id}
-            onClick={() => loadLogs(btn.id)}
-            style={{
-              padding: "10px 20px",
-              background: logType === btn.id ? "#143a63" : "#e0e0e0",
-              color: logType === btn.id ? "white" : "#333",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontWeight: "bold"
-            }}
+            className={`logs-tab ${logType === btn.id ? "active" : ""}`}
+            onClick={() => setLogType(btn.id)}
           >
             {btn.label}
           </button>
         ))}
       </div>
 
-      {/* Logs Display */}
-      <div style={{ 
-        backgroundColor: "#1e1e1e", 
-        color: "#d4d4d4",
-        padding: "20px",
-        borderRadius: "8px",
-        fontFamily: "monospace",
-        maxHeight: "600px",
-        overflowY: "auto",
-        fontSize: "13px"
-      }}>
-        <div style={{ 
-          borderBottom: "1px solid #4a4a4a", 
-          paddingBottom: "10px", 
-          marginBottom: "15px"
-        }}>
-          <h3 style={{ color: "#fff", margin: 0 }}>📄 {logType.toUpperCase()} LOGS</h3>
+      <div className="logs-container">
+        <div className="logs-header">
+          <h3>📄 {logType.toUpperCase()} LOGS</h3>
+          <button onClick={() => fetchLogs()} className="logs-refresh-btn">
+            🔄 Refresh
+          </button>
         </div>
-        <pre style={{ 
-          whiteSpace: "pre-wrap", 
-          wordWrap: "break-word",
-          margin: 0,
-          lineHeight: "1.5"
-        }}>
-          {logs || "Select a log type to view"}
-        </pre>
+        
+        {loading && <div className="logs-loading">Loading logs...</div>}
+        
+        {error && !loading && (
+          <div className="logs-error">
+            ⚠️ {error}
+            <button onClick={() => fetchLogs()}>Retry</button>
+          </div>
+        )}
+        
+        {!loading && !error && (
+          <pre className="logs-content">
+            {logs || "No logs available"}
+          </pre>
+        )}
       </div>
     </div>
   );

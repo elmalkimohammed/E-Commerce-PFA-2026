@@ -326,6 +326,8 @@ services:
     container_name: adminlogsservice-api
     ports:
       - "5009:5026"
+    volumes:
+        - ./Back-End/AdminLogsService/AuditLogs:/app/AuditLogs  # Add this line
     depends_on:
       kafka:
         condition: service_started

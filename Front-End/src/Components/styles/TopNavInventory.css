@@ -3,87 +3,84 @@
 :root {
   --black: #000;
   --white: #fff;
-  --gray-light: #f5f5f5;
-  --gray-mid: #e8e8e8;
-  --gray-text: #767677;
   --accent: #e31837;
+  --dark-bg: #0a0a0a;
   --font-display: 'Barlow Condensed', sans-serif;
   --font-body: 'Barlow', sans-serif;
 }
 
-/* Top Navigation for Inventory Manager */
+/* Top Navigation - Perfect Centering */
 .inventoryNav {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: var(--white);
-  border-bottom: 1px solid var(--gray-mid);
-  padding: 0 40px;
-  height: 64px;
+  justify-content: center;
+  gap: 0;
+  background: var(--dark-bg);
+  padding: 0 48px;
+  height: 70px;
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
+/* Center the navigation buttons container */
+.nav-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1;
+}
+
 .inventory-nav-btn {
   background: transparent;
-  color: var(--black);
+  color: rgba(255, 255, 255, 0.7);
   border: none;
-  padding: 0 16px;
-  height: 64px;
+  padding: 0 28px;
+  height: 70px;
   cursor: pointer;
   font-family: var(--font-body);
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
-  transition: all 0.2s ease;
-  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
 }
 
 .inventory-nav-btn:hover {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+  color: var(--white);
 }
 
 .inventory-nav-btn.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+  color: var(--white);
+  border-bottom: 2px solid var(--accent);
 }
 
 .profile-icon {
-  margin-left: auto;
-  font-size: 20px;
+  font-size: 18px;
   text-decoration: none;
-  color: var(--black);
+  color: rgba(255, 255, 255, 0.7);
   padding: 0 16px;
-  height: 64px;
+  height: 70px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease;
+  transition: color 0.2s;
   cursor: pointer;
 }
 
 .profile-icon:hover {
-  color: var(--accent);
+  color: var(--white);
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .inventoryNav {
     padding: 0 20px;
-    gap: 4px;
-    overflow-x: auto;
   }
   
   .inventory-nav-btn {
-    padding: 0 12px;
+    padding: 0 16px;
     font-size: 11px;
     white-space: nowrap;
-  }
-  
-  .profile-icon {
-    padding: 0 12px;
   }
 }

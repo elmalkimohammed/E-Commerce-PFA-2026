@@ -1,2 +1,0 @@
-[2026-05-01 00:26:03] PRODUCT CREATED - ProductId: 16, Name: marlboroo, Price: 40, Stock: 1, Category: Sports, UserId: 91cfafb0-e273-4b9d-b0ca-69172a39d762
-[2026-05-01 16:32:21] PRODUCT CREATED - ProductId: 17, Name: Test Product, Price: 123.45, Stock: 10, Category: TestCategory, UserId: 00000000-0000-0000-0000-000000000000

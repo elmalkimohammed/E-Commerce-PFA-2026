@@ -36,9 +36,9 @@ namespace UserAuditLoggingService.Services
 
             using var consumer = new ConsumerBuilder<string, string>(config).Build();
 
-            consumer.Subscribe(new[] { "user-created", "user-deleted", "product-created" });
+            consumer.Subscribe(new[] { "user-created", "user-deleted", "product-events"  }); 
 
-            _logger.LogInformation("✅ Subscribed to topics: user-created, user-deleted, product-created");
+            _logger.LogInformation("✅ Subscribed to topics: user-created, user-deleted, product-events ");
 
             try
             {
@@ -49,18 +49,17 @@ namespace UserAuditLoggingService.Services
                         var result = consumer.Consume(stoppingToken);
 
                         _logger.LogInformation("📨 Received message from topic: {Topic}", result.Topic);
-
-                        if (result.Topic == "user-created")
+                        switch (result.Topic)
                         {
-                            await HandleUserCreated(result.Message.Value);
-                        }
-                        else if (result.Topic == "user-deleted")
-                        {
-                            await HandleUserDeleted(result.Message.Value);
-                        }
-                        else if (result.Topic == "product-created")
-                        {
-                            await HandleProductCreated(result.Message.Value);
+                            case "user-created":
+                                await HandleUserCreated(result.Message.Value);
+                                break;
+                            case "user-deleted":
+                                await HandleUserDeleted(result.Message.Value);
+                                break;
+                            case "product-events":
+                                await HandleProductEvent(result.Message.Value);
+                                break;
                         }
 
                         consumer.Commit(result);
@@ -139,30 +138,30 @@ namespace UserAuditLoggingService.Services
             }
         }
 
-        private async Task HandleProductCreated(string messageValue)
+        
+        private async Task HandleProductEvent(string messageValue)
         {
             try
             {
-                _logger.LogInformation("📝 Processing product-created event");
-
-                var productEvent = JsonSerializer.Deserialize<ProductCreatedEvent>(messageValue);
+                _logger.LogInformation("📝 Processing product event");
+                
+                var productEvent = JsonSerializer.Deserialize<ProductEvent>(messageValue);
                 if (productEvent == null)
                 {
-                    _logger.LogError("Failed to deserialize product-created event");
+                    _logger.LogError("Failed to deserialize product event");
                     return;
                 }
 
-                _logger.LogInformation("Product created: {ProductId}, {ProductName}", productEvent.ProductId, productEvent.ProductName);
+                _logger.LogInformation("Product {Action}: {ProductId}, {ProductName}", 
+                    productEvent.Action, productEvent.ProductId, productEvent.ProductName);
 
                 using var scope = _scopeFactory.CreateScope();
-                var storage = scope.ServiceProvider.GetRequiredService<IAuditFileStorage>();
-                await storage.SaveProductCreation(productEvent);
-
-                _logger.LogInformation("✅ Saved product creation for {ProductId}", productEvent.ProductId);
+                var auditInventory = scope.ServiceProvider.GetRequiredService<IAuditInventory>();
+                await auditInventory.SaveProductEvent(productEvent);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error handling product-created event");
+                _logger.LogError(ex, "Error handling product event");
             }
         }
     }

@@ -1,6 +1,7 @@
 using Confluent.Kafka;
 using System.Text.Json;
 
+
 namespace ProductService.Service
 {
     public class KafkaProducerService : IKafkaProducerService /* For Implementing The Interface's Method */, IDisposable  /* For CleanUps */

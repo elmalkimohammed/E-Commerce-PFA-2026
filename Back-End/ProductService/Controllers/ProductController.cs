@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
@@ -8,6 +9,8 @@ using TicketProductApi.Model;
 using TicketProductApi.Repo;
 using ProductService.Service;
 using ProductService.Events;
+using ProductService.Services;
+using System.Security.Claims;
 
 namespace TicketProductApi.Controllers
 {
@@ -16,12 +19,12 @@ namespace TicketProductApi.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProducthandler _productHandler;
-        private readonly IKafkaProducerService _kafkaProducer;
+        private readonly ProductEventService _productEventService;
 
-        public ProductController(IProducthandler productHandler, IKafkaProducerService kafkaProducer)
+        public ProductController(IProducthandler productHandler, ProductEventService productEventService)
         {
             _productHandler = productHandler;
-            _kafkaProducer = kafkaProducer;
+            _productEventService = productEventService;
         }
 
         [HttpGet]
@@ -30,16 +33,12 @@ namespace TicketProductApi.Controllers
         {
             try
             {
-
                 var response = this._productHandler.GetCategories();
                 return Ok(response);
-
             }
             catch (Exception error)
             {
-
                 return StatusCode(500, $"An error occurred while retrieving products: {error.Message}");
-
             }
         }
 
@@ -98,7 +97,6 @@ namespace TicketProductApi.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception here if you have logging
                 return StatusCode(500, $"An error occurred while retrieving products: {ex.Message}");
             }
         }
@@ -115,44 +113,53 @@ namespace TicketProductApi.Controllers
             {
                 int newId = _productHandler.AddProduct(product);
                 
-                // Send Kafka event
-                var productEvent = new ProductEvent
-                {
-                    ProductId = newId,
-                    ProductName = product.Name,
-                    Description = product.Description,
-                    Price = (float)product.Price,
-                    Stock = product.Stock,
-                    UserId = product.UserId.ToString(),
-                    Category = product.Category
-                };
+                // Get user info from JWT token (who created)
+                var performedBy = User.FindFirst("email")?.Value ?? User.FindFirst("sub")?.Value ?? "Unknown";
                 
-                await _kafkaProducer.AsyncPublish("product-created", productEvent);
+                await _productEventService.PublishProductCreatedEvent(product, newId, performedBy);
                 
                 return Ok(new { id = newId });
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(new { error = ex.Message });
             }
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
             try
             {
+                // Get product details before deletion
+                var product = _productHandler.GetProductById(id);
+                if (product == null)
+                {
+                    return NotFound(new { message = $"Product with ID {id} not found" });
+                }
+
+                // Get user info from JWT token (who deleted)
+                var performedBy = User.FindFirst("email")?.Value ?? User.FindFirst("sub")?.Value ?? "Unknown";
+
+                // Delete the product
                 _productHandler.DeleteProduct(id);
-                return Ok();
+
+                await _productEventService.PublishProductDeletedEvent(product, performedBy);
+
+                return Ok(new { 
+                    message = "Product deleted successfully", 
+                    productId = id,
+                    deletedBy = performedBy
+                });
             }
-            catch
+            catch (Exception ex)
             {
-                return NotFound();
+                return NotFound(new { error = ex.Message });
             }
         }
 
         [HttpPut]
-        public IActionResult UpdateProduct(PutDtoRequest obj)
+        public async Task<IActionResult> UpdateProduct(PutDtoRequest obj)
         {
             if (!ModelState.IsValid)
             {
@@ -162,11 +169,17 @@ namespace TicketProductApi.Controllers
             try
             {
                 _productHandler.UpdateProduct(product);
-                return Ok();
+                
+                // Get user info from JWT token (who updated)
+                var performedBy = User.FindFirst("email")?.Value ?? User.FindFirst("sub")?.Value ?? "Unknown";
+                
+                await _productEventService.PublishProductUpdatedEvent(product, performedBy);
+                
+                return Ok(new { message = "Product updated successfully" });
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(new { error = ex.Message });
             }
         }
 

@@ -1,3 +1,4 @@
+using ProductService.Service;
 namespace ProductService.Service
 {
     public interface IKafkaProducerService

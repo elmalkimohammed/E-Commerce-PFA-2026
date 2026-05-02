@@ -17,6 +17,7 @@ builder.Services.AddCors(options =>
 );
 
 builder.Services.AddSingleton<IAuditFileStorage, AuditFileStorage>();
+builder.Services.AddScoped<IAuditInventory, AuditInventory>();
 builder.Services.AddHostedService<KafkaAuditConsumer>();
 
 var app = builder.Build();
