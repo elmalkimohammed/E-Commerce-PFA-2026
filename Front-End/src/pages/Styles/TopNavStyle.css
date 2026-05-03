@@ -90,7 +90,7 @@
 }
 .top-nav .redirect a:hover,
 .top-nav .redirect a.categoryList:hover {
-  color: var(--accent);
+  color: #000;
   border-bottom-color: var(--accent);
 }
 

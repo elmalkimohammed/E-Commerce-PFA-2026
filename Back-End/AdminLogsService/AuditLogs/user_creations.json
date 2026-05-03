@@ -1,0 +1,16 @@
+[
+  {
+    "UserId": "f15d9ede-ec2f-4f02-a67c-27a81b36df5d",
+    "Email": "elmalki@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-03T15:17:14.7269406Z",
+      "audit_version": "1.0"
+    }
+  }
+]
