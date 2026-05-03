@@ -155,6 +155,10 @@ const SavePublicInfo = async () => {
     showToast(err.message, "error");
   }
 };       
+const logout = () => {
+    localStorage.removeItem("generatedJWT_Token");
+    window.location.href = "/";
+  }
 
   const sexeOptions = [
     { value: "Female", label: "female" },
@@ -248,6 +252,7 @@ const SavePublicInfo = async () => {
           <div style={styles.userInfo}>
             <div style={styles.userName}>{user.firstName} {user.lastName}</div>
             <div style={styles.userEmail}>{priv.email}</div>
+            <button style={styles.logoutButton} onClick={logout}> Logout</button>
           </div>
         </aside>
 

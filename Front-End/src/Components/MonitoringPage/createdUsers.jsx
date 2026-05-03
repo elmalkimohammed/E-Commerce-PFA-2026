@@ -16,7 +16,7 @@ function CreatedUsers() {
     }, [] )
 
     const fetchUserLogs = async () => {
-        const response = await axios.get("http://localhost:5008/api/audit/users")
+        const response = await axios.get("http://localhost:5009/api/audit/users")
         const usersArray = Object.values(response.data)
         setUserLogs( usersArray )
     }

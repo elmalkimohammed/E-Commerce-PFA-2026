@@ -353,6 +353,10 @@ services:
         - ASPNETCORE_ENVIRONMENT=Development
         - ASPNETCORE_URLS=http://+:5026  
         - Kafka__BootstrapServers=kafka:29092
+    volumes:
+      - ./Back-End/AdminLogsService/AuditLogs:/app/AuditLogs
+    networks:
+      - ecommerce-network
   repportservice-api:
     build:
       context: ./Back-End/RepportsService/initial

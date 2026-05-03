@@ -1,24 +1,45 @@
 .MonitoringGlobalStyles {
     width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    border-radius: 25px;
-    overflow: auto;
-    font-weight: bold;
-    text-align: center;
-    background-color: #f8f9fa;
-    margin: 20px 0;
+    max-width: 1100px;
+    margin: 40px auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    font-weight: 400;
+    text-align: left;
+    background-color: #ffffff;
+    border: 1px solid #e8e8e8;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .MonitoringGlobalStyles thead tr:first-child {
-    background: linear-gradient(135deg, #2d3748 0%, #1a365d 100%);
+    background: #0a0a0a;
     color: #ffffff;
 }
 
-.MonitoringGlobalStyles thead th, 
+.MonitoringGlobalStyles thead th {
+    padding: 14px 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e8e8e8;
+}
+
 .MonitoringGlobalStyles tbody td {
-    padding: 15px 10px;
-    border: 1px solid #ddd;
+    padding: 14px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    color: #333;
+}
+
+.MonitoringGlobalStyles tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.MonitoringGlobalStyles tbody tr:hover {
+    background-color: #fafafa;
 }
 
 /* Apply truncation to all cells EXCEPT the last one (Actions) */
@@ -29,31 +50,34 @@
     white-space: nowrap;
 }
 
-/* Actions column gets special treatment */
+/* Actions column */
 .MonitoringGlobalStyles tbody td:last-child {
-    min-width: 160px; /* Enough space for buttons */
+    min-width: 160px;
     white-space: nowrap;
 }
 
-.MonitoringGlobalStyles tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
 .acionsBtn {
-    padding: 8px 12px;
-    margin: 5px;
-    border: 2px solid #143a63;
-    border-radius: 25px;
-    font-weight: bold;
-    transition: 0.3s;
-    background-color: white;
+    padding: 6px 16px;
+    margin: 0 4px;
+    border: 1px solid #0a0a0a;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: 0.2s;
+    background-color: transparent;
+    color: #0a0a0a;
     cursor: pointer;
-    display: inline-block; /* Ensure buttons are visible */
+    display: inline-block;
 }
 
 .acionsBtn:hover {
-    background-color: #143a63;
+    background-color: #0a0a0a;
     color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.tableWrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
