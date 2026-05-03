@@ -27,8 +27,8 @@ function CreateUser() {
         <div className="containerBox"  style={{ width:"fit-content",  height:"fit-content"}}>
             <form style={{ display: "flex", flexDirection: "column" }} onSubmit={ createUser } >
                 <div className="inputsSenderBox" style={{ display: "flex", flexDirection: "row", gap: "3em" }}>
-                    <div className="privateInfos">
-                        <h1 className="header" style={{ borderRadius: "12px" }}>Créer Un Utilisateur</h1>
+                    <div className="privateInfos" style={{ width: "100%" }}>
+                        <h1 className="header" style={{ borderRadius: "12px", textAlign: "center" }}>Créer Un Utilisateur</h1>
                         <label htmlFor="emailInput" >Email: </label>
                         <input type="email"id="emailInput" required onChange={ (e) => { setEmail(e.target.value) } } />
                         <label htmlFor="passwInput" >Mot De Pass: </label>
