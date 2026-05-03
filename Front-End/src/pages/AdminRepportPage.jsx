@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import TopNavAdmin from "../Components/navbarComponent/TopNavAdmin";
-import RepportSideBar from "../Components/AdminRepport/RepportSideBar";
+import TopNavHelpCenter from "../Components/navbarComponent/TopNavHelpCenter";
 import AllRepports from "../Components/AdminRepport/AllRepports";
 import RecentRepports from "../Components/AdminRepport/RecentRepports";
 import LogsViewer from "../Components/AdminRepport/LogsViewer";
 import "./Styles/AdminRepportPage.css";
 
 function AdminRepportPage() {
-    const [currentPage, setCurrentPage] = useState("reclamations");
+    const [currentPage, setCurrentPage] = useState("reclamationsCreees");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,15 +22,12 @@ function AdminRepportPage() {
 
     return (
         <div className="repport-parent">
-            <TopNavAdmin />
-            <div className="repport-container">
-                <RepportSideBar currentPage={currentPage} onSwitch={setCurrentPage} />
-                <main className="repport-main">
-                    {currentPage === "reclamations" && <AllRepports />}
-                    {currentPage === "reclamationsCreees" && <RecentRepports />}
-                    {currentPage === "logs" && <LogsViewer />}
-                </main>
-            </div>
+            <TopNavHelpCenter currentPage={currentPage} onSwitch={setCurrentPage} />
+            <main className="repport-main">
+                {currentPage === "reclamations"       && <AllRepports />}
+                {currentPage === "reclamationsCreees" && <RecentRepports />}
+                {currentPage === "logs"               && <LogsViewer />}
+            </main>
         </div>
     );
 }
