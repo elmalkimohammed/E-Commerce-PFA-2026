@@ -29,12 +29,12 @@ public class ReviewService {
     }
 
     
-    public List<Review> getByProduct(UUID productId) {
+    public List<Review> getByProduct(int productId) {
         return repository.findByProductId(productId);
     }
 
     
-    public double getRating(UUID productId) {
+    public double getRating(int productId) {
         List<Review> reviews = repository.findByProductId(productId);
 
         return reviews.stream()
@@ -57,5 +57,9 @@ public class ReviewService {
     
     public void delete(UUID id) {
         repository.deleteById(id);
+    }
+
+    public List<Review> GetByUserId(UUID userid) {
+        return repository.findByUserId(userid);
     }
 }

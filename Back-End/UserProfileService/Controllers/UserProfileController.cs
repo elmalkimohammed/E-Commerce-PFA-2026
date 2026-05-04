@@ -34,6 +34,27 @@ namespace UserProfileService.Controllers
             GetFullInfoResponse response = UserFullInfoMapper.UserFullInfoModelToDto(user);
             return Ok(response);
         }
+        [HttpGet("{userId}")]
+        [AllowAnonymous]  // Pour permettre à n'importe qui de voir les noms publics
+        public IActionResult GetUserPublicInfo(Guid userId)
+        {
+            UserFullInfo user = _UserHandler.FullInfo(userId.ToString());
+            if (user == null)
+            {
+                return NotFound();
+            }
+            
+            // Retourner SEULEMENT les infos publiques (pas email, password, phone, address...)
+            var publicInfo = new
+            {
+                userId = user.UserId,
+                firstName = user.FirstName,
+                lastName = user.LastName,
+                profileImage = user.ProfileImage
+            };
+            
+            return Ok(publicInfo);
+        }
         [HttpPut]
         public IActionResult UpdatePrivateInfo(PutPrivateInfoDtoRequest dto)
         {

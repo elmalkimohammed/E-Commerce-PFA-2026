@@ -1,51 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap');
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --gray-light: #f5f5f5;
+  --gray-mid: #e8e8e8;
+  --gray-text: #767677;
+  --accent: #e31837;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+}
+
+/* ── SIDEBAR WRAPPER ── */
 .repport-sidebar {
-    width: 220px;
-    flex-shrink: 0;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    padding: 24px 16px;
-    height: fit-content;
-    position: sticky;
-    top: 24px;
-    box-sizing: border-box;
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--white);
+  border-right: 1px solid var(--gray-mid);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  font-family: var(--font-body);
+  min-height: calc(100vh - 64px);
 }
 
-.repport-sidebar .sidebar-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: #94a3b8;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin: 0 0 12px 0;
-    padding: 0 8px;
+/* ── SECTION LABEL ── */
+.sidebar-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-text);
+  padding: 0 20px 12px;
+  margin: 0;
+  font-family: var(--font-body);
 }
 
-.repport-sidebar .sidebar-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+/* ── NAV BUTTONS ── */
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 20px;
+  background: none;
+  border: none;
+  border-left: 3px solid transparent;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--black);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  position: relative;
+}
+
+/* icon spacing — Bootstrap Icons sit before the label */
+.sidebar-btn::before {
+  font-size: 15px;
+  flex-shrink: 0;
+  color: var(--gray-text);
+  transition: color 0.15s;
+}
+
+.sidebar-btn:hover {
+  background: var(--gray-light);
+  color: var(--black);
+}
+.sidebar-btn:hover::before {
+  color: var(--black);
+}
+
+/* ── ACTIVE STATE ── */
+.sidebar-btn.active {
+  background: var(--gray-light);
+  border-left-color: var(--accent);
+  color: var(--accent);
+}
+.sidebar-btn.active::before {
+  color: var(--accent);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .repport-sidebar {
     width: 100%;
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 400;
-    background: transparent;
-    color: #475569;
-    text-align: left;
-    margin-bottom: 4px;
-    transition: all 0.15s ease;
-}
-
-.repport-sidebar .sidebar-btn:hover {
-    background: #f1f5f9;
-    color: #1e3a8a;
-}
-
-.repport-sidebar .sidebar-btn.active {
-    background: #e8edf7;
-    color: #1e3a8a;
-    font-weight: 600;
+    min-height: unset;
+    flex-direction: row;
+    border-right: none;
+    border-bottom: 1px solid var(--gray-mid);
+    padding: 0;
+    overflow-x: auto;
+  }
+  .sidebar-label { display: none; }
+  .sidebar-btn {
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    padding: 14px 16px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .sidebar-btn.active {
+    border-left-color: transparent;
+    border-bottom-color: var(--accent);
+    background: none;
+  }
 }

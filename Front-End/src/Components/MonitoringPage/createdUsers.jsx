@@ -2,6 +2,7 @@ import axios from "axios"
 import UsersRow from "./Inside Components/usersRow"
 
 import { useState , useEffect } from "react"
+import { adminLogsAPI } from "../../services/servicesAPI"   
 
 import "../styles/adminMonitoringGlobalStyles.css"
 
@@ -16,7 +17,7 @@ function CreatedUsers() {
     }, [] )
 
     const fetchUserLogs = async () => {
-        const response = await axios.get("http://localhost/api/audit/users")
+        const response = await axios.get(`${adminLogsAPI}/users`)
         const usersArray = Object.values(response.data)
         setUserLogs( usersArray )
     }

@@ -1,17 +1,27 @@
 import "../styles/RepportForm.css";
-import { repportAPI } from "../../services/servicesAPI";
-import { useState } from "react";
+import { repportAPI, userAPI } from "../../services/servicesAPI";
+import { useState, useEffect } from "react";
 
 function RepportForm({ userID, onSubmitSuccess, onError }) {
-    const [form, setForm] = useState({
-        SourceEmail: "",
-        Title: "",
-        Description: ""
-    });
+    const [form, setForm] = useState({ SourceEmail: "", Title: "", Description: "" });
     const [loading, setLoading] = useState(false);
 
+    const jwtToken = localStorage.getItem("generatedJWT_Token");
+
+    useEffect(() => {
+        fetch(userAPI, {
+            headers: { Authorization: `Bearer ${jwtToken}` }
+        })
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+                return res.json();
+            })
+            .then(data => setForm(prev => ({ ...prev, SourceEmail: data.email ?? "" })))
+            .catch(err => console.error("Failed to fetch user email:", err));
+    }, []);
+
     const handleChange = (e) => {
-        setForm({ ...form, [e.target.id]: e.target.value });
+        setForm(prev => ({ ...prev, [e.target.id]: e.target.value }));
     };
 
     const handleSubmit = async (e) => {
@@ -23,12 +33,10 @@ function RepportForm({ userID, onSubmitSuccess, onError }) {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...form, UserID: userID })
             });
-
             if (!res.ok) throw new Error(`Erreur ${res.status}`);
-
-            setForm({ SourceEmail: "", Title: "", Description: "" });
+            setForm(prev => ({ ...prev, Title: "", Description: "" }));
             onSubmitSuccess?.();
-        } catch (err) {
+        } catch {
             onError?.();
         } finally {
             setLoading(false);
@@ -41,10 +49,8 @@ function RepportForm({ userID, onSubmitSuccess, onError }) {
             <input
                 type="email"
                 id="SourceEmail"
-                placeholder="votre@email.com"
                 value={form.SourceEmail}
-                onChange={handleChange}
-                required
+                readOnly
             />
 
             <label htmlFor="Title">Titre</label>

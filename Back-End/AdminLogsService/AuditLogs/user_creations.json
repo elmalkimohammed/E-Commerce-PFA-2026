@@ -1,0 +1,152 @@
+[
+  {
+    "UserId": "f15d9ede-ec2f-4f02-a67c-27a81b36df5d",
+    "Email": "elmalki@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-03T15:17:14.7269406Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "554bd160-ba96-4f98-886a-d094118649a7",
+    "Email": "mohammedelmalki24@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-03T17:50:16.1094153Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "1e511ab9-357d-4be0-9069-114ead0ce5d6",
+    "Email": "mohammedelmalki2417@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-03T17:50:16.1664109Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "bb011ee5-512d-4bcf-80c2-c01ff0aaef72",
+    "Email": "mohammedelmalki24176@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-03T17:50:16.1845807Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "c64eab39-649b-44a0-acc7-d4bcc0b7ba05",
+    "Email": "UNKNOWN",
+    "Role": "UNKNOWN",
+    "CreatedAt": "2026-05-03T15:16:22.9436299Z",
+    "Status": "Deleted",
+    "DeletedAt": "2026-05-03T15:16:22.9436299Z",
+    "DeletedBy": "user",
+    "Metadata": {
+      "note": "User was deleted but registration record not found in audit",
+      "deleted_at": "2026-05-03T15:16:22.9436299Z"
+    }
+  },
+  {
+    "UserId": "eb0f2ae7-9e31-4ed9-b78e-49226d464480",
+    "Email": "UNKNOWN",
+    "Role": "UNKNOWN",
+    "CreatedAt": "2026-05-03T15:16:30.8535315Z",
+    "Status": "Deleted",
+    "DeletedAt": "2026-05-03T15:16:35.7099933Z",
+    "DeletedBy": "user",
+    "Metadata": {
+      "note": "User was deleted but registration record not found in audit",
+      "deleted_at": "2026-05-03T15:16:35.7099933Z",
+      "deleted_by": "user"
+    }
+  },
+  {
+    "UserId": "caa71fee-6d53-40e1-a817-b961340da4b5",
+    "Email": "UNKNOWN",
+    "Role": "UNKNOWN",
+    "CreatedAt": "2026-05-03T15:16:33.2986753Z",
+    "Status": "Deleted",
+    "DeletedAt": "2026-05-03T15:16:33.2986753Z",
+    "DeletedBy": "user",
+    "Metadata": {
+      "note": "User was deleted but registration record not found in audit",
+      "deleted_at": "2026-05-03T15:16:33.2986753Z"
+    }
+  },
+  {
+    "UserId": "64b08ab7-ff0f-4177-975b-5962d725984a",
+    "Email": "UNKNOWN",
+    "Role": "UNKNOWN",
+    "CreatedAt": "2026-05-03T15:16:41.7626303Z",
+    "Status": "Deleted",
+    "DeletedAt": "2026-05-03T15:16:41.7626303Z",
+    "DeletedBy": "user",
+    "Metadata": {
+      "note": "User was deleted but registration record not found in audit",
+      "deleted_at": "2026-05-03T15:16:41.7626303Z"
+    }
+  },
+  {
+    "UserId": "577892ee-2d3f-4186-9f28-b4cf712bf730",
+    "Email": "UNKNOWN",
+    "Role": "UNKNOWN",
+    "CreatedAt": "2026-05-03T15:16:53.3675921Z",
+    "Status": "Deleted",
+    "DeletedAt": "2026-05-03T15:16:53.3675921Z",
+    "DeletedBy": "user",
+    "Metadata": {
+      "note": "User was deleted but registration record not found in audit",
+      "deleted_at": "2026-05-03T15:16:53.3675921Z"
+    }
+  },
+  {
+    "UserId": "d7ba91f3-21f0-470e-8002-c7214a03c8fb",
+    "Email": "jamal@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-03T18:33:38.9940403Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "3b819ac5-c087-4d3c-a5ba-a80565cf1083",
+    "Email": "aminebouchadad04@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-04T16:42:52.1704281Z",
+      "audit_version": "1.0"
+    }
+  }
+]

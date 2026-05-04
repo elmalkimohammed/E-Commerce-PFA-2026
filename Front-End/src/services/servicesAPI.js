@@ -10,7 +10,7 @@ const authAPI = "http://localhost/api/auth"
 const prodAPI = "http://localhost/TechStore/ProductService"
 
 /* Endpoint Of The Cart Micro-Service API */
-const cartAPI  = "http://localhost/api/cart"
+const cartAPI = "http://localhost/api/cart"
 
 /* Endpoint Of The User Profile Micro-Service API */
 const userAPI = "http://localhost/api/UserProfile"
@@ -24,4 +24,13 @@ const orderAPI = "http://localhost/api/orders"
 /* Endpoint Of The Repport Micro-Service API */
 const repportAPI = "http://localhost/repport"
 
-export { cartAPI , authAPI , prodAPI , userAPI , orderAPI , subsAPI , repportAPI };
+/* Endpoint of the review Micro-Service API */
+const reviewAPI = "http://localhost/api/reviews"
+
+/* Endpoint of the notification Micro-Service API */
+const notiAPI = "http://localhost/api/Notifications"
+
+/* Endpoint of the Admin Logs Micro-Service API */
+const adminLogsAPI = "http://localhost/api/Audit"
+
+export { cartAPI, authAPI, prodAPI, userAPI, orderAPI, subsAPI, repportAPI, reviewAPI, notiAPI, adminLogsAPI };

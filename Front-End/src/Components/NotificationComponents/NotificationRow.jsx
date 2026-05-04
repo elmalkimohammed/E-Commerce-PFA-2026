@@ -3,13 +3,14 @@ import { useState, useEffect } from "react";
 import "../styles/NotificationRow.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { notiAPI } from "../../services/servicesAPI";
 
-const NOTIF_API = "http://localhost/api/notifications";
+const NOTIF_API = notiAPI; 
 
 function NotificationRow() {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading]             = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError]                 = useState(null);
 
   // Récupère l'userId depuis le JWT stocké

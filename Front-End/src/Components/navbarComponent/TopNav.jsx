@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { cartAPI } from "../../services/servicesAPI";
 import { prodAPI } from "../../services/servicesAPI";
 import { Link } from "react-router-dom";
+import { notiAPI } from "../../services/servicesAPI"; 
 
 /* Needed Global CHosen Category State Import */
 import { useDispatch } from "react-redux"
@@ -11,6 +12,7 @@ import { setChosenCategory } from "../../store/categorySlicer.js"
 import axios from "axios" 
 
 import "../../pages/Styles/TopNavStyle.css";
+import logo from "../../assets/AutoNova_Logo.png"
 
 function TopNav() {
   const [menuOpen, setMenuOpen]     = useState(false);
@@ -38,7 +40,7 @@ function TopNav() {
   const userId = getUserId();
   if (!userId) return;
 
-  axios.get(`http://localhost/api/notifications/user/${userId}`)
+  axios.get(`${notiAPI}/user/${userId}`)
     .then((res) => setNotification(res.data))
     .catch(() => {});   // silencieux dans la navbar
 }, []);
@@ -135,10 +137,16 @@ const lastFiveNotifications = notification.slice(0, 5);
     dispatcher( setChosenCategory(value) )
   }
 
+  const sendToHome = () => {
+    navigate("/")
+  }
+
   return (
     <>
       <nav className="top-nav">
-        <p className="brand">TechStore</p>
+        <p className="brand">
+          <img src={logo} alt="test" onClick={sendToHome}/>
+        </p>
 
         <button
           type="button"
@@ -153,7 +161,6 @@ const lastFiveNotifications = notification.slice(0, 5);
         <div className={`redirect ${menuOpen ? "open" : ""}`}>
           <p><a href="/"             onClick={() => setMenuOpen(false)}>Accueil</a></p>
           <p><a onClick={() => { setMenuOpen(false); displaySpan(); }} className="categoryList">Catègories</a></p>
-          <p><a href="#"             onClick={() => setMenuOpen(false)}>À propos</a></p>
           <p><a href="/CategoryPage" onClick={() => setMenuOpen(false)}>Filtrage</a></p>
           <p><a href="/repport"             onClick={() => setMenuOpen(false)}>Contact</a></p>
           {localStorage.getItem("generatedJWT_Token") && (
@@ -182,7 +189,7 @@ const lastFiveNotifications = notification.slice(0, 5);
                             key={n.notificationId}
                             className={n.status === "SENT" ? "unread" : "read"}
                             onClick={() => {
-                              axios.patch(`http://localhost/api/notifications/${n.notificationId}/read`);
+                              axios.patch(`${notiAPI}/${n.notificationId}/read`);
                               setNotification((prev) =>
                                 prev.map((x) =>
                                   x.notificationId === n.notificationId ? { ...x, status: "READ" } : x
@@ -273,7 +280,7 @@ const lastFiveNotifications = notification.slice(0, 5);
       </nav>
       {/* Hidden Categories HTML Span */}
       { spanState &&
-      <span className="hiddenCategories" style={{ position: "sticky", top: "56.8px", zIndex: "51" }}>
+      <span className="hiddenCategories" style={{ position: "sticky", top: "56.8px", zIndex: "51", justifyContent: "center" }}>
         { categories.map((foundCategory) => 
           <span key={foundCategory} className="hiddenCategories-item">
             <a onClick={() => { storeCategory(foundCategory); navigate("/CategoryPage"); }}>
