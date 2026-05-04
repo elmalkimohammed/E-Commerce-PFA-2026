@@ -1,13 +1,14 @@
 services:
   #___Nginx Reverse Proxy___
   nginx:
-    image: nginx:alpine
+    build:
+      context: ./Front-End
+      dockerfile: Dockerfile
     container_name: nginx-gateway
     ports:
       - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./Front-End/dist:/usr/share/nginx/html:ro
     depends_on:
       - AuthServiceAPI
       - ProductServiceAPI
