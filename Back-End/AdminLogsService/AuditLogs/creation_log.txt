@@ -3,3 +3,4 @@
 [2026-05-03 17:50:16] CREATED - UserId: 1e511ab9-357d-4be0-9069-114ead0ce5d6, Email: mohammedelmalki2417@gmail.com, Role: Customer
 [2026-05-03 17:50:16] CREATED - UserId: bb011ee5-512d-4bcf-80c2-c01ff0aaef72, Email: mohammedelmalki24176@gmail.com, Role: Customer
 [2026-05-03 18:33:39] CREATED - UserId: d7ba91f3-21f0-470e-8002-c7214a03c8fb, Email: jamal@gmail.com, Role: Customer
+[2026-05-04 16:42:52] CREATED - UserId: 3b819ac5-c087-4d3c-a5ba-a80565cf1083, Email: aminebouchadad04@gmail.com, Role: Customer

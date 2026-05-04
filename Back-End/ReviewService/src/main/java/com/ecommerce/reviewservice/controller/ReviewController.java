@@ -5,6 +5,7 @@ import com.ecommerce.reviewservice.entity.Review;
 import com.ecommerce.reviewservice.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -24,13 +25,13 @@ public class ReviewController {
 
     
     @GetMapping("/product/{productId}")
-    public List<Review> getByProduct(@PathVariable UUID productId) {
+    public List<Review> getByProduct(@PathVariable int productId) {
         return service.getByProduct(productId);
     }
 
     
     @GetMapping("/product/{productId}/rating")
-    public double getRating(@PathVariable UUID productId) {
+    public double getRating(@PathVariable int productId) {
         return service.getRating(productId);
     }
 
@@ -46,4 +47,9 @@ public class ReviewController {
     public void delete(@PathVariable UUID id) {
         service.delete(id);
     }
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Review>> getByUserId(@PathVariable UUID userId) {
+        return ResponseEntity.ok(service.GetByUserId(userId));
+    }
+
 }

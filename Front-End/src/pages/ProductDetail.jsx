@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { prodAPI, cartAPI } from "../services/servicesAPI"
+import { prodAPI, cartAPI, reviewAPI, userAPI } from "../services/servicesAPI"
 import TopNav from "../Components/navbarComponent/TopNav"
 import axios from "axios"
 import "./Styles/ProductDetail.css"
@@ -16,6 +16,16 @@ const ProductDetail = () => {
   const [cartMsg,    setCartMsg]    = useState(null)
   const [loading,    setLoading]    = useState(false)
   const [imgError,   setImgError]   = useState(false)
+  const [rating,     setRating]     = useState(0)
+  const [reviewCount, setReviewCount] = useState(0)
+  const [reviews,    setReviews]    = useState([])
+
+  const [users, setUsers] = useState({})
+  const [showReviewForm, setShowReviewForm] = useState(false)
+  const [newRating, setNewRating]   = useState(5)
+  const [newComment, setNewComment] = useState("")
+  const [submittingReview, setSubmittingReview] = useState(false)
+  const [reviewMsg, setReviewMsg]   = useState(null)
 
   useEffect(() => {
     fetch(`${prodAPI}/${id}`)
@@ -28,15 +38,61 @@ const ProductDetail = () => {
       .catch(err => console.error(err))
   }, [id])
 
+  // Charger les reviews + les infos des utilisateurs
+  const loadReviews = async () => {
+    try {
+      // Récupérer le rating moyen
+      const ratingRes = await fetch(`${reviewAPI}/product/${id}/rating`)
+      const ratingData = await ratingRes.json()
+      setRating(ratingData || 0)
+
+      // Récupérer les avis
+      const reviewsRes = await fetch(`${reviewAPI}/product/${id}`)
+      const reviewsData = await reviewsRes.json()
+      const sorted = (reviewsData || []).sort((a, b) =>
+        new Date(b.createdAt) - new Date(a.createdAt)
+      )
+      setReviews(sorted)
+      setReviewCount(sorted.length)
+
+      // Récupérer les infos des utilisateurs uniques
+      const uniqueUserIds = [...new Set(sorted.map(r => r.userId))]
+      const usersData = {}
+
+      await Promise.all(
+        uniqueUserIds.map(async (userId) => {
+          try {
+            const res = await fetch(`${userAPI}/${userId}`)
+            if (res.ok) {
+              const userData = await res.json()
+              usersData[userId] = userData
+            }
+          } catch (e) {
+            console.error(`Erreur chargement user ${userId}:`, e)
+          }
+        })
+      )
+
+      setUsers(usersData)
+
+    } catch (err) {
+      console.error("Erreur chargement reviews:", err)
+    }
+  }
+
+  useEffect(() => {
+    if (!id) return
+    loadReviews()
+  }, [id])
+
+
   if (!product) return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
       <p>Chargement...</p>
     </div>
   )
 
-  const images = product.images?.length > 0
-    ? product.images
-    : []
+  const images = product.images?.length > 0 ? product.images : []
 
   const handleQuantityChange = (action) => {
     if (action === "increment" && quantity < product.stock) setQuantity(q => q + 1)
@@ -53,21 +109,24 @@ const ProductDetail = () => {
 
   const attributeEntries = product.attributes ? Object.entries(product.attributes) : []
 
-  const RATING = 4.0
-  const REVIEW_COUNT = 24
+  /* ── Décoder le JWT pour récupérer le userId ── */
+  const getUserIdFromToken = (token) => {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]))
+      return payload.userId || payload.sub || payload.id
+    } catch (e) {
+      return null
+    }
+  }
 
   /* ── Ajouter au Panier ── */
   const handleAddToCart = async () => {
-    
-    // Vérifier si JWT existe
     const token = localStorage.getItem("generatedJWT_Token")
-    console.log("TOKEN:", token)
     if (!token) {
       navigate("/Authentication")
       return
     }
 
-    // Vérifier si le stock est disponible
     if (product.stock === 0) return
 
     setLoading(true)
@@ -81,11 +140,9 @@ const ProductDetail = () => {
         }
       }
 
-      // POST /api/cart/addToCart
-      // userId est extrait automatiquement du JWT côté Back-End
       await axios.post(`${cartAPI}/addToCart`, {
-        productId: product.id,  // ← l'id du produit
-        stock: quantity          // ← la quantité choisie
+        productId: product.id,
+        stock: quantity
       }, config)
 
       setCartMsg({ type: "success", text: "✅ Produit ajouté au panier !" })
@@ -95,8 +152,58 @@ const ProductDetail = () => {
       setCartMsg({ type: "error", text: "❌ Erreur lors de l'ajout au panier." })
     } finally {
       setLoading(false)
-      // Effacer le message après 3 secondes
       setTimeout(() => setCartMsg(null), 3000)
+    }
+  }
+
+  /* ── Soumettre un nouveau commentaire ── */
+  const handleSubmitReview = async () => {
+    const token = localStorage.getItem("generatedJWT_Token")
+    if (!token) {
+      navigate("/Authentication")
+      return
+    }
+
+    if (!newComment.trim()) {
+      setReviewMsg({ type: "error", text: "Veuillez écrire un commentaire." })
+      return
+    }
+
+    const userId = getUserIdFromToken(token)
+    if (!userId) {
+      setReviewMsg({ type: "error", text: "Erreur d'authentification." })
+      return
+    }
+
+    setSubmittingReview(true)
+    setReviewMsg(null)
+
+    try {
+      await axios.post(reviewAPI, {
+        productId: Number(product.id),
+        userId: userId,
+        rating: newRating,
+        comment: newComment
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      })
+
+      setReviewMsg({ type: "success", text: "✅ Commentaire ajouté avec succès !" })
+      setNewComment("")
+      setNewRating(5)
+      setShowReviewForm(false)
+
+      loadReviews()
+
+    } catch (err) {
+      console.error(err)
+      setReviewMsg({ type: "error", text: "❌ Erreur lors de l'envoi." })
+    } finally {
+      setSubmittingReview(false)
+      setTimeout(() => setReviewMsg(null), 3000)
     }
   }
 
@@ -165,11 +272,11 @@ const ProductDetail = () => {
           <div className="rating-section">
             <div className="stars-container">
               {[1, 2, 3, 4, 5].map(star => (
-                <span key={star} className={`star ${star <= Math.round(RATING) ? "filled" : ""}`}>★</span>
+                <span key={star} className={`star ${star <= Math.round(rating) ? "filled" : ""}`}>★</span>
               ))}
             </div>
-            <span className="rating-value">{RATING}</span>
-            <span className="review-count">({REVIEW_COUNT} avis)</span>
+            <span className="rating-value">{rating.toFixed(1)}</span>
+            <span className="review-count">({reviewCount} avis)</span>
           </div>
 
           {/* Price */}
@@ -203,7 +310,6 @@ const ProductDetail = () => {
 
           {/* Quantity + Cart */}
           <div className="add-to-cart-section">
-
             <div className="quantity-selector">
               <button
                 className="quantity-btn"
@@ -225,10 +331,8 @@ const ProductDetail = () => {
             >
               {loading ? "Ajout en cours..." : "Ajouter au Panier"}
             </button>
-
           </div>
 
-          {/* Message succès / erreur */}
           {cartMsg && (
             <p style={{
               marginTop: "1em",
@@ -241,6 +345,134 @@ const ProductDetail = () => {
 
         </div>
       </div>
+
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/* SECTION COMMENTAIRES                                     */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      <div className="comments-section">
+        <div className="comments-header">
+          <h2 className="comments-title">
+            Commentaires <span className="comments-count">({reviewCount})</span>
+          </h2>
+          <button
+            className="add-review-btn"
+            onClick={() => setShowReviewForm(prev => !prev)}
+          >
+            {showReviewForm ? "✕ Annuler" : "✍️ Ajouter un commentaire"}
+          </button>
+        </div>
+
+        {/* Formulaire d'ajout */}
+        {showReviewForm && (
+          <div className="review-form">
+            <h3 className="form-title">Votre avis</h3>
+
+            <div className="form-rating">
+              <label>Note :</label>
+              <div className="rating-stars-input">
+                {[1, 2, 3, 4, 5].map(star => (
+                  <span
+                    key={star}
+                    className={`star-input ${star <= newRating ? "filled" : ""}`}
+                    onClick={() => setNewRating(star)}
+                  >★</span>
+                ))}
+                <span className="rating-text">{newRating}/5</span>
+              </div>
+            </div>
+
+            <textarea
+              className="comment-input"
+              placeholder="Partagez votre expérience avec ce produit..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              rows={4}
+              maxLength={500}
+            />
+            <div className="char-count">{newComment.length}/500</div>
+
+            <div className="form-actions">
+              <button
+                className="submit-review-btn"
+                onClick={handleSubmitReview}
+                disabled={submittingReview || !newComment.trim()}
+              >
+                {submittingReview ? "Envoi..." : "Publier mon avis"}
+              </button>
+            </div>
+
+            {reviewMsg && (
+              <p className={`review-msg ${reviewMsg.type}`}>
+                {reviewMsg.text}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Liste des commentaires */}
+        {reviews.length === 0 ? (
+          <p className="no-comments">
+            Aucun commentaire pour ce produit. Soyez le premier à donner votre avis !
+          </p>
+        ) : (
+          <div className="comments-list">
+            {reviews.map(review => {
+              const user = users[review.userId]
+              const fullName = user
+                ? `${user.firstName || "Utilisateur"} ${user.lastName || ""}`.trim()
+                : "Utilisateur inconnu"
+              const initials = user
+                ? `${(user.firstName?.[0] || "U")}${(user.lastName?.[0] || "")}`.toUpperCase()
+                : "U"
+
+              return (
+                <div key={review.reviewId} className="comment-card">
+                  <div className="comment-header">
+                    {user?.profileImage ? (
+                      <img
+                        src={user.profileImage}
+                        alt={fullName}
+                        className="comment-avatar-img"
+                      />
+                    ) : (
+                      <div
+                        className="comment-avatar"
+                        style={{
+                          background: `hsl(${parseInt(review.userId.substring(0, 8), 16) % 360}, 65%, 55%)`
+                        }}
+                      >
+                        {initials}
+                      </div>
+                    )}
+                    <div className="comment-meta">
+                      <span className="comment-author">{fullName}</span>
+                      <div className="comment-stars">
+                        {[1, 2, 3, 4, 5].map(star => (
+                          <span
+                            key={star}
+                            className={`star ${star <= review.rating ? "filled" : ""}`}
+                          >★</span>
+                        ))}
+                      </div>
+                      <span className="comment-date">
+                        {new Date(review.createdAt).toLocaleDateString("fr-FR", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric"
+                        })}
+                      </span>
+                    </div>
+                  </div>
+                  {review.comment && (
+                    <p className="comment-text">{review.comment}</p>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
     </div>
     </>
   )

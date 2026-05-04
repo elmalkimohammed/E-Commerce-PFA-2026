@@ -19,7 +19,7 @@ public class Review {
     private UUID reviewId;
 
     @Column(nullable = false)
-    private UUID productId;
+    private int productId;
 
     @Column(nullable = false)
     private UUID userId;
