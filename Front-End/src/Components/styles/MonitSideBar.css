@@ -1,22 +1,54 @@
-.sideBar {
+.sideBar, .opsSideBar {
     display: flex;
     flex-direction: column;
-    gap: 1em;
-    padding: 25px;
-    border: #143a63 2px solid;
-    border-radius: 25px;
+    gap: 4px;
+    padding: 40px 24px;
+    min-width: 240px;
+    width: 240px;
+    background: #ffffff;
+    border-right: 1px solid #e8e8e8;
+    height: 100%;
+    position: sticky;
+    top: 72px;
+    flex-shrink: 0;
+    overflow-y: auto;
 }
-.sideBar p {
-    border: 2px solid #143a63;
-    border-radius: 25px;
-    padding: 20px;
-    font-weight: bold;
-    transition: 0.5s;
+
+.sideBar h1, .opsSideBar h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #0a0a0a;
+    text-align: left;
+    margin-bottom: 24px;
+    padding: 0 16px;
 }
-.sideBar p:hover {
-    cursor: pointer;
+
+.sideBar p, .opsSideBar p {
     border: none;
-    margin-left: 10px;
-    background-color: #143a63;
-    color: white;
+    border-radius: 0;
+    padding: 12px 16px;
+    font-size: 20px;
+    font-weight: 500;
+    color: #555;
+    transition: 0.2s;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    margin: 0;
+    letter-spacing: 0.02em;
+}
+
+.sideBar p:hover, .opsSideBar p:hover {
+    border-left: 2px solid #0a0a0a;
+    background-color: #f8f8f8;
+    color: #0a0a0a;
+}
+.MonitoringParent .containerBox > :not(.sideBar):not(.opsSideBar),
+.CrudParent .containerBox > :not(.sideBar):not(.opsSideBar) {
+    flex: 1;
+    min-width: 0;
+    padding: 40px;
+    overflow-x: auto;
 }

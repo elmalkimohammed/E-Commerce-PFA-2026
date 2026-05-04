@@ -11,6 +11,7 @@ import { setChosenCategory } from "../../store/categorySlicer.js"
 import axios from "axios" 
 
 import "../../pages/Styles/TopNavStyle.css";
+import logo from "../../assets/AutoNova_Logo.png"
 
 function TopNav() {
   const [menuOpen, setMenuOpen]     = useState(false);
@@ -135,10 +136,16 @@ const lastFiveNotifications = notification.slice(0, 5);
     dispatcher( setChosenCategory(value) )
   }
 
+  const sendToHome = () => {
+    navigate("/")
+  }
+
   return (
     <>
       <nav className="top-nav">
-        <p className="brand">TechStore</p>
+        <p className="brand">
+          <img src={logo} alt="test" onClick={sendToHome}/>
+        </p>
 
         <button
           type="button"
@@ -153,7 +160,6 @@ const lastFiveNotifications = notification.slice(0, 5);
         <div className={`redirect ${menuOpen ? "open" : ""}`}>
           <p><a href="/"             onClick={() => setMenuOpen(false)}>Accueil</a></p>
           <p><a onClick={() => { setMenuOpen(false); displaySpan(); }} className="categoryList">Catègories</a></p>
-          <p><a href="#"             onClick={() => setMenuOpen(false)}>À propos</a></p>
           <p><a href="/CategoryPage" onClick={() => setMenuOpen(false)}>Filtrage</a></p>
           <p><a href="/repport"             onClick={() => setMenuOpen(false)}>Contact</a></p>
           {localStorage.getItem("generatedJWT_Token") && (
@@ -273,7 +279,7 @@ const lastFiveNotifications = notification.slice(0, 5);
       </nav>
       {/* Hidden Categories HTML Span */}
       { spanState &&
-      <span className="hiddenCategories" style={{ position: "sticky", top: "56.8px", zIndex: "51" }}>
+      <span className="hiddenCategories" style={{ position: "sticky", top: "56.8px", zIndex: "51", justifyContent: "center" }}>
         { categories.map((foundCategory) => 
           <span key={foundCategory} className="hiddenCategories-item">
             <a onClick={() => { storeCategory(foundCategory); navigate("/CategoryPage"); }}>
