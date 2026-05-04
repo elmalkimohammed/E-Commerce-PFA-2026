@@ -17,7 +17,37 @@ namespace AdminLogsService.Services
                 Directory.CreateDirectory(_auditDirectory);
             }
         }
+        public async Task SaveOrderEvent(OrderEvent orderEvent)
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    _logger.LogInformation("Saving order {Action} for {OrderId}", orderEvent.Action, orderEvent.OrderId);
 
+                    string fileName = orderEvent.Action.ToLower() switch
+                    {
+                        "created" => "order_created.txt",
+                        "updated" => "order_updated.txt",
+                        "cancelled" => "order_cancelled.txt",
+                        _ => "order_events.txt"
+                    };
+
+                    var logPath = Path.Combine(_auditDirectory, fileName);
+                    var timestamp = orderEvent.Timestamp.ToString("yyyy-MM-dd HH:mm:ss");
+                    
+                    var logEntry = $"[{timestamp}] ORDER {orderEvent.Action} - OrderId: {orderEvent.OrderId}, UserId: {orderEvent.UserId}, Status: {orderEvent.Status}, PerformedBy: {orderEvent.PerformedBy}{Environment.NewLine}";
+                    
+                    File.AppendAllText(logPath, logEntry);
+                    _logger.LogInformation("✅ Saved order {Action} for {OrderId}", orderEvent.Action, orderEvent.OrderId);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error saving order {Action}", orderEvent.Action);
+                    throw;
+                }
+            });
+        }
         public async Task SaveProductEvent(ProductEvent productEvent)
         {
             await Task.Run(() =>

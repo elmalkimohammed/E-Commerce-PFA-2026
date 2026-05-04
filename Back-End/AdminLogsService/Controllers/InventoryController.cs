@@ -91,7 +91,79 @@ namespace AdminLogsService.Controllers
             }
         }
 
-        // ========== EXPORT ENDPOINTS ==========
+        // ========== ORDER CREATED LOGS ==========
+        [HttpGet("orders/created/logs")]
+        public async Task<IActionResult> GetOrderCreatedLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "order_created.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return Ok("No order created logs available yet.");
+                }
+
+                var logs = await System.IO.File.ReadAllTextAsync(logPath);
+                return Ok(logs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error reading order created logs");
+                return StatusCode(500, new { error = "Error reading order created logs" });
+            }
+        }
+
+        // ========== ORDER UPDATED LOGS ==========
+        [HttpGet("orders/updated/logs")]
+        public async Task<IActionResult> GetOrderUpdatedLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "order_updated.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return Ok("No order updated logs available yet.");
+                }
+
+                var logs = await System.IO.File.ReadAllTextAsync(logPath);
+                return Ok(logs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error reading order updated logs");
+                return StatusCode(500, new { error = "Error reading order updated logs" });
+            }
+        }
+
+        // ========== ORDER CANCELLED LOGS ==========
+        [HttpGet("orders/cancelled/logs")]
+        public async Task<IActionResult> GetOrderCancelledLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "order_cancelled.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return Ok("No order cancelled logs available yet.");
+                }
+
+                var logs = await System.IO.File.ReadAllTextAsync(logPath);
+                return Ok(logs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error reading order cancelled logs");
+                return StatusCode(500, new { error = "Error reading order cancelled logs" });
+            }
+        }
+
+        // ========== PRODUCT EXPORT ENDPOINTS ==========
         [HttpGet("products/created/export")]
         public async Task<IActionResult> ExportProductCreatedLogs()
         {
@@ -167,7 +239,83 @@ namespace AdminLogsService.Controllers
             }
         }
 
-        // ========== CART LOGS (if needed) ==========
+        // ========== ORDER EXPORT ENDPOINTS ==========
+        [HttpGet("orders/created/export")]
+        public async Task<IActionResult> ExportOrderCreatedLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "order_created.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return NotFound(new { message = "No order created logs available" });
+                }
+
+                var logs = await System.IO.File.ReadAllBytesAsync(logPath);
+                var fileName = $"order_created_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+                
+                return File(logs, "text/plain", fileName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting order created logs");
+                return StatusCode(500, new { error = "Error exporting order created logs" });
+            }
+        }
+
+        [HttpGet("orders/updated/export")]
+        public async Task<IActionResult> ExportOrderUpdatedLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "order_updated.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return NotFound(new { message = "No order updated logs available" });
+                }
+
+                var logs = await System.IO.File.ReadAllBytesAsync(logPath);
+                var fileName = $"order_updated_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+                
+                return File(logs, "text/plain", fileName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting order updated logs");
+                return StatusCode(500, new { error = "Error exporting order updated logs" });
+            }
+        }
+
+        [HttpGet("orders/cancelled/export")]
+        public async Task<IActionResult> ExportOrderCancelledLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "order_cancelled.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return NotFound(new { message = "No order cancelled logs available" });
+                }
+
+                var logs = await System.IO.File.ReadAllBytesAsync(logPath);
+                var fileName = $"order_cancelled_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+                
+                return File(logs, "text/plain", fileName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting order cancelled logs");
+                return StatusCode(500, new { error = "Error exporting order cancelled logs" });
+            }
+        }
+
+        // ========== CART LOGS ==========
         [HttpGet("carts/logs")]
         public async Task<IActionResult> GetCartLogs()
         {
@@ -191,7 +339,7 @@ namespace AdminLogsService.Controllers
             }
         }
 
-        // ========== REVIEW LOGS (if needed) ==========
+        // ========== REVIEW LOGS ==========
         [HttpGet("reviews/logs")]
         public async Task<IActionResult> GetReviewLogs()
         {
@@ -212,6 +360,57 @@ namespace AdminLogsService.Controllers
             {
                 _logger.LogError(ex, "Error reading review logs");
                 return StatusCode(500, new { error = "Error reading review logs" });
+            }
+        }
+                // ========== CART EXPORT ==========
+        [HttpGet("carts/export")]
+        public async Task<IActionResult> ExportCartLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "carts.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return NotFound(new { message = "No cart logs available" });
+                }
+
+                var logs = await System.IO.File.ReadAllBytesAsync(logPath);
+                var fileName = $"cart_logs_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+                
+                return File(logs, "text/plain", fileName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting cart logs");
+                return StatusCode(500, new { error = "Error exporting cart logs" });
+            }
+        }
+
+        // ========== REVIEW EXPORT ==========
+        [HttpGet("reviews/export")]
+        public async Task<IActionResult> ExportReviewLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "reviews.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return NotFound(new { message = "No review logs available" });
+                }
+
+                var logs = await System.IO.File.ReadAllBytesAsync(logPath);
+                var fileName = $"review_logs_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+                
+                return File(logs, "text/plain", fileName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting review logs");
+                return StatusCode(500, new { error = "Error exporting review logs" });
             }
         }
     }

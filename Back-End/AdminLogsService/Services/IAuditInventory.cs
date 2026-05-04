@@ -5,5 +5,6 @@ namespace AdminLogsService.Services
     public interface IAuditInventory
     {
         Task SaveProductEvent(ProductEvent productEvent);
+        Task SaveOrderEvent(OrderEvent orderEvent);  
     }
 }

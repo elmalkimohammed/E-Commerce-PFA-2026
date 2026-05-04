@@ -1,31 +1,84 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrderService.DTOs;
 using OrderService.Services;
+using OrderService.Events;
+using System.Security.Claims;
 
 namespace OrderService.API.Controllers;
 
 [ApiController]
 [Route("api/orders")]
-public class OrdersController(IOrderService orderService) : ControllerBase
+[Authorize]
+public class OrdersController : ControllerBase
 {
+    private readonly IOrderService _orderService;
+    private readonly OrderEventService _orderEventService;
+    private readonly ILogger<OrdersController> _logger;
+
+    public OrdersController(
+        IOrderService orderService, 
+        OrderEventService orderEventService,
+        ILogger<OrdersController> logger)
+    {
+        _orderService = orderService;
+        _orderEventService = orderEventService;
+        _logger = logger;
+    }
+
+    private string GetCurrentUser()
+    {
+        return User.FindFirst("email")?.Value 
+            ?? User.FindFirst(ClaimTypes.Email)?.Value
+            ?? User.FindFirst("sub")?.Value 
+            ?? "Unknown";
+    }
+
     [HttpPost("cart")]
     public async Task<IActionResult> CreateFromCart([FromBody] CreateOrderDto dto)
     {
-        var order = await orderService.CreateOrderFromCartAsync(dto);
-        return CreatedAtAction(nameof(GetActiveOrders), new { userId = order.UserId }, order);
+        try
+        {
+            var orderResponse = await _orderService.CreateOrderFromCartAsync(dto);
+            
+            // Get the actual Order entity
+            var orderEntity = await _orderService.GetOrderByIdAsync(orderResponse.OrderId);
+            await _orderEventService.PublishOrderCreatedEvent(orderEntity, GetCurrentUser());
+            
+            return CreatedAtAction(nameof(GetActiveOrders), new { userId = orderResponse.UserId }, orderResponse);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating order from cart");
+            return BadRequest(new { error = ex.Message });
+        }
     }
 
     [HttpPost("users/{userId}/single")]
     public async Task<IActionResult> CreateSingleProduct(Guid userId, [FromBody] OrderItemDto item)
     {
-        var order = await orderService.CreateSingleProductOrderAsync(userId, item);
-        return CreatedAtAction(nameof(GetActiveOrders), new { userId }, order);
+        try
+        {
+            var orderResponse = await _orderService.CreateSingleProductOrderAsync(userId, item);
+            
+            // Get the actual Order entity
+            var orderEntity = await _orderService.GetOrderByIdAsync(orderResponse.OrderId);
+            await _orderEventService.PublishOrderCreatedEvent(orderEntity, GetCurrentUser());
+            
+            return CreatedAtAction(nameof(GetActiveOrders), new { userId }, orderResponse);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating single product order");
+            return BadRequest(new { error = ex.Message });
+        }
     }
 
     [HttpGet("users/{userId}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetActiveOrders(Guid userId)
     {
-        var orders = await orderService.GetActiveOrdersByUserAsync(userId);
+        var orders = await _orderService.GetActiveOrdersByUserAsync(userId);
         return Ok(orders);
     }
 
@@ -34,24 +87,39 @@ public class OrdersController(IOrderService orderService) : ControllerBase
     {
         try
         {
-            var order = await orderService.UpdateOrderStatusAsync(orderId, dto);
-            return Ok(order);
+            var orderResponse = await _orderService.UpdateOrderStatusAsync(orderId, dto);
+            
+            // Get the actual Order entity
+            var orderEntity = await _orderService.GetOrderByIdAsync(orderId);
+            await _orderEventService.PublishOrderUpdatedEvent(orderEntity, GetCurrentUser());
+            
+            return Ok(orderResponse);
         }
         catch (KeyNotFoundException ex) { return NotFound(new { message = ex.Message }); }
         catch (ArgumentException ex) { return BadRequest(new { message = ex.Message }); }
     }
+
     [HttpGet("all")]
+    [Authorize(Roles = "Admin,Invet")]
     public async Task<IActionResult> GetAllOrders()
     {
-        var orders = await orderService.GetAllOrdersAsync();
+        var orders = await _orderService.GetAllOrdersAsync();
         return Ok(orders);
     }
+
     [HttpDelete("{orderId}")]
     public async Task<IActionResult> CancelOrder(Guid orderId)
     {
         try
         {
-            await orderService.CancelOrderAsync(orderId);
+            var orderEntity = await _orderService.GetOrderByIdAsync(orderId);
+            if (orderEntity == null)
+                return NotFound(new { message = "Order not found" });
+
+            await _orderService.CancelOrderAsync(orderId);
+            
+            await _orderEventService.PublishOrderCancelledEvent(orderEntity, GetCurrentUser());
+            
             return NoContent();
         }
         catch (KeyNotFoundException ex) { return NotFound(new { message = ex.Message }); }

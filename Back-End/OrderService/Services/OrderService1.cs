@@ -31,11 +31,6 @@ public class OrderService1 : IOrderService
         var created = await _repository.CreateAsync(order);
         return MapToDto(created);
     }
-    public async Task<IEnumerable<OrderResponseDto>> GetAllOrdersAsync()
-    {
-        var orders = await _repository.GetAllOrdersAsync();
-        return orders.Select(MapToDto);
-    }
 
     public async Task<OrderResponseDto> CreateSingleProductOrderAsync(Guid userId, OrderItemDto item)
     {
@@ -74,7 +69,13 @@ public class OrderService1 : IOrderService
 
         order.Status = newStatus;
         var updated = await _repository.UpdateAsync(order);
-        return MapToDto(updated);
+        return MapToDto(updated!);
+    }
+
+    public async Task<IEnumerable<OrderResponseDto>> GetAllOrdersAsync()
+    {
+        var orders = await _repository.GetAllOrdersAsync();
+        return orders.Select(MapToDto);
     }
 
     public async Task<bool> CancelOrderAsync(Guid orderId)
@@ -88,13 +89,24 @@ public class OrderService1 : IOrderService
         return await _repository.DeleteAsync(orderId);
     }
 
+    public async Task<Order> GetOrderByIdAsync(Guid orderId)
+    {
+        var order = await _repository.GetByIdAsync(orderId);
+        if (order == null)
+            throw new KeyNotFoundException($"Order {orderId} not found.");
+        return order;
+    }
+
     private static OrderResponseDto MapToDto(Order order) => new(
         order.OrderId,
         order.UserId,
         order.Status.ToString(),
         order.CreatedAt,
         order.OrderItems.Select(i => new OrderItemResponseDto(
-            i.ProductId, i.ProductName, i.Quantity, i.UnitPrice
+            i.ProductId,
+            i.ProductName,
+            i.Quantity,
+            i.UnitPrice
         )).ToList()
     );
 }

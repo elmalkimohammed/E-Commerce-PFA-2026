@@ -29,16 +29,17 @@ namespace UserAuditLoggingService.Services
             var config = new ConsumerConfig
             {
                 BootstrapServers = _configuration["Kafka:BootstrapServers"],
-                GroupId = "user-audit-logging-service-v3", // New group ID
+                GroupId = "user-audit-logging-service-v3",
                 AutoOffsetReset = AutoOffsetReset.Earliest,
                 EnableAutoCommit = false
             };
 
             using var consumer = new ConsumerBuilder<string, string>(config).Build();
 
-            consumer.Subscribe(new[] { "user-created", "user-deleted", "product-events"  }); 
+            // ADDED: order-events to subscription
+            consumer.Subscribe(new[] { "user-created", "user-deleted", "product-events", "order-events" }); 
 
-            _logger.LogInformation("✅ Subscribed to topics: user-created, user-deleted, product-events ");
+            _logger.LogInformation("✅ Subscribed to topics: user-created, user-deleted, product-events, order-events");
 
             try
             {
@@ -59,6 +60,9 @@ namespace UserAuditLoggingService.Services
                                 break;
                             case "product-events":
                                 await HandleProductEvent(result.Message.Value);
+                                break;
+                            case "order-events":  // ADDED
+                                await HandleOrderEvent(result.Message.Value);
                                 break;
                         }
 
@@ -138,7 +142,6 @@ namespace UserAuditLoggingService.Services
             }
         }
 
-        
         private async Task HandleProductEvent(string messageValue)
         {
             try
@@ -162,6 +165,33 @@ namespace UserAuditLoggingService.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error handling product event");
+            }
+        }
+
+        // ========== ADDED: ORDER EVENT HANDLER ==========
+        private async Task HandleOrderEvent(string messageValue)
+        {
+            try
+            {
+                _logger.LogInformation("📝 Processing order event");
+                
+                var orderEvent = JsonSerializer.Deserialize<OrderEvent>(messageValue);
+                if (orderEvent == null)
+                {
+                    _logger.LogError("Failed to deserialize order event");
+                    return;
+                }
+
+                _logger.LogInformation("Order {Action}: {OrderId}, UserId: {UserId}, Status: {Status}", 
+                    orderEvent.Action, orderEvent.OrderId, orderEvent.UserId, orderEvent.Status);
+
+                using var scope = _scopeFactory.CreateScope();
+                var auditInventory = scope.ServiceProvider.GetRequiredService<IAuditInventory>();
+                await auditInventory.SaveOrderEvent(orderEvent);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error handling order event");
             }
         }
     }

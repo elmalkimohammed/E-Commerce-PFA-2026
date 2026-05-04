@@ -1,0 +1,6 @@
+[2026-05-03 19:26:33] PRODUCT DELETED - ProductId: 32, Name: kafka test, Price: 90, Stock: 25, Category: Electronics, UserId: 19517445-ee47-4329-9034-2931cd05c0cd, DELETEDBy: invet@techstore.com
+[2026-05-03 19:26:41] PRODUCT DELETED - ProductId: 31, Name: net, Price: 50, Stock: 20, Category: net, UserId: 91cfafb0-e273-4b9d-b0ca-69172a39d762, DELETEDBy: invet@techstore.com
+[2026-05-03 19:26:56] PRODUCT DELETED - ProductId: 30, Name: da, Price: 40, Stock: 55, Category: dada, UserId: 91cfafb0-e273-4b9d-b0ca-69172a39d762, DELETEDBy: invet@techstore.com
+[2026-05-03 19:27:16] PRODUCT DELETED - ProductId: 29, Name: mot, Price: 1000, Stock: 1, Category: moto, UserId: 423e4567-e89b-12d3-a456-426614174003, DELETEDBy: invet@techstore.com
+[2026-05-03 19:27:32] PRODUCT DELETED - ProductId: 17, Name: Test Product, Price: 123.45, Stock: 10, Category: TestCategory, UserId: 00000000-0000-0000-0000-000000000000, DELETEDBy: invet@techstore.com
+[2026-05-03 19:27:42] PRODUCT DELETED - ProductId: 15, Name: Test Kafka Product, Price: 199.99, Stock: 100, Category: Test, UserId: 00000000-0000-0000-0000-000000000000, DELETEDBy: invet@techstore.com

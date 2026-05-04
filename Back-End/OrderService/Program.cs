@@ -2,12 +2,35 @@
 using OrderService.Services;
 using OrderService.Data;
 using OrderService.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-Console.WriteLine($"🔌 Connecting to: {connectionString}"); // so you can verify in logs
+// ========== JWT Authentication ==========
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var secretKey = jwtSettings["SecretKey"] ?? "x7K#mP9$qL2@nR5&wJ8*vB3^hF6!uD4%";
+var key = Encoding.UTF8.GetBytes(secretKey);
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"] ?? "AuthService",
+            ValidAudience = jwtSettings["Audience"] ?? "EcommerceUsers",
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+// ========== Database ==========
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         connectionString,
@@ -15,19 +38,29 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         mysql => mysql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(5), null)
     ));
 
+// ========== Services ==========
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService1>();
+builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
+builder.Services.AddScoped<OrderEventService>();
+
+// ========== Controllers & CORS ==========
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-// Configure The CORS Policy To Accept Our React App (Cross-Origin)
+
 builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowReact", policy => policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod());
-    }
-);
+{
+    options.AddPolicy("AllowReact", policy =>
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+    );
+});
 
 var app = builder.Build();
 
+// ========== Database Initialization ==========
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -35,8 +68,14 @@ using (var scope = app.Services.CreateScope())
     Console.WriteLine("✅ Database ready.");
 }
 
-app.MapOpenApi();
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+}
+
 app.UseCors("AllowReact");
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
 app.Run();

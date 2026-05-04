@@ -1,0 +1,86 @@
+[
+  {
+    "UserId": "b2232511-9764-436a-beae-3b818bcd494f",
+    "Email": "test2@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-03T17:08:42.4936494Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "3b6cac59-a79b-4487-b930-ae78ffd1e13b",
+    "Email": "user@user.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-03T17:15:48.8699668Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "649a1033-167f-47c4-9b85-90bde9c27775",
+    "Email": "admin@admin.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-03T19:34:34.6174477Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "a7681c71-de7b-4602-be05-0b74924f6441",
+    "Email": "invet@techstore.com",
+    "Role": "invert",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-04T19:08:36.836541Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "6a2ec232-f7d2-4a46-9f45-466ca0189d33",
+    "Email": "admin@admin.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-04T19:13:13.115901Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "9728fd50-13fd-401c-a495-36d087ac6849",
+    "Email": "test@test.com",
+    "Role": "Invet",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-04T19:15:19.3974045Z",
+      "audit_version": "1.0"
+    }
+  }
+]

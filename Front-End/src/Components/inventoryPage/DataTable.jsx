@@ -63,7 +63,7 @@ function DataTable({ currentPage, data, onRefresh }) {
 
   const getHeaders = () => {
     if (currentPage === "products" || currentPage === "createdProducts") {
-      return ["Id", "Nom", "Description", "Prix", "Stock", "Categorie", "Vendeur", "Actions"];
+      return ["Id", "Nom", "Description", "Prix", "Stock", "Categorie", "Vendeur (Email)", "Actions"];
     }
     if (currentPage === "orders") {
       return ["OrderId", "UserId", "Status", "Items", "Actions"];
@@ -77,10 +77,25 @@ function DataTable({ currentPage, data, onRefresh }) {
     return ["Data", "Actions"];
   };
 
+  // Fields that are editable
+  const getEditableFields = () => {
+    if (currentPage === "products" || currentPage === "createdProducts") {
+      return ["name", "description", "price", "stock", "category"]; // Removed "userEmail" from editable fields
+    }
+    if (currentPage === "orders") {
+      return ["status"];
+    }
+    if (currentPage === "reviews" || currentPage === "createdReviews") {
+      return ["rating", "comment"];
+    }
+    return [];
+  };
+
   const renderCell = (item, field, value) => {
     const isEditing = editingId === (item.id || item.orderId || item.reviewId);
+    const isEditable = getEditableFields().includes(field);
     
-    if (!isEditing) {
+    if (!isEditing || !isEditable) {
       return value !== undefined && value !== null ? String(value) : "-";
     }
 
@@ -139,7 +154,7 @@ function DataTable({ currentPage, data, onRefresh }) {
 
   const getFields = () => {
     if (currentPage === "products" || currentPage === "createdProducts") {
-      return ["id", "name", "description", "price", "stock", "category", "userId"];
+      return ["id", "name", "description", "price", "stock", "category", "userEmail"];
     }
     if (currentPage === "orders") {
       return ["orderId", "userId", "status", "items"];
@@ -156,6 +171,9 @@ function DataTable({ currentPage, data, onRefresh }) {
   const getValue = (item, field) => {
     if (field === "items") {
       return item.items?.length || 0;
+    }
+    if (field === "userEmail") {
+      return item.userEmail || item.userId || "-";
     }
     return item[field];
   };
@@ -186,16 +204,70 @@ function DataTable({ currentPage, data, onRefresh }) {
                       {renderCell(item, field, getValue(item, field))}
                     </td>
                   ))}
-                  <td>
+                  <td style={{ padding: "8px", border: "1px solid #ddd", whiteSpace: "nowrap" }}>
                     {isEditing ? (
                       <>
-                        <button className="action-edit" onClick={saveEdit} style={{ background: "#4CAF50" }}>Save</button>
-                        <button className="action-delete" onClick={cancelEdit} style={{ background: "#999" }}>Cancel</button>
+                        <button 
+                          className="action-edit" 
+                          onClick={saveEdit} 
+                          style={{ 
+                            marginRight: "5px", 
+                            padding: "5px 10px", 
+                            background: "#4CAF50", 
+                            color: "white", 
+                            border: "none", 
+                            borderRadius: "3px", 
+                            cursor: "pointer" 
+                          }}
+                        >
+                          Save
+                        </button>
+                        <button 
+                          className="action-delete" 
+                          onClick={cancelEdit} 
+                          style={{ 
+                            padding: "5px 10px", 
+                            background: "#999", 
+                            color: "white", 
+                            border: "none", 
+                            borderRadius: "3px", 
+                            cursor: "pointer" 
+                          }}
+                        >
+                          Cancel
+                        </button>
                       </>
                     ) : (
                       <>
-                        <button className="action-edit" onClick={() => startEdit(item)}>Edit</button>
-                        <button className="action-delete" onClick={() => handleDelete(itemId)}>Delete</button>
+                        <button 
+                          className="action-edit" 
+                          onClick={() => startEdit(item)} 
+                          style={{ 
+                            marginRight: "5px", 
+                            padding: "5px 10px", 
+                            background: "#4CAF50", 
+                            color: "white", 
+                            border: "none", 
+                            borderRadius: "3px", 
+                            cursor: "pointer" 
+                          }}
+                        >
+                          Edit
+                        </button>
+                        <button 
+                          className="action-delete" 
+                          onClick={() => handleDelete(itemId)} 
+                          style={{ 
+                            padding: "5px 10px", 
+                            background: "#f44336", 
+                            color: "white", 
+                            border: "none", 
+                            borderRadius: "3px", 
+                            cursor: "pointer" 
+                          }}
+                        >
+                          Delete
+                        </button>
                       </>
                     )}
                   </td>
