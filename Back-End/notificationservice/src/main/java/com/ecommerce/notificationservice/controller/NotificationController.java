@@ -1,9 +1,7 @@
 package com.ecommerce.notificationservice.controller;
 
-import com.ecommerce.notificationservice.dto.request.CreateNotificationRequest;
 import com.ecommerce.notificationservice.dto.response.NotificationResponse;
 import com.ecommerce.notificationservice.service.INotificationService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,72 +19,98 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
-    // ─── [GET] Get All Notifications For A User ───
+    // ─── [GET] Récupérer toutes les notifications d'un utilisateur ───
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<NotificationResponse>> getUserNotifications(
             @PathVariable UUID userId) {
-        List<NotificationResponse> notifications = notificationService.getUserNotifications(userId);
+        List<NotificationResponse> notifications =
+                notificationService.getUserNotifications(userId);
         return ResponseEntity.ok(notifications); // 200
     }
-
-    // ─── [POST] Order Confirmed (Pending) ───
-    @PostMapping("/order-pending")
-    public ResponseEntity<NotificationResponse> createOrderPendingNotification(
-            @Valid @RequestBody CreateNotificationRequest request) {
-        NotificationResponse response = notificationService.createNotification(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201
+    @GetMapping("/user/notif/{notifId}")
+    public ResponseEntity<NotificationResponse> getNotification(
+            @PathVariable UUID notifId) {
+        NotificationResponse notification = notificationService.getNotification(notifId);
+        return ResponseEntity.ok(notification); // 200
     }
 
-    // ─── [POST] Order Cancelled ───
-    @PostMapping("/order-cancelled")
-    public ResponseEntity<NotificationResponse> createOrderCancelledNotification(
-            @Valid @RequestBody CreateNotificationRequest request) {
-        NotificationResponse response = notificationService.createNotification(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201
-    }
-
-    // ─── [POST] Order Delivered (Paid Successfully) ───
-    @PostMapping("/order-delivered")
-    public ResponseEntity<NotificationResponse> createOrderDeliveredNotification(
-            @Valid @RequestBody CreateNotificationRequest request) {
-        NotificationResponse response = notificationService.createNotification(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201
-    }
-
-    // ─── [POST] Welcome Notification (New User) ───
-    @PostMapping("/welcome")
+    // ─── [POST] Welcome Notification ───
+    @PostMapping("/welcome/{userId}")
     public ResponseEntity<NotificationResponse> createWelcomeNotification(
-            @Valid @RequestBody CreateNotificationRequest request) {
-        NotificationResponse response = notificationService.createNotification(request);
+            @PathVariable UUID userId) {
+        NotificationResponse response =
+                notificationService.createWelcomeNotification(userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201
     }
 
-    // ─── [POST] Confidential Profile Info Updated ───
-    @PostMapping("/profile-confidential-updated")
-    public ResponseEntity<NotificationResponse> createConfidentialUpdateNotification(
-            @Valid @RequestBody CreateNotificationRequest request) {
-        NotificationResponse response = notificationService.createNotification(request);
+    // ─── [POST] Order Pending Notification ───
+    @PostMapping("/order-pending/{userId}/{orderId}")
+    public ResponseEntity<NotificationResponse> createOrderPendingNotification(
+            @PathVariable UUID userId,
+            @PathVariable String orderId) {
+        NotificationResponse response =
+                notificationService.createOrderPendingNotification(userId, orderId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201
     }
 
-    // ─── [POST] Public Profile Info Updated ───
-    @PostMapping("/profile-public-updated")
-    public ResponseEntity<NotificationResponse> createPublicUpdateNotification(
-            @Valid @RequestBody CreateNotificationRequest request) {
-        NotificationResponse response = notificationService.createNotification(request);
+    // ─── [POST] Order Cancelled Notification ───
+    @PostMapping("/order-cancelled/{userId}/{orderId}")
+    public ResponseEntity<NotificationResponse> createOrderCancelledNotification(
+            @PathVariable UUID userId,
+            @PathVariable String orderId) {
+        NotificationResponse response =
+                notificationService.createOrderCancelledNotification(userId, orderId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201
     }
 
-    // ─── [DELETE] Delete A Specific Notification ───
+    // ─── [POST] Order Delivered Notification ───
+    @PostMapping("/order-delivered/{userId}/{orderId}")
+    public ResponseEntity<NotificationResponse> createOrderDeliveredNotification(
+            @PathVariable UUID userId,
+            @PathVariable String orderId) {
+        NotificationResponse response =
+                notificationService.createOrderDeliveredNotification(userId, orderId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201
+    }
+
+    // ─── [POST] Confidential Profile Updated Notification ───
+    @PostMapping("/profile-confidential-updated/{userId}")
+    public ResponseEntity<NotificationResponse> createConfidentialUpdatedNotification(
+            @PathVariable UUID userId) {
+        NotificationResponse response =
+                notificationService.createConfidentialUpdatedNotification(userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201
+    }
+
+    // ─── [POST] Public Profile Updated Notification ───
+    @PostMapping("/profile-public-updated/{userId}")
+    public ResponseEntity<NotificationResponse> createPublicUpdatedNotification(
+            @PathVariable UUID userId) {
+        NotificationResponse response =
+                notificationService.createPublicUpdatedNotification(userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201
+    }
+
+    // ─── [PATCH] Marquer une notification comme lue ───
+    @PatchMapping("/{notificationId}/read")
+    public ResponseEntity<NotificationResponse> markAsRead(
+            @PathVariable UUID notificationId) {
+        NotificationResponse response = notificationService.markAsRead(notificationId);
+        return ResponseEntity.ok(response); // 200
+    }
+
+    // ─── [DELETE] Supprimer une notification spécifique ───
     @DeleteMapping("/{notificationId}")
-    public ResponseEntity<Void> deleteNotification(@PathVariable UUID notificationId) {
+    public ResponseEntity<Void> deleteNotification(
+            @PathVariable UUID notificationId) {
         notificationService.deleteNotification(notificationId);
         return ResponseEntity.noContent().build(); // 204
     }
 
-    // ─── [DELETE] Clear All Notifications For A User ───
+    // ─── [DELETE] Vider toutes les notifications d'un utilisateur ───
     @DeleteMapping("/user/{userId}/clear")
-    public ResponseEntity<Void> clearAllNotifications(@PathVariable UUID userId) {
+    public ResponseEntity<Void> clearAllNotifications(
+            @PathVariable UUID userId) {
         notificationService.clearAllNotifications(userId);
         return ResponseEntity.noContent().build(); // 204
     }

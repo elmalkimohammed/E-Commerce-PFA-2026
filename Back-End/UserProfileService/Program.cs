@@ -2,6 +2,7 @@ using UserProfileService.Repository;
 using UserProfileService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using UserProfileService.KafkaServices; // ← ajoute cette ligne en haut
 using System.Text;
 
 namespace UserProfileService
@@ -18,6 +19,7 @@ namespace UserProfileService
             
             builder.Services.AddHostedService<KafkaConsumerService>();
             builder.Services.AddScoped<IUserProfileHandler, UserProfileHandler>();
+            builder.Services.AddScoped<IKafkaProducerService, KafkaProducerService>();
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(

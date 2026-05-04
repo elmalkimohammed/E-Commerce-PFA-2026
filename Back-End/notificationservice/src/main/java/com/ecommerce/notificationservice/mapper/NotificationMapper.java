@@ -1,6 +1,5 @@
 package com.ecommerce.notificationservice.mapper;
 
-import com.ecommerce.notificationservice.dto.request.CreateNotificationRequest;
 import com.ecommerce.notificationservice.dto.response.NotificationResponse;
 import com.ecommerce.notificationservice.entity.Notification;
 import com.ecommerce.notificationservice.enums.NotificationStatus;
@@ -10,51 +9,57 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * NotificationMapper — Static utility class.
- * Responsible for mapping between DTOs and Entities.
- * Follows Single Responsibility Principle (SOLID).
+ * NotificationMapper — Classe statique utilitaire.
+ * Responsable uniquement du mapping entre Entity et Response DTO.
+ * Principe SRP (Single Responsibility Principle).
  */
 public class NotificationMapper {
 
-    // Private constructor — prevents instantiation
+    // Empêche l'instanciation de cette classe
     private NotificationMapper() {}
 
-    /**
-     * Maps a CreateNotificationRequest DTO → Notification Entity
-     * Used when creating a new notification from an API call.
-     */
-    public static Notification toEntity(CreateNotificationRequest request) {
-        Notification notification = new Notification();
-        notification.setUserId(request.getUserId());
-        notification.setTitle(request.getTitle());
-        notification.setMessage(request.getMessage());
-        notification.setType(request.getType());
-        notification.setStatus(NotificationStatus.SENT);     // Default status on creation
-        notification.setReadableByUser(true);                 // Visible to user by default
-        notification.setCreatedAt(LocalDateTime.now());
-        return notification;
-    }
+    // ─────────────────────────────────────────────────────────────
+    // Entity Builder — Utilisé par le Service et le Kafka Consumer
+    // ─────────────────────────────────────────────────────────────
 
     /**
-     * Builds a Notification Entity directly from raw fields.
-     * Used by Kafka consumers when receiving events from other microservices.
+     * Construit une Notification Entity depuis les données brutes.
+     * Appelé par :
+     *  - NotificationServiceImpl (via les endpoints REST)
+     *  - NotificationKafkaConsumer (via les events Kafka)
+     *
+     * @param userId  L'identifiant de l'utilisateur concerné
+     * @param title   Le titre de la notification
+     * @param message Le message de la notification
+     * @param type    Le type de la notification (WELCOME, ORDER_PENDING, ...)
+     * @return        Une nouvelle Notification Entity prête à être sauvegardée
      */
-    public static Notification toEntityFromKafka(UUID userId, String title,
-                                                 String message, NotificationType type) {
+    public static Notification toEntityFromKafka(UUID userId,
+                                                  String title,
+                                                  String message,
+                                                  NotificationType type) {
         Notification notification = new Notification();
         notification.setUserId(userId);
         notification.setTitle(title);
         notification.setMessage(message);
         notification.setType(type);
-        notification.setStatus(NotificationStatus.SENT);
-        notification.setReadableByUser(true);
-        notification.setCreatedAt(LocalDateTime.now());
+        notification.setStatus(NotificationStatus.SENT);   // Toujours SENT à la création
+        notification.setReadableByUser(true);               // Visible par l'utilisateur
+        notification.setCreatedAt(LocalDateTime.now());     // Date de création automatique
         return notification;
     }
 
+    // ─────────────────────────────────────────────────────────────
+    // Response Builder — Utilisé pour retourner les données au client
+    // ─────────────────────────────────────────────────────────────
+
     /**
-     * Maps a Notification Entity → NotificationResponse DTO
-     * Used when returning data to the client (API response).
+     * Mappe une Notification Entity → NotificationResponse DTO.
+     * Appelé par :
+     *  - NotificationServiceImpl (dans tous les endpoints)
+     *
+     * @param notification  L'entité récupérée depuis la base de données
+     * @return              Un NotificationResponse DTO prêt à être retourné au client
      */
     public static NotificationResponse toResponse(Notification notification) {
         return new NotificationResponse(

@@ -1,0 +1,22 @@
+﻿cartservice-api: Up 24 minutes
+adminlogsservice-api: Up 25 minutes
+notification-service: Up 24 minutes
+subscriptionservice-api: Up 24 minutes
+userprofileservice-api: Up 24 minutes
+productservice-api: Up 24 minutes
+authservice-api: Up 24 minutes
+e-commerce-pfa-2026-kafka-ui-1: Up 25 minutes
+e-commerce-pfa-2026-kafka-1: Up 25 minutes
+e-commerce-pfa-2026-orderservice.api-1: Up 24 minutes
+repportservice-api: Up 24 minutes
+review-service: Up 24 minutes
+e-commerce-pfa-2026-SubscriptionServiceDB-1: Up 25 minutes (healthy)
+e-commerce-pfa-2026-ProductServiceDB-1: Up 25 minutes (healthy)
+notification-db: Up 25 minutes (healthy)
+e-commerce-pfa-2026-zookeeper-1: Up 25 minutes
+e-commerce-pfa-2026-CartServiceDB-1: Up 25 minutes (healthy)
+e-commerce-pfa-2026-OrderServiceDB-1: Up 25 minutes (healthy)
+e-commerce-pfa-2026-AuthServiceDB-1: Up 25 minutes (healthy)
+e-commerce-pfa-2026-UserProfileDB-1: Up 25 minutes (healthy)
+e-commerce-pfa-2026-RepportServiceDB-1: Up 25 minutes (healthy)
+review-postgres: Up 25 minutes (healthy)

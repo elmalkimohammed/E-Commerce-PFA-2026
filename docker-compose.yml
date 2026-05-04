@@ -1,4 +1,28 @@
 services:
+  #___Nginx Reverse Proxy___
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./Front-End/dist:/usr/share/nginx/html:ro
+    depends_on:
+      - AuthServiceAPI
+      - ProductServiceAPI
+      - CartServiceAPI
+      - UserProfileServiceAPI
+      - SubscriptionServiceAPI
+      - orderservice.api
+      - review-service.api
+      - repportservice-api
+      - AdminLogsServiceAPI
+      - notification-service
+    restart: unless-stopped
+    networks:
+      - ecommerce-network
+
   #___Infrastructure___
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
@@ -207,9 +231,8 @@ services:
       dockerfile: dockerfile
     image: authservice-api:latest
     container_name: authservice-api 
-    ports:
-      - "5001:5181"
-      #- "5002:7214"
+    expose:
+      - "5181"
     depends_on:
       AuthServiceDB:
         condition: service_healthy
@@ -228,8 +251,8 @@ services:
       dockerfile: dockerfile
     image: productservice-api:latest
     container_name: productservice-api
-    ports:
-      - "5002:5252"
+    expose:
+      - "5252"
     depends_on:
       ProductServiceDB:
         condition: service_healthy
@@ -248,8 +271,8 @@ services:
       dockerfile: Dockerfile
     image: cartservice-api:latest
     container_name: cartservice-api
-    ports:
-      - "5003:5279"
+    expose:
+      - "5279"
     depends_on:
       CartServiceDB:
         condition: service_healthy
@@ -268,8 +291,8 @@ services:
       dockerfile: Dockerfile
     image: userprofileservice-api:latest
     container_name: userprofileservice-api
-    ports:
-      - "5004:5353"
+    expose:
+      - "5353"
     depends_on:
       UserProfileDB:
         condition: service_healthy
@@ -288,8 +311,8 @@ services:
       dockerfile: dockerfile
     image: subscriptionservice-api:latest
     container_name: subscriptionservice-api
-    ports:
-      - "5005:5353"
+    expose:
+      - "5354"
     depends_on:
       SubscriptionServiceDB:
         condition: service_healthy
@@ -297,7 +320,7 @@ services:
         condition: service_started
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
-        - ASPNETCORE_URLS=http://+:5353
+        - ASPNETCORE_URLS=http://+:5354
         - ConnectionStrings__DefaultConnection=Server=SubscriptionServiceDB;Port=3306;Database=SubscriptionDb;User=root;Password=admin;
         - Kafka__BootstrapServers=kafka:29092
     networks:
@@ -306,8 +329,8 @@ services:
     build:
       context: ./Back-End/OrderService
       dockerfile: dockerfile
-    ports:
-      - "5006:5038"
+    expose:
+      - "5038"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5038
@@ -325,8 +348,8 @@ services:
       context: ./Back-End/ReviewService
       dockerfile: Dockerfile
     container_name: review-service
-    ports:
-      - "5007:5252"
+    expose:
+      - "5252"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://ReviwServiceDB:5432/reviewdb
       SPRING_DATASOURCE_USERNAME: postgres
@@ -344,8 +367,8 @@ services:
       dockerfile: Dockerfile
     image: adminlogsservice-api:latest
     container_name: adminlogsservice-api
-    ports:
-      - "5009:5026"
+    expose:
+      - "5026"
     depends_on:
       kafka:
         condition: service_started
@@ -353,14 +376,16 @@ services:
         - ASPNETCORE_ENVIRONMENT=Development
         - ASPNETCORE_URLS=http://+:5026  
         - Kafka__BootstrapServers=kafka:29092
+    networks:
+      - ecommerce-network
   repportservice-api:
     build:
       context: ./Back-End/RepportsService/initial
       dockerfile: Dockerfile
     image: repportservice-api:latest
     container_name: repportservice-api
-    ports:
-      - "5008:8081"
+    expose:
+      - "8081"
     depends_on:
       RepportServiceDB:
         condition: service_healthy
@@ -379,16 +404,21 @@ services:
       context: ./Back-End/notificationservice
       dockerfile: Dockerfile
     container_name: notification-service
-    ports:
-      - "5010:8086"
+    expose:
+      - "8086"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/notificationdb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/notificationdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: mysql
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092          # ← ajout
+      SPRING_KAFKA_CONSUMER_GROUP_ID: notification-service-group  # ← ajout
+      SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET: earliest    # ← ajout
     depends_on:
       mysql:
         condition: service_healthy
+      kafka:
+        condition: service_started
     restart: on-failure
     networks:
       - ecommerce-network
