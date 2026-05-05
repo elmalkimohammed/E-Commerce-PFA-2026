@@ -1,4 +1,4 @@
-package com.ecommerce.reviewservice.mapper;
+package com.ecommerce.reviewservice.Mapper;
 
 import com.ecommerce.reviewservice.dto.GetReviewDto;
 import com.ecommerce.reviewservice.entity.Review;

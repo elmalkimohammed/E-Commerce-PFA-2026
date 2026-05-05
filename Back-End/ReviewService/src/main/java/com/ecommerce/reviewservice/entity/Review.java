@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "review_db")
@@ -14,14 +15,15 @@ import java.time.LocalDateTime;
 public class Review {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incrément INTEGER
-    private Long reviewId;  // LONG pour INTEGER
-
+    @GeneratedValue(strategy = GenerationType.UUID)  // ← UUID, pas IDENTITY
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID reviewId;
+    
     @Column(nullable = false)
     private int productId;  // int pour INTEGER
 
     @Column(nullable = false)
-    private int userId;  // int pour INTEGER (pas UUID!)
+    private UUID userId;  // int pour INTEGER (pas UUID!)
 
     @Column(nullable = false)
     private int rating;

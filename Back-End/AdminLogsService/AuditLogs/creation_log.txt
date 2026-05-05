@@ -8,3 +8,4 @@
 [2026-05-04 17:37:09] CREATED - UserId: 2179b1ad-e8cf-4e91-a909-d5145bf92770, Email: admin@gmail.com, Role: Customer
 [2026-05-05 15:01:04] CREATED - UserId: 4e412540-a593-4578-b4a1-7b322bbe953e, Email: aminebouchadad04@gmail.com, Role: Customer
 [2026-05-05 16:30:37] CREATED - UserId: 20e550fc-1ecd-457f-a873-1cd64f862f2d, Email: aminebouchadad04@gmail.com, Role: Customer
+[2026-05-05 18:13:25] CREATED - UserId: 600089b6-8864-4a3f-877c-0a7fad1f627b, Email: aminebouchadad04@gmail.com, Role: Customer

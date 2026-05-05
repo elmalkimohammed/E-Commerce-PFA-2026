@@ -204,5 +204,19 @@
       "audit_created_at": "2026-05-05T16:30:37.9266442Z",
       "audit_version": "1.0"
     }
+  },
+  {
+    "UserId": "600089b6-8864-4a3f-877c-0a7fad1f627b",
+    "Email": "aminebouchadad04@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-05T18:13:25.4513449Z",
+      "audit_version": "1.0"
+    }
   }
 ]

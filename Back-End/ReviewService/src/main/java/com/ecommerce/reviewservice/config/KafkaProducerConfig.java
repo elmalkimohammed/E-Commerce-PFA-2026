@@ -1,4 +1,4 @@
-package com.ecommerce.reviewservice.config;
+package com.ecommerce.reviewservice.Config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

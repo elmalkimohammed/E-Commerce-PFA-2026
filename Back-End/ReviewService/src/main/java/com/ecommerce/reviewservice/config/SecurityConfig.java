@@ -1,4 +1,4 @@
-package com.ecommerce.reviewservice.config;
+package com.ecommerce.reviewservice.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -179,7 +179,7 @@ const ProductDetail = () => {
     setReviewMsg(null)
 
     try {
-      await axios.post(reviewAPI, {
+      await axios.post(`${reviewAPI}/`, {
         productId: Number(product.id),
         userId: userId,
         rating: newRating,

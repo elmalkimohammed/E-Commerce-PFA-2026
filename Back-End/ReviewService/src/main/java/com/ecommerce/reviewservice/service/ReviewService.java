@@ -2,7 +2,7 @@ package com.ecommerce.reviewservice.service;
 
 import com.ecommerce.reviewservice.dto.*;
 import com.ecommerce.reviewservice.entity.Review;
-import com.ecommerce.reviewservice.mapper.ReviewMapper;
+import com.ecommerce.reviewservice.Mapper.ReviewMapper;
 import com.ecommerce.reviewservice.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import java.util.UUID;
@@ -32,7 +32,7 @@ public class ReviewService {
         return ReviewMapper.toDto(saved);
     }
 
-    public Review getReviewEntity(Long id) {
+    public Review getReviewEntity(UUID id) {
         return repository.findById(id).orElse(null);  // FIXED: changed reviewRepository to repository
     }
 
@@ -58,7 +58,7 @@ public class ReviewService {
                 .orElse(0.0);
     }
 
-    public GetReviewDto update(Long id, UpdateReviewDto dto) {
+    public GetReviewDto update(UUID id, UpdateReviewDto dto) {
         Review review = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Review not found with id: " + id));
 
@@ -70,7 +70,7 @@ public class ReviewService {
         return ReviewMapper.toDto(updated);
     }
 
-    public void delete(Long id) {
+    public void delete(UUID id) {
         repository.deleteById(id);
     }
 

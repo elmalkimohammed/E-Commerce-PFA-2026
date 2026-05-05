@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @Slf4j
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/api/reviews")
 @RequiredArgsConstructor
@@ -38,7 +38,7 @@ public class ReviewController {
         return "Unknown";
     }
 
-    @PostMapping
+    @PostMapping({"", "/"})
     public GetReviewDto create(@RequestBody @Valid CreateReviewDto dto) {
         GetReviewDto review = service.create(dto);
         Review reviewEntity = service.getReviewEntity(review.reviewId());  // Fixed: use reviewId()
@@ -62,7 +62,7 @@ public class ReviewController {
     }
 
     @PutMapping("/{id}")
-    public GetReviewDto update(@PathVariable Long id, @RequestBody UpdateReviewDto dto) {
+    public GetReviewDto update(@PathVariable UUID id, @RequestBody UpdateReviewDto dto) {
         GetReviewDto review = service.update(id, dto);
         Review reviewEntity = service.getReviewEntity(id);
         reviewEventService.publishReviewUpdatedEvent(reviewEntity, getCurrentUser());
@@ -70,7 +70,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable UUID id) {
         Review reviewEntity = service.getReviewEntity(id);
         if (reviewEntity != null) {
             reviewEventService.publishReviewDeletedEvent(reviewEntity, getCurrentUser());
