@@ -176,5 +176,33 @@
       "audit_created_at": "2026-05-04T17:37:09.7413083Z",
       "audit_version": "1.0"
     }
+  },
+  {
+    "UserId": "4e412540-a593-4578-b4a1-7b322bbe953e",
+    "Email": "aminebouchadad04@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-05T15:01:04.4959255Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "20e550fc-1ecd-457f-a873-1cd64f862f2d",
+    "Email": "aminebouchadad04@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-05T16:30:37.9266442Z",
+      "audit_version": "1.0"
+    }
   }
 ]

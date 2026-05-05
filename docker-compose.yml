@@ -350,13 +350,13 @@ services:
       dockerfile: Dockerfile
     container_name: review-service
     expose:
-      - "5252"
+      - "5253"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://ReviwServiceDB:5432/reviewdb
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SERVER_PORT: 5252 
+      SERVER_PORT: 5253
     depends_on:
       ReviwServiceDB:
         condition: service_healthy

@@ -25,10 +25,10 @@ const orderAPI = "http://localhost/api/orders"
 const repportAPI = "http://localhost/repport"
 
 /* Endpoint of the review Micro-Service API */
-const reviewAPI = "http://localhost/api/reviews"
+const reviewAPI = "http://localhost/api/reviews/"
 
 /* Endpoint of the notification Micro-Service API */
-const notiAPI = "http://localhost/api/Notifications"
+const notiAPI = "http://localhost/api/notifications"
 
 /* Endpoint of the Admin Logs Micro-Service API */
 const adminLogsAPI = "http://localhost/api/Audit"
