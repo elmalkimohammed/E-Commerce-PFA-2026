@@ -1,0 +1,2 @@
+[2026-05-03 16:46:20] PRODUCT CREATED - ProductId: 33, Name: headphones, Price: 250, Stock: 1000, Category: Electronics, UserId: 2f5fe934-2839-43b0-8fbe-b16e6bd0273e
+[2026-05-05 03:22:29] PRODUCT CREATED - ProductId: 7, Name: oui, Price: 1, Stock: 1, Category: oui, UserId: 59f65bea-af87-4b7a-b21a-ed431bb6a594

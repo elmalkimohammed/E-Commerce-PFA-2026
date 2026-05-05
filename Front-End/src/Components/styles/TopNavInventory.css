@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap');
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --accent: #e31837;
+  --dark-bg: #0a0a0a;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+}
+
+/* Top Navigation - Perfect Centering */
+.inventoryNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: var(--dark-bg);
+  padding: 0 48px;
+  height: 70px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Center the navigation buttons container */
+.nav-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.inventory-nav-btn {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  border: none;
+  padding: 0 28px;
+  height: 70px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.inventory-nav-btn:hover {
+  color: var(--white);
+}
+
+.inventory-nav-btn.active {
+  color: var(--white);
+  border-bottom: 2px solid var(--accent);
+}
+
+.profile-icon {
+  font-size: 18px;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0 16px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+.profile-icon:hover {
+  color: var(--white);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .inventoryNav {
+    padding: 0 20px;
+  }
+  
+  .inventory-nav-btn {
+    padding: 0 16px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+}

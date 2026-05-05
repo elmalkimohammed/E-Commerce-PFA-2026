@@ -30,7 +30,10 @@ const reviewAPI = "http://localhost/api/reviews"
 /* Endpoint of the notification Micro-Service API */
 const notiAPI = "http://localhost/api/Notifications"
 
-/* Endpoint of the Admin Logs Micro-Service API */
+const subsAPI = "http://localhost:5005/api/Subscription"
+const reviewAPI = "http://localhost:5007/api/reviews"
 const adminLogsAPI = "http://localhost/api/Audit"
+
+/* Endpoint of the Admin Logs Micro-Service API */
 
 export { cartAPI, authAPI, prodAPI, userAPI, orderAPI, subsAPI, repportAPI, reviewAPI, notiAPI, adminLogsAPI };

@@ -29,16 +29,17 @@ namespace UserAuditLoggingService.Services
             var config = new ConsumerConfig
             {
                 BootstrapServers = _configuration["Kafka:BootstrapServers"],
-                GroupId = "user-audit-logging-service-v3", // New group ID
+                GroupId = "user-audit-logging-service-v3",
                 AutoOffsetReset = AutoOffsetReset.Earliest,
                 EnableAutoCommit = false
             };
 
             using var consumer = new ConsumerBuilder<string, string>(config).Build();
 
-            consumer.Subscribe(new[] { "user-created", "user-deleted" });
+            // ADDED: order-events to subscription
+            consumer.Subscribe(new[] { "user-created", "user-deleted", "product-events", "order-events" , "cart-events" , "review-events" }); 
 
-            _logger.LogInformation("✅ Subscribed to topics: user-created, user-deleted");
+            _logger.LogInformation("✅ Subscribed to topics: user-created, user-deleted, product-events, order-events , cart-events , review-events");
 
             try
             {
@@ -49,14 +50,26 @@ namespace UserAuditLoggingService.Services
                         var result = consumer.Consume(stoppingToken);
 
                         _logger.LogInformation("📨 Received message from topic: {Topic}", result.Topic);
-
-                        if (result.Topic == "user-created")
+                        switch (result.Topic)
                         {
-                            await HandleUserCreated(result.Message.Value);
-                        }
-                        else if (result.Topic == "user-deleted")
-                        {
-                            await HandleUserDeleted(result.Message.Value);
+                            case "user-created":
+                                await HandleUserCreated(result.Message.Value);
+                                break;
+                            case "user-deleted":
+                                await HandleUserDeleted(result.Message.Value);
+                                break;
+                            case "product-events":
+                                await HandleProductEvent(result.Message.Value);
+                                break;
+                            case "order-events":  // ADDED
+                                await HandleOrderEvent(result.Message.Value);
+                                break;
+                            case "cart-events":  
+                                await HandleCartEvent(result.Message.Value);
+                                break;
+                            case "review-events":
+                                await HandleReviewEvent(result.Message.Value);
+                                break;
                         }
 
                         consumer.Commit(result);
@@ -134,5 +147,111 @@ namespace UserAuditLoggingService.Services
                 _logger.LogError(ex, "Error handling user-deleted event");
             }
         }
+
+        private async Task HandleProductEvent(string messageValue)
+        {
+            try
+            {
+                _logger.LogInformation("📝 Processing product event");
+                
+                var productEvent = JsonSerializer.Deserialize<ProductEvent>(messageValue);
+                if (productEvent == null)
+                {
+                    _logger.LogError("Failed to deserialize product event");
+                    return;
+                }
+
+                _logger.LogInformation("Product {Action}: {ProductId}, {ProductName}", 
+                    productEvent.Action, productEvent.ProductId, productEvent.ProductName);
+
+                using var scope = _scopeFactory.CreateScope();
+                var auditInventory = scope.ServiceProvider.GetRequiredService<IAuditInventory>();
+                await auditInventory.SaveProductEvent(productEvent);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error handling product event");
+            }
+        }
+
+        // ========== ADDED: ORDER EVENT HANDLER ==========
+        private async Task HandleOrderEvent(string messageValue)
+        {
+            try
+            {
+                _logger.LogInformation("📝 Processing order event");
+                
+                var orderEvent = JsonSerializer.Deserialize<OrderEvent>(messageValue);
+                if (orderEvent == null)
+                {
+                    _logger.LogError("Failed to deserialize order event");
+                    return;
+                }
+
+                _logger.LogInformation("Order {Action}: {OrderId}, UserId: {UserId}, Status: {Status}", 
+                    orderEvent.Action, orderEvent.OrderId, orderEvent.UserId, orderEvent.Status);
+
+                using var scope = _scopeFactory.CreateScope();
+                var auditInventory = scope.ServiceProvider.GetRequiredService<IAuditInventory>();
+                await auditInventory.SaveOrderEvent(orderEvent);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error handling order event");
+            }
+        }
+        private async Task HandleCartEvent(string messageValue)
+        {
+            try
+            {
+                _logger.LogInformation("📝 Processing cart event");
+                
+                var cartEvent = JsonSerializer.Deserialize<CartEvent>(messageValue);
+                if (cartEvent == null)
+                {
+                    _logger.LogError("Failed to deserialize cart event");
+                    return;
+                }
+
+                _logger.LogInformation("Cart {Action}: {CartId}, UserId: {UserId}, ItemsCount: {ItemsCount}", 
+                    cartEvent.Action, cartEvent.CartId, cartEvent.UserId, cartEvent.ItemsCount);
+
+                using var scope = _scopeFactory.CreateScope();
+                var auditInventory = scope.ServiceProvider.GetRequiredService<IAuditInventory>();
+                await auditInventory.SaveCartEvent(cartEvent);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error handling cart event");
+            }
+        }
+        // ========== ADDED: REVIEW EVENT HANDLER ==========
+        private async Task HandleReviewEvent(string messageValue)
+        {
+            try
+            {
+                _logger.LogInformation("📝 Processing review event");
+                _logger.LogInformation("Raw message: {Message}", messageValue);
+                
+                var reviewEvent = JsonSerializer.Deserialize<ReviewEvent>(messageValue);
+                if (reviewEvent == null)
+                {
+                    _logger.LogError("Failed to deserialize review event");
+                    return;
+                }
+
+                _logger.LogInformation("Review {Action}: {ReviewId}, ProductId: {ProductId}, UserId: {UserId}", 
+                    reviewEvent.Action, reviewEvent.ReviewId, reviewEvent.ProductId, reviewEvent.UserId);
+
+                using var scope = _scopeFactory.CreateScope();
+                var auditInventory = scope.ServiceProvider.GetRequiredService<IAuditInventory>();
+                await auditInventory.SaveReviewEvent(reviewEvent);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error handling review event");
+            }
+        }
     }
 }
+    

@@ -1,0 +1,1 @@
+[2026-05-04 23:16:08] CART DELETED - CartId: 8395f6a5-5595-40f8-aa42-f79b78caf276, UserId: 59f65bea-af87-4b7a-b21a-ed431bb6a594, ItemsCount: 0, TotalAmount: 0, PerformedBy: test2@gmail.com

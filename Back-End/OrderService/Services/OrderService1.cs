@@ -90,17 +90,13 @@ public class OrderService1 : IOrderService
 
         order.Status = newStatus;
         var updated = await _repository.UpdateAsync(order);
+        return MapToDto(updated!);
+    }
 
-        // ─── Kafka : notifier si la commande est livrée ───
-        if (newStatus == OrderStatus.Delivered)
-        {
-            await _kafkaProducer.ProduceAsync(
-                "order-delivered",
-                $"{updated.UserId}::{updated.OrderId}"
-            );
-        }
-
-        return MapToDto(updated);
+    public async Task<IEnumerable<OrderResponseDto>> GetAllOrdersAsync()
+    {
+        var orders = await _repository.GetAllOrdersAsync();
+        return orders.Select(MapToDto);
     }
 
     // ─── Annuler une commande ───
@@ -127,13 +123,24 @@ public class OrderService1 : IOrderService
         return result;
     }
 
+    public async Task<Order> GetOrderByIdAsync(Guid orderId)
+    {
+        var order = await _repository.GetByIdAsync(orderId);
+        if (order == null)
+            throw new KeyNotFoundException($"Order {orderId} not found.");
+        return order;
+    }
+
     private static OrderResponseDto MapToDto(Order order) => new(
         order.OrderId,
         order.UserId,
         order.Status.ToString(),
         order.CreatedAt,
         order.OrderItems.Select(i => new OrderItemResponseDto(
-            i.ProductId, i.ProductName, i.Quantity, i.UnitPrice
+            i.ProductId,
+            i.ProductName,
+            i.Quantity,
+            i.UnitPrice
         )).ToList()
     );
 }

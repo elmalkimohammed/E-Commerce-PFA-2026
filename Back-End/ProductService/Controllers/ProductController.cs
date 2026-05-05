@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
@@ -6,40 +7,46 @@ using TicketProductApi.Dto;
 using TicketProductApi.Mapper;
 using TicketProductApi.Model;
 using TicketProductApi.Repo;
+using ProductService.Service;
+using ProductService.Events;
+using ProductService.Services;
+using System.Security.Claims;
 
 namespace TicketProductApi.Controllers
 {
     [Route("TechStore/ProductService")]
     [ApiController]
+    [Authorize]  // ADD THIS LINE - Required to populate User from JWT token
     public class ProductController : ControllerBase
     {
         private readonly IProducthandler _productHandler;
+        private readonly ProductEventService _productEventService;
 
-        public ProductController(IProducthandler productHandler)
+        public ProductController(IProducthandler productHandler, ProductEventService productEventService)
         {
             _productHandler = productHandler;
+            _productEventService = productEventService;
         }
 
+        // Make specific endpoints public if needed
         [HttpGet]
         [Route("getCategories")]
+        [AllowAnonymous]  // ADD THIS - Public endpoint doesn't need auth
         public IActionResult GetAllCategories()
         {
             try
             {
-
                 var response = this._productHandler.GetCategories();
                 return Ok(response);
-
             }
             catch (Exception error)
             {
-
                 return StatusCode(500, $"An error occurred while retrieving products: {error.Message}");
-
             }
         }
 
         [HttpGet]
+        [AllowAnonymous]  // ADD THIS - Public endpoint
         public IActionResult GetAllProducts()
         {
             var products = _productHandler.GetAllProducts();
@@ -48,6 +55,7 @@ namespace TicketProductApi.Controllers
         }
 
         [HttpGet("Latest")]
+        [AllowAnonymous]  // ADD THIS - Public endpoint
         public IActionResult Get5Products()
         {
             try
@@ -63,6 +71,7 @@ namespace TicketProductApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]  // ADD THIS - Public endpoint
         public IActionResult GetProduct(int id)
         {
             try
@@ -78,6 +87,7 @@ namespace TicketProductApi.Controllers
         }
 
         [HttpGet("user/{userId}")]
+        // No [AllowAnonymous] - requires authentication
         public IActionResult GetProductsByUserId(Guid userId)
         {
             try
@@ -94,13 +104,13 @@ namespace TicketProductApi.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception here if you have logging
                 return StatusCode(500, $"An error occurred while retrieving products: {ex.Message}");
             }
         }
 
         [HttpPost]
-        public IActionResult addProduct(PostDtoRequest obj)
+        // No [AllowAnonymous] - requires authentication
+        public async Task<IActionResult> addProduct(PostDtoRequest obj)
         {
             if (!ModelState.IsValid)
             {
@@ -110,30 +120,60 @@ namespace TicketProductApi.Controllers
             try
             {
                 int newId = _productHandler.AddProduct(product);
+                
+                // Get user info from JWT token
+                var performedBy = User.FindFirst("email")?.Value 
+                    ?? User.FindFirst(ClaimTypes.Email)?.Value
+                    ?? User.FindFirst("sub")?.Value 
+                    ?? "Unknown";
+                
+                await _productEventService.PublishProductCreatedEvent(product, newId, performedBy);
+                
                 return Ok(new { id = newId });
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(new { error = ex.Message });
             }
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteProduct(int id)
+        // No [AllowAnonymous] - requires authentication
+        public async Task<IActionResult> DeleteProduct(int id)
         {
             try
             {
+                var product = _productHandler.GetProductById(id);
+                if (product == null)
+                {
+                    return NotFound(new { message = $"Product with ID {id} not found" });
+                }
+
+                // Get user info from JWT token
+                var performedBy = User.FindFirst("email")?.Value 
+                    ?? User.FindFirst(ClaimTypes.Email)?.Value
+                    ?? User.FindFirst("sub")?.Value 
+                    ?? "Unknown";
+
                 _productHandler.DeleteProduct(id);
-                return Ok();
+
+                await _productEventService.PublishProductDeletedEvent(product, performedBy);
+
+                return Ok(new { 
+                    message = "Product deleted successfully", 
+                    productId = id,
+                    deletedBy = performedBy
+                });
             }
-            catch
+            catch (Exception ex)
             {
-                return NotFound();
+                return NotFound(new { error = ex.Message });
             }
         }
 
         [HttpPut]
-        public IActionResult UpdateProduct(PutDtoRequest obj)
+        // No [AllowAnonymous] - requires authentication
+        public async Task<IActionResult> UpdateProduct(PutDtoRequest obj)
         {
             if (!ModelState.IsValid)
             {
@@ -143,11 +183,20 @@ namespace TicketProductApi.Controllers
             try
             {
                 _productHandler.UpdateProduct(product);
-                return Ok();
+                
+                // Get user info from JWT token
+                var performedBy = User.FindFirst("email")?.Value 
+                    ?? User.FindFirst(ClaimTypes.Email)?.Value
+                    ?? User.FindFirst("sub")?.Value 
+                    ?? "Unknown";
+                
+                await _productEventService.PublishProductUpdatedEvent(product, performedBy);
+                
+                return Ok(new { message = "Product updated successfully" });
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(new { error = ex.Message });
             }
         }
 

@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "review_db")
@@ -15,14 +14,14 @@ import java.util.UUID;
 public class Review {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID reviewId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incrément INTEGER
+    private Long reviewId;  // LONG pour INTEGER
 
     @Column(nullable = false)
-    private int productId;
+    private int productId;  // int pour INTEGER
 
     @Column(nullable = false)
-    private UUID userId;
+    private int userId;  // int pour INTEGER (pas UUID!)
 
     @Column(nullable = false)
     private int rating;
@@ -35,5 +34,5 @@ public class Review {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updatedAt;  // Add this field
+    private LocalDateTime updatedAt;
 }

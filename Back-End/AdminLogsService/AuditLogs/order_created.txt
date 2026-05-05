@@ -1,0 +1,2 @@
+[2026-05-04 20:00:00] ORDER CREATED - OrderId: 123e4567-e89b-12d3-a456-426614174000, UserId: 2f5fe934-2839-43b0-8fbe-b16e6bd0273e, Status: Pending, PerformedBy: test@test.com
+[2026-05-04 20:00:00] ORDER CREATED - OrderId: 123e4567-e89b-12d3-a456-426614174000, UserId: 2f5fe934-2839-43b0-8fbe-b16e6bd0273e, Status: Pending, PerformedBy: test@test.com

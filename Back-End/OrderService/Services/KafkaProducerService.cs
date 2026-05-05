@@ -1,34 +1,41 @@
 using Confluent.Kafka;
+using System.Text.Json;
 
 namespace OrderService.Services
 {
-    // Interface — SOLID (DIP)
-    public interface IKafkaProducerService
-    {
-        Task ProduceAsync(string topic, string message);
-    }
-
     public class KafkaProducerService : IKafkaProducerService, IDisposable
     {
         private readonly IProducer<string, string> _producer;
+        private readonly ILogger<KafkaProducerService> _logger;
 
-        public KafkaProducerService(IConfiguration configuration)
+        public KafkaProducerService(IConfiguration configuration, ILogger<KafkaProducerService> logger)
         {
+            _logger = logger;
             var config = new ProducerConfig
             {
-                BootstrapServers = configuration["Kafka:BootstrapServers"]
+                BootstrapServers = configuration["Kafka:BootstrapServers"] ?? "kafka:29092"
             };
             _producer = new ProducerBuilder<string, string>(config).Build();
+            _logger.LogInformation("KafkaProducerService initialized");
         }
 
-        // Envoie un message vers un topic Kafka
-        public async Task ProduceAsync(string topic, string message)
+        public async Task AsyncPublish<T>(string topic, T message)
         {
-            await _producer.ProduceAsync(topic, new Message<string, string>
+            try
             {
-                Key  = Guid.NewGuid().ToString(),
-                Value = message
-            });
+                var json = JsonSerializer.Serialize(message);
+                await _producer.ProduceAsync(topic, new Message<string, string>
+                {
+                    Key = Guid.NewGuid().ToString(),
+                    Value = json
+                });
+                _logger.LogInformation("✅ Published message to topic {Topic}", topic);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "❌ Failed to publish message to topic {Topic}", topic);
+                throw;
+            }
         }
 
         public void Dispose()

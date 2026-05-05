@@ -18,6 +18,7 @@ import MonitoringPage from "./pages/MonitoringPage.jsx";
 import CrudPage from "./pages/CrudPage.jsx";
 import AdminProfilePage from "./pages/adminProfilePage.jsx";
 import AdminRepportPage from "./pages/AdminRepportPage.jsx";
+import InventoryManagerPage from "./pages/InventoryManagerPage.jsx";
 
 function NotFound() {
   return (
@@ -51,6 +52,7 @@ function App() {
           <Route path="/adminMonitoring" element={<MonitoringPage/>}/>
           <Route path="/adminCrudPage" element={<CrudPage/>}/>
           <Route path="/adminRepport" element={<AdminRepportPage/>}/>
+          <Route path="/inventoryManager" element={<InventoryManagerPage/>}/>
         </Routes>
       </BrowserRouter>
     </Provider>

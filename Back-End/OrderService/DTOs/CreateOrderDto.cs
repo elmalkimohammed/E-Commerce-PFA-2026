@@ -6,7 +6,7 @@ public record CreateOrderDto(
 );
 
 public record OrderItemDto(
-    int ProductId,
+    int ProductId,          // Change from int to Guid
     string ProductName,
     int Quantity,
     decimal UnitPrice
