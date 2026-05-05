@@ -4,7 +4,7 @@ import TopNavHelpCenter from "../Components/navbarComponent/TopNavHelpCenter";
 import AllRepports from "../Components/AdminRepport/AllRepports";
 import RecentRepports from "../Components/AdminRepport/RecentRepports";
 import LogsViewer from "../Components/AdminRepport/LogsViewer";
-import "./Styles/AdminRepportPage.css";
+import "./Styles/Adminrepportpage.css";
 
 function AdminRepportPage() {
     const [currentPage, setCurrentPage] = useState("reclamationsCreees");
