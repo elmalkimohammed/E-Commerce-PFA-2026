@@ -4,6 +4,8 @@ function LogsInventoryPage() {
   const [logType, setLogType] = useState("product"); // "product", "order", "cart", "review"
   const [productLogSubType, setProductLogSubType] = useState("created"); // "created", "updated", "deleted"
   const [orderLogSubType, setOrderLogSubType] = useState("created"); // "created", "updated", "cancelled"
+  const [cartLogSubType, setCartLogSubType] = useState("updated"); // "updated", "deleted"
+  const [reviewLogSubType, setReviewLogSubType] = useState("created"); // "created", "updated", "deleted"
   const [logs, setLogs] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -50,10 +52,31 @@ function LogsInventoryPage() {
           }
           break;
         case "cart":
-          endpoint = `${baseUrl}/api/inventory/carts/logs`;
+          switch(cartLogSubType) {
+            case "updated":
+              endpoint = `${baseUrl}/api/inventory/carts/updated/logs`;
+              break;
+            case "deleted":
+              endpoint = `${baseUrl}/api/inventory/carts/deleted/logs`;
+              break;
+            default:
+              endpoint = `${baseUrl}/api/inventory/carts/updated/logs`;
+          }
           break;
         case "review":
-          endpoint = `${baseUrl}/api/inventory/reviews/logs`;
+          switch(reviewLogSubType) {
+            case "created":
+              endpoint = `${baseUrl}/api/inventory/reviews/created/logs`;
+              break;
+            case "updated":
+              endpoint = `${baseUrl}/api/inventory/reviews/updated/logs`;
+              break;
+            case "deleted":
+              endpoint = `${baseUrl}/api/inventory/reviews/deleted/logs`;
+              break;
+            default:
+              endpoint = `${baseUrl}/api/inventory/reviews/created/logs`;
+          }
           break;
         default:
           endpoint = `${baseUrl}/api/inventory/products/created/logs`;
@@ -80,10 +103,10 @@ function LogsInventoryPage() {
     }
   };
 
-  // Fetch logs when logType, productLogSubType, or orderLogSubType changes
+  // Fetch logs when any relevant state changes
   useEffect(() => {
     fetchLogs();
-  }, [logType, productLogSubType, orderLogSubType]);
+  }, [logType, productLogSubType, orderLogSubType, cartLogSubType, reviewLogSubType]);
 
   // Product sub-type buttons
   const productSubButtons = [
@@ -97,6 +120,19 @@ function LogsInventoryPage() {
     { id: "created", label: "📝 CREATED", color: "#4CAF50" },
     { id: "updated", label: "✏️ UPDATED", color: "#FF9800" },
     { id: "cancelled", label: "❌ CANCELLED", color: "#f44336" },
+  ];
+
+  // Cart sub-type buttons
+  const cartSubButtons = [
+    { id: "updated", label: "✏️ UPDATED", color: "#FF9800" },
+    { id: "deleted", label: "🗑️ DELETED", color: "#f44336" },
+  ];
+
+  // Review sub-type buttons
+  const reviewSubButtons = [
+    { id: "created", label: "📝 CREATED", color: "#4CAF50" },
+    { id: "updated", label: "✏️ UPDATED", color: "#FF9800" },
+    { id: "deleted", label: "🗑️ DELETED", color: "#f44336" },
   ];
 
   const logButtons = [
@@ -113,6 +149,12 @@ function LogsInventoryPage() {
     }
     if (logType === "order") {
       return `ORDER ${orderLogSubType.toUpperCase()} LOGS`;
+    }
+    if (logType === "cart") {
+      return `CART ${cartLogSubType.toUpperCase()} LOGS`;
+    }
+    if (logType === "review") {
+      return `REVIEW ${reviewLogSubType.toUpperCase()} LOGS`;
     }
     return `${logType.toUpperCase()} LOGS`;
   };
@@ -134,7 +176,7 @@ function LogsInventoryPage() {
         ))}
       </div>
 
-      {/* Product Sub-Type Buttons - Only show when PRODUCT LOGS is selected */}
+      {/* Product Sub-Type Buttons */}
       {logType === "product" && (
         <div className="product-sub-tabs">
           {productSubButtons.map(btn => (
@@ -149,7 +191,7 @@ function LogsInventoryPage() {
         </div>
       )}
 
-      {/* Order Sub-Type Buttons - Only show when ORDER LOGS is selected */}
+      {/* Order Sub-Type Buttons */}
       {logType === "order" && (
         <div className="order-sub-tabs">
           {orderSubButtons.map(btn => (
@@ -157,6 +199,36 @@ function LogsInventoryPage() {
               key={btn.id}
               className={`order-sub-tab ${orderLogSubType === btn.id ? "active" : ""}`}
               onClick={() => setOrderLogSubType(btn.id)}
+            >
+              {btn.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Cart Sub-Type Buttons */}
+      {logType === "cart" && (
+        <div className="cart-sub-tabs">
+          {cartSubButtons.map(btn => (
+            <button
+              key={btn.id}
+              className={`cart-sub-tab ${cartLogSubType === btn.id ? "active" : ""}`}
+              onClick={() => setCartLogSubType(btn.id)}
+            >
+              {btn.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Review Sub-Type Buttons */}
+      {logType === "review" && (
+        <div className="review-sub-tabs">
+          {reviewSubButtons.map(btn => (
+            <button
+              key={btn.id}
+              className={`review-sub-tab ${reviewLogSubType === btn.id ? "active" : ""}`}
+              onClick={() => setReviewLogSubType(btn.id)}
             >
               {btn.label}
             </button>

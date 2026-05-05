@@ -1,13 +1,20 @@
 package com.ecommerce.reviewservice.controller;
 
 import com.ecommerce.reviewservice.dto.*;
+import com.ecommerce.reviewservice.entity.Review;
 import com.ecommerce.reviewservice.service.ReviewService;
+import com.ecommerce.reviewservice.service.ReviewEventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+@Slf4j
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/reviews")
@@ -15,10 +22,27 @@ import java.util.*;
 public class ReviewController {
 
     private final ReviewService service;
+    private final ReviewEventService reviewEventService;
+
+    private String getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof Jwt) {
+            Jwt jwt = (Jwt) authentication.getPrincipal();
+            String email = jwt.getClaimAsString("email");
+            if (email == null) {
+                email = jwt.getClaimAsString("sub");
+            }
+            return email != null ? email : "Unknown";
+        }
+        return "Unknown";
+    }
 
     @PostMapping
     public GetReviewDto create(@RequestBody @Valid CreateReviewDto dto) {
-        return service.create(dto);
+        GetReviewDto review = service.create(dto);
+        Review reviewEntity = service.getReviewEntity(review.reviewId());  // Fixed: use reviewId()
+        reviewEventService.publishReviewCreatedEvent(reviewEntity, getCurrentUser());
+        return review;
     }
     
     @GetMapping("/all")
@@ -31,7 +55,6 @@ public class ReviewController {
         return service.getByProduct(productId);
     }
 
-
     @GetMapping("/product/{productId}/rating")
     public double getRating(@PathVariable int productId) {
         return service.getRating(productId);
@@ -39,11 +62,18 @@ public class ReviewController {
 
     @PutMapping("/{id}")
     public GetReviewDto update(@PathVariable Long id, @RequestBody UpdateReviewDto dto) {
-        return service.update(id, dto);
-    }
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+        GetReviewDto review = service.update(id, dto);
+        Review reviewEntity = service.getReviewEntity(id);
+        reviewEventService.publishReviewUpdatedEvent(reviewEntity, getCurrentUser());
+        return review;
     }
 
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        Review reviewEntity = service.getReviewEntity(id);
+        if (reviewEntity != null) {
+            reviewEventService.publishReviewDeletedEvent(reviewEntity, getCurrentUser());
+        }
+        service.delete(id);
+    }
 }

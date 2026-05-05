@@ -4,3 +4,5 @@
 [2026-05-04 19:08:36] CREATED - UserId: a7681c71-de7b-4602-be05-0b74924f6441, Email: invet@techstore.com, Role: Customer
 [2026-05-04 19:13:13] CREATED - UserId: 6a2ec232-f7d2-4a46-9f45-466ca0189d33, Email: admin@admin.com, Role: Customer
 [2026-05-04 19:15:19] CREATED - UserId: 9728fd50-13fd-401c-a495-36d087ac6849, Email: test@test.com, Role: Invet
+[2026-05-04 23:17:46] CREATED - UserId: b9781251-8acd-4d0d-8fc3-715fd325bd62, Email: oussama@gmail.com, Role: Customer
+[2026-05-04 23:17:46] CREATED - UserId: 59f65bea-af87-4b7a-b21a-ed431bb6a594, Email: test2@gmail.com, Role: Customer

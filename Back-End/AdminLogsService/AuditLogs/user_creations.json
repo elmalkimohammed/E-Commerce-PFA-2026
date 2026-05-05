@@ -82,5 +82,33 @@
       "audit_created_at": "2026-05-04T19:15:19.3974045Z",
       "audit_version": "1.0"
     }
+  },
+  {
+    "UserId": "b9781251-8acd-4d0d-8fc3-715fd325bd62",
+    "Email": "oussama@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-04T23:17:46.9385261Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "59f65bea-af87-4b7a-b21a-ed431bb6a594",
+    "Email": "test2@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-04T23:17:46.9684524Z",
+      "audit_version": "1.0"
+    }
   }
 ]

@@ -31,6 +31,10 @@ public class ReviewService {
         return ReviewMapper.toDto(saved);
     }
 
+    public Review getReviewEntity(Long id) {
+        return repository.findById(id).orElse(null);  // FIXED: changed reviewRepository to repository
+    }
+
     public List<GetReviewDto> getAll() {
         return repository.findAll()
             .stream()

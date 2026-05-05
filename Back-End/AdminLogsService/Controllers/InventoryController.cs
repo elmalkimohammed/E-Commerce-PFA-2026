@@ -362,6 +362,76 @@ namespace AdminLogsService.Controllers
                 return StatusCode(500, new { error = "Error reading review logs" });
             }
         }
+        [HttpGet("carts/created/logs")]
+        public async Task<IActionResult> GetCartCreatedLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "cart_created.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return Ok("No cart created logs available yet.");
+                }
+
+                var logs = await System.IO.File.ReadAllTextAsync(logPath);
+                return Ok(logs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error reading cart created logs");
+                return StatusCode(500, new { error = "Error reading cart created logs" });
+            }
+        }
+
+        // ========== CART UPDATED LOGS ==========
+        [HttpGet("carts/updated/logs")]
+        public async Task<IActionResult> GetCartUpdatedLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "cart_updated.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return Ok("No cart updated logs available yet.");
+                }
+
+                var logs = await System.IO.File.ReadAllTextAsync(logPath);
+                return Ok(logs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error reading cart updated logs");
+                return StatusCode(500, new { error = "Error reading cart updated logs" });
+            }
+        }
+
+        // ========== CART DELETED LOGS ==========
+        [HttpGet("carts/deleted/logs")]
+        public async Task<IActionResult> GetCartDeletedLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "cart_deleted.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return Ok("No cart deleted logs available yet.");
+                }
+
+                var logs = await System.IO.File.ReadAllTextAsync(logPath);
+                return Ok(logs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error reading cart deleted logs");
+                return StatusCode(500, new { error = "Error reading cart deleted logs" });
+            }
+        }
                 // ========== CART EXPORT ==========
         [HttpGet("carts/export")]
         public async Task<IActionResult> ExportCartLogs()
@@ -411,6 +481,153 @@ namespace AdminLogsService.Controllers
             {
                 _logger.LogError(ex, "Error exporting review logs");
                 return StatusCode(500, new { error = "Error exporting review logs" });
+            }
+        }
+                // ========== REVIEW CREATED LOGS ==========
+        [HttpGet("reviews/created/logs")]
+        public async Task<IActionResult> GetReviewCreatedLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "review_created.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return Ok("No review created logs available yet.");
+                }
+
+                var logs = await System.IO.File.ReadAllTextAsync(logPath);
+                return Ok(logs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error reading review created logs");
+                return StatusCode(500, new { error = "Error reading review created logs" });
+            }
+        }
+
+        // ========== REVIEW UPDATED LOGS ==========
+        [HttpGet("reviews/updated/logs")]
+        public async Task<IActionResult> GetReviewUpdatedLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "review_updated.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return Ok("No review updated logs available yet.");
+                }
+
+                var logs = await System.IO.File.ReadAllTextAsync(logPath);
+                return Ok(logs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error reading review updated logs");
+                return StatusCode(500, new { error = "Error reading review updated logs" });
+            }
+        }
+
+        // ========== REVIEW DELETED LOGS ==========
+        [HttpGet("reviews/deleted/logs")]
+        public async Task<IActionResult> GetReviewDeletedLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "review_deleted.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return Ok("No review deleted logs available yet.");
+                }
+
+                var logs = await System.IO.File.ReadAllTextAsync(logPath);
+                return Ok(logs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error reading review deleted logs");
+                return StatusCode(500, new { error = "Error reading review deleted logs" });
+            }
+        }
+
+        // ========== REVIEW EXPORT ==========
+        [HttpGet("reviews/created/export")]
+        public async Task<IActionResult> ExportReviewCreatedLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "review_created.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return NotFound(new { message = "No review created logs available" });
+                }
+
+                var logs = await System.IO.File.ReadAllBytesAsync(logPath);
+                var fileName = $"review_created_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+                
+                return File(logs, "text/plain", fileName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting review created logs");
+                return StatusCode(500, new { error = "Error exporting review created logs" });
+            }
+        }
+
+        [HttpGet("reviews/updated/export")]
+        public async Task<IActionResult> ExportReviewUpdatedLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "review_updated.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return NotFound(new { message = "No review updated logs available" });
+                }
+
+                var logs = await System.IO.File.ReadAllBytesAsync(logPath);
+                var fileName = $"review_updated_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+                
+                return File(logs, "text/plain", fileName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting review updated logs");
+                return StatusCode(500, new { error = "Error exporting review updated logs" });
+            }
+        }
+
+        [HttpGet("reviews/deleted/export")]
+        public async Task<IActionResult> ExportReviewDeletedLogs()
+        {
+            try
+            {
+                var auditDirectory = Path.Combine(_environment.ContentRootPath, "AuditLogs");
+                var logPath = Path.Combine(auditDirectory, "review_deleted.txt");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return NotFound(new { message = "No review deleted logs available" });
+                }
+
+                var logs = await System.IO.File.ReadAllBytesAsync(logPath);
+                var fileName = $"review_deleted_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+                
+                return File(logs, "text/plain", fileName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting review deleted logs");
+                return StatusCode(500, new { error = "Error exporting review deleted logs" });
             }
         }
     }

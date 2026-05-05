@@ -37,9 +37,9 @@ namespace UserAuditLoggingService.Services
             using var consumer = new ConsumerBuilder<string, string>(config).Build();
 
             // ADDED: order-events to subscription
-            consumer.Subscribe(new[] { "user-created", "user-deleted", "product-events", "order-events" }); 
+            consumer.Subscribe(new[] { "user-created", "user-deleted", "product-events", "order-events" , "cart-events" , "review-events" }); 
 
-            _logger.LogInformation("✅ Subscribed to topics: user-created, user-deleted, product-events, order-events");
+            _logger.LogInformation("✅ Subscribed to topics: user-created, user-deleted, product-events, order-events , cart-events , review-events");
 
             try
             {
@@ -63,6 +63,12 @@ namespace UserAuditLoggingService.Services
                                 break;
                             case "order-events":  // ADDED
                                 await HandleOrderEvent(result.Message.Value);
+                                break;
+                            case "cart-events":  
+                                await HandleCartEvent(result.Message.Value);
+                                break;
+                            case "review-events":
+                                await HandleReviewEvent(result.Message.Value);
                                 break;
                         }
 
@@ -194,5 +200,58 @@ namespace UserAuditLoggingService.Services
                 _logger.LogError(ex, "Error handling order event");
             }
         }
+        private async Task HandleCartEvent(string messageValue)
+        {
+            try
+            {
+                _logger.LogInformation("📝 Processing cart event");
+                
+                var cartEvent = JsonSerializer.Deserialize<CartEvent>(messageValue);
+                if (cartEvent == null)
+                {
+                    _logger.LogError("Failed to deserialize cart event");
+                    return;
+                }
+
+                _logger.LogInformation("Cart {Action}: {CartId}, UserId: {UserId}, ItemsCount: {ItemsCount}", 
+                    cartEvent.Action, cartEvent.CartId, cartEvent.UserId, cartEvent.ItemsCount);
+
+                using var scope = _scopeFactory.CreateScope();
+                var auditInventory = scope.ServiceProvider.GetRequiredService<IAuditInventory>();
+                await auditInventory.SaveCartEvent(cartEvent);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error handling cart event");
+            }
+        }
+        // ========== ADDED: REVIEW EVENT HANDLER ==========
+        private async Task HandleReviewEvent(string messageValue)
+        {
+            try
+            {
+                _logger.LogInformation("📝 Processing review event");
+                _logger.LogInformation("Raw message: {Message}", messageValue);
+                
+                var reviewEvent = JsonSerializer.Deserialize<ReviewEvent>(messageValue);
+                if (reviewEvent == null)
+                {
+                    _logger.LogError("Failed to deserialize review event");
+                    return;
+                }
+
+                _logger.LogInformation("Review {Action}: {ReviewId}, ProductId: {ProductId}, UserId: {UserId}", 
+                    reviewEvent.Action, reviewEvent.ReviewId, reviewEvent.ProductId, reviewEvent.UserId);
+
+                using var scope = _scopeFactory.CreateScope();
+                var auditInventory = scope.ServiceProvider.GetRequiredService<IAuditInventory>();
+                await auditInventory.SaveReviewEvent(reviewEvent);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error handling review event");
+            }
+        }
     }
 }
+    

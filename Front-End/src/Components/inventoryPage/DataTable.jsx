@@ -63,7 +63,7 @@ function DataTable({ currentPage, data, onRefresh }) {
 
   const getHeaders = () => {
     if (currentPage === "products" || currentPage === "createdProducts") {
-      return ["Id", "Nom", "Description", "Prix", "Stock", "Categorie", "Vendeur (Email)", "Actions"];
+      return ["Id", "Nom", "Description", "Prix", "Stock", "Categorie", "Vendeur ID", "Actions"];
     }
     if (currentPage === "orders") {
       return ["OrderId", "UserId", "Status", "Items", "Actions"];
@@ -80,7 +80,7 @@ function DataTable({ currentPage, data, onRefresh }) {
   // Fields that are editable
   const getEditableFields = () => {
     if (currentPage === "products" || currentPage === "createdProducts") {
-      return ["name", "description", "price", "stock", "category"]; // Removed "userEmail" from editable fields
+      return ["name", "description", "price", "stock", "category"];
     }
     if (currentPage === "orders") {
       return ["status"];
@@ -108,7 +108,7 @@ function DataTable({ currentPage, data, onRefresh }) {
           style={{ padding: "5px", width: "100%" }}
         >
           <option value="Pending">Pending</option>
-          <option value="Processing">Processing</option>
+          <option value="Confirmed">Confirmed</option>
           <option value="Shipped">Shipped</option>
           <option value="Delivered">Delivered</option>
           <option value="Cancelled">Cancelled</option>
@@ -154,7 +154,7 @@ function DataTable({ currentPage, data, onRefresh }) {
 
   const getFields = () => {
     if (currentPage === "products" || currentPage === "createdProducts") {
-      return ["id", "name", "description", "price", "stock", "category", "userEmail"];
+      return ["id", "name", "description", "price", "stock", "category", "userId"];
     }
     if (currentPage === "orders") {
       return ["orderId", "userId", "status", "items"];
@@ -171,9 +171,6 @@ function DataTable({ currentPage, data, onRefresh }) {
   const getValue = (item, field) => {
     if (field === "items") {
       return item.items?.length || 0;
-    }
-    if (field === "userEmail") {
-      return item.userEmail || item.userId || "-";
     }
     return item[field];
   };

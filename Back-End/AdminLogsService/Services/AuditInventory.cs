@@ -88,5 +88,67 @@ namespace AdminLogsService.Services
                 }
             });
         }
+        public async Task SaveCartEvent(CartEvent cartEvent)
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    _logger.LogInformation("Saving cart {Action} for {CartId}", cartEvent.Action, cartEvent.CartId);
+
+                    string fileName = cartEvent.Action?.ToLower() switch
+                    {
+                        "created" => "cart_created.txt",
+                        "updated" => "cart_updated.txt",
+                        "deleted" => "cart_deleted.txt",
+                        _ => "cart_events.txt"
+                    };
+
+                    var logPath = Path.Combine(_auditDirectory, fileName);
+                    var timestamp = cartEvent.Timestamp.ToString("yyyy-MM-dd HH:mm:ss");
+                    
+                    var logEntry = $"[{timestamp}] CART {cartEvent.Action} - CartId: {cartEvent.CartId}, UserId: {cartEvent.UserId}, ItemsCount: {cartEvent.ItemsCount}, TotalAmount: {cartEvent.TotalAmount}, PerformedBy: {cartEvent.PerformedBy}{Environment.NewLine}";
+                    
+                    File.AppendAllText(logPath, logEntry);
+                    _logger.LogInformation("✅ Saved cart {Action} for {CartId}", cartEvent.Action, cartEvent.CartId);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error saving cart {Action}", cartEvent.Action);
+                    throw;
+                }
+            });
+        }
+        public async Task SaveReviewEvent(ReviewEvent reviewEvent)
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    _logger.LogInformation("Saving review {Action} for {ReviewId}", reviewEvent.Action, reviewEvent.ReviewId);
+
+                    string fileName = reviewEvent.Action?.ToLower() switch
+                    {
+                        "created" => "review_created.txt",
+                        "updated" => "review_updated.txt",
+                        "deleted" => "review_deleted.txt",
+                        _ => "review_events.txt"
+                    };
+
+                    var logPath = Path.Combine(_auditDirectory, fileName);
+                    var timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
+                    
+                    var logEntry = $"[{timestamp}] REVIEW {reviewEvent.Action} - ReviewId: {reviewEvent.ReviewId}, ProductId: {reviewEvent.ProductId}, UserId: {reviewEvent.UserId}, Rating: {reviewEvent.Rating}, Comment: {reviewEvent.Comment}, PerformedBy: {reviewEvent.PerformedBy}{Environment.NewLine}";
+                    
+                    File.AppendAllText(logPath, logEntry);
+                    _logger.LogInformation("✅ Saved review {Action} for {ReviewId}", reviewEvent.Action, reviewEvent.ReviewId);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error saving review {Action}", reviewEvent.Action);
+                    throw;
+                }
+            });
+        }
     }
 }

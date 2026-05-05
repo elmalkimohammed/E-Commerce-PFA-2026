@@ -11,7 +11,6 @@ function InventoryPage({ currentTable, onTableChange }) {
   const [loading, setLoading] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState("");
   const [categories, setCategories] = useState([]);
-  const [userEmails, setUserEmails] = useState({});
 
   // Get unique categories from products
   useEffect(() => {
@@ -21,50 +20,10 @@ function InventoryPage({ currentTable, onTableChange }) {
     }
   }, [products]);
 
-  // Fetch user emails for all product sellers
-  useEffect(() => {
-    const fetchUserEmails = async () => {
-      const uniqueUserIds = [...new Set(products.map(p => p.userId).filter(id => id))];
-      const emails = {};
-      
-      for (const userId of uniqueUserIds) {
-        try {
-          // Try to fetch from AuthService or UserProfileService
-          const response = await fetch(`http://localhost:5001/api/auth/users/${userId}`, {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem("generatedJWT_Token")}`
-            }
-          });
-          if (response.ok) {
-            const userData = await response.json();
-            emails[userId] = userData.email || userData.userEmail || userId;
-          } else {
-            // Fallback: use userId if email not found
-            emails[userId] = userId;
-          }
-        } catch (error) {
-          console.error(`Failed to fetch user email for ${userId}:`, error);
-          emails[userId] = userId;
-        }
-      }
-      setUserEmails(emails);
-    };
-
-    if (products.length > 0) {
-      fetchUserEmails();
-    }
-  }, [products]);
-
   // Apply category filter
   const filteredProducts = categoryFilter
     ? products.filter(p => p.category === categoryFilter)
     : products;
-
-  // Enhance products with user emails
-  const enhancedProducts = filteredProducts.map(product => ({
-    ...product,
-    userEmail: userEmails[product.userId] || product.userId
-  }));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,7 +52,7 @@ function InventoryPage({ currentTable, onTableChange }) {
   }, [currentTable, refresh]);
 
   const getCurrentData = () => {
-    if (currentTable === "products") return enhancedProducts;
+    if (currentTable === "products") return filteredProducts;
     if (currentTable === "orders") return orders;
     if (currentTable === "carts") return carts;
     if (currentTable === "reviews") return reviews;
