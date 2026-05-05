@@ -30,7 +30,7 @@ function ConnectedUsers() {
 
     const fetchAllInfos = async () => {
         try {
-            const response = await axios.get("http://localhost:5004/api/UserProfile/fetchALLFullUsrsInfos", config)
+            const response = await axios.get("http://localhost/api/UserProfile/fetchALLFullUsrsInfos", config)
             setUsersFullInfos( response.data )            
         } catch (error) {
             alert(error.response?.data || "An Internal Error Happened While Trying To Fetch The Infos For All The Users.....");

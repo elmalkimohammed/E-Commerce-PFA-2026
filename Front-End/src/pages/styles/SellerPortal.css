@@ -42,8 +42,7 @@ body {
 }
 
 .portal-header {
-  background: var(--navy);
-  border-radius: var(--radius);
+  background: #e05252;
   padding: 32px 36px;
 }
 
@@ -52,12 +51,14 @@ body {
   font-weight: 700;
   letter-spacing: -0.02em;
   color: #ffffff;
+  justify-self: center;
 }
 
 .portal-subtitle {
   margin-top: 6px;
   color: rgba(255, 255, 255, 0.55);
   font-size: 0.9rem;
+  justify-self: center;
 }
 
 /* ── Section Titles ─────────────────────────────────────── */
@@ -79,7 +80,6 @@ body {
 .stat-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
   padding: 20px;
   display: flex;
   align-items: flex-start;
@@ -95,7 +95,6 @@ body {
 .stat-icon {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
   background: var(--accent-dim);
   color: var(--accent);
   display: flex;
@@ -136,7 +135,6 @@ body {
 /* ── Product Table ──────────────────────────────────────── */
 .table-wrapper {
   border: 1px solid var(--border);
-  border-radius: var(--radius);
   overflow: hidden;
   overflow-x: auto;
   box-shadow: 0 1px 4px rgba(26, 41, 66, 0.06);
@@ -200,7 +198,6 @@ body {
   color: var(--text-muted);
   font-size: 0.75rem;
   padding: 3px 10px;
-  border-radius: 100px;
   white-space: nowrap;
 }
 
@@ -225,7 +222,6 @@ body {
   align-items: center;
   gap: 5px;
   padding: 6px 12px;
-  border-radius: 8px;
   border: 1px solid transparent;
   font-size: 0.8rem;
   font-family: var(--font);
@@ -259,7 +255,6 @@ body {
 .empty-state {
   background: var(--surface);
   border: 1px dashed var(--border);
-  border-radius: var(--radius);
   padding: 40px;
   text-align: center;
   color: var(--text-muted);
@@ -270,7 +265,6 @@ body {
 .add-product-section {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
   padding: 28px;
   box-shadow: 0 1px 4px rgba(26, 41, 66, 0.06);
 }
@@ -310,7 +304,6 @@ body {
 .form-group textarea {
   background: var(--surface-2);
   border: 1.5px solid var(--border);
-  border-radius: 8px;
   padding: 10px 14px;
   font-size: 0.9rem;
   font-family: var(--font);
@@ -348,7 +341,6 @@ body {
 /* Image Upload */
 .image-upload-area {
   border: 1.5px dashed var(--border);
-  border-radius: 8px;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -383,7 +375,6 @@ body {
   position: relative;
   width: 72px;
   height: 72px;
-  border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--border);
 }
@@ -400,7 +391,6 @@ body {
   right: 3px;
   width: 18px;
   height: 18px;
-  border-radius: 50%;
   background: rgba(26, 41, 66, 0.7);
   color: #fff;
   border: none;
@@ -424,10 +414,9 @@ body {
 }
 
 .btn-primary {
-  background: var(--accent);
+  background: #e05252;
   color: #fff;
   border: none;
-  border-radius: 8px;
   padding: 10px 24px;
   font-size: 0.9rem;
   font-family: var(--font);
@@ -437,7 +426,8 @@ body {
 }
 
 .btn-primary:hover {
-  background: var(--accent-hover);
+  background: #000;
+  color: white;
 }
 
 .btn-primary:active {
@@ -448,7 +438,6 @@ body {
   background: var(--surface-2);
   color: var(--text-muted);
   border: 1.5px solid var(--border);
-  border-radius: 8px;
   padding: 10px 20px;
   font-size: 0.9rem;
   font-family: var(--font);
@@ -483,7 +472,6 @@ body {
 .modal {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
   width: 100%;
   max-width: 580px;
   max-height: 90vh;
@@ -504,7 +492,6 @@ body {
   padding: 20px 24px;
   border-bottom: 1px solid var(--border);
   background: var(--surface-2);
-  border-radius: 16px 16px 0 0;
 }
 
 .modal-title {
@@ -516,7 +503,6 @@ body {
 .modal-close {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
   background: var(--surface);
   border: 1px solid var(--border);
   color: var(--text-muted);
@@ -557,7 +543,6 @@ body {
   flex: 1;
   background: var(--surface-2);
   border: 1.5px solid var(--border);
-  border-radius: 8px;
   padding: 8px 12px;
   font-size: 0.875rem;
   font-family: var(--font);
@@ -580,7 +565,6 @@ body {
 .attr-remove {
   width: 28px;
   height: 28px;
-  border-radius: 6px;
   background: var(--danger-dim);
   border: 1px solid rgba(224, 82, 82, 0.15);
   color: var(--danger);
@@ -602,7 +586,6 @@ body {
   align-items: center;
   gap: 6px;
   padding: 7px 14px;
-  border-radius: 8px;
   border: 1.5px dashed var(--border);
   background: transparent;
   color: var(--text-muted);

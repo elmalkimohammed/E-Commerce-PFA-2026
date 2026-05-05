@@ -78,6 +78,18 @@
   resize: vertical;
 }
 
+/* ── READONLY EMAIL ── */
+.report-container form input[readonly] {
+  background: #f0f0f0;
+  color: #767677;
+  cursor: not-allowed;
+  border-color: #e8e8e8;
+}
+.report-container form input[readonly]:focus {
+  border-color: #e8e8e8;
+  background: #f0f0f0;
+}
+
 /* ── SUBMIT BUTTON ── */
 .report-container form button[type="submit"] {
   margin-top: 28px;
@@ -96,6 +108,10 @@
 }
 .report-container form button[type="submit"]:hover {
   background: #e31837;
+}
+.report-container form button[type="submit"]:disabled {
+  background: #767677;
+  cursor: not-allowed;
 }
 
 /* ── MY REPORTS TABLE ── */
@@ -148,4 +164,19 @@
   color: #767677;
   padding: 40px;
   font-size: 14px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .report-container {
+    padding: 24px 16px 60px;
+  }
+  .report-container form {
+    padding: 20px;
+  }
+  .repport-table thead th,
+  .repport-table tbody td {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
 }

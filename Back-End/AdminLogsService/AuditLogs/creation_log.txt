@@ -1,8 +1,8 @@
-[2026-05-03 17:08:42] CREATED - UserId: b2232511-9764-436a-beae-3b818bcd494f, Email: test2@gmail.com, Role: Customer
-[2026-05-03 17:15:48] CREATED - UserId: 3b6cac59-a79b-4487-b930-ae78ffd1e13b, Email: user@user.com, Role: Customer
-[2026-05-03 19:34:34] CREATED - UserId: 649a1033-167f-47c4-9b85-90bde9c27775, Email: admin@admin.com, Role: Customer
-[2026-05-04 19:08:36] CREATED - UserId: a7681c71-de7b-4602-be05-0b74924f6441, Email: invet@techstore.com, Role: Customer
-[2026-05-04 19:13:13] CREATED - UserId: 6a2ec232-f7d2-4a46-9f45-466ca0189d33, Email: admin@admin.com, Role: Customer
-[2026-05-04 19:15:19] CREATED - UserId: 9728fd50-13fd-401c-a495-36d087ac6849, Email: test@test.com, Role: Invet
-[2026-05-04 23:17:46] CREATED - UserId: b9781251-8acd-4d0d-8fc3-715fd325bd62, Email: oussama@gmail.com, Role: Customer
-[2026-05-04 23:17:46] CREATED - UserId: 59f65bea-af87-4b7a-b21a-ed431bb6a594, Email: test2@gmail.com, Role: Customer
+[2026-05-03 15:17:14] CREATED - UserId: f15d9ede-ec2f-4f02-a67c-27a81b36df5d, Email: elmalki@gmail.com, Role: Customer
+[2026-05-03 17:50:16] CREATED - UserId: 554bd160-ba96-4f98-886a-d094118649a7, Email: mohammedelmalki24@gmail.com, Role: Customer
+[2026-05-03 17:50:16] CREATED - UserId: 1e511ab9-357d-4be0-9069-114ead0ce5d6, Email: mohammedelmalki2417@gmail.com, Role: Customer
+[2026-05-03 17:50:16] CREATED - UserId: bb011ee5-512d-4bcf-80c2-c01ff0aaef72, Email: mohammedelmalki24176@gmail.com, Role: Customer
+[2026-05-03 18:33:39] CREATED - UserId: d7ba91f3-21f0-470e-8002-c7214a03c8fb, Email: jamal@gmail.com, Role: Customer
+[2026-05-04 16:42:52] CREATED - UserId: 3b819ac5-c087-4d3c-a5ba-a80565cf1083, Email: aminebouchadad04@gmail.com, Role: Customer
+[2026-05-04 17:32:52] CREATED - UserId: 1ddc8e94-4afb-432c-bfcb-969b54c537ae, Email: aminebouchadad@gmail.com, Role: Customer
+[2026-05-04 17:37:09] CREATED - UserId: 2179b1ad-e8cf-4e91-a909-d5145bf92770, Email: admin@gmail.com, Role: Customer

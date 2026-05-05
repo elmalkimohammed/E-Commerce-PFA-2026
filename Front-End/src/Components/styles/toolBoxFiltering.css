@@ -1,7 +1,127 @@
+.title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.title h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    color: #dc2626;
+    margin: 0;
+}
+
+.title svg {
+    color: #dc2626;
+    font-size: 1.3rem;
+}
+
+.toolBoxSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.toolBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.toolBox table tr:first-child td {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    padding-bottom: 8px;
+}
+
+.toolBox table tr td {
+    color: #6b7280;
+    padding: 4px 8px;
+    font-family: 'Barlow', sans-serif;
+}
+
+.toolBox table tr td select {
+    background-color: #f9fafb;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    width: 100%;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #1a1a2e;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Barlow', sans-serif;
+}
+
+.toolBox table tr td select:focus {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.actions {
+    align-self: flex-end;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.actions button {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+    border-style: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.actions button:first-child {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+.actions button:first-child:hover {
+    background-color: #b91c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.actions button:nth-child(2) {
+    background-color: #f3f4f6;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+}
+
+.actions button:nth-child(2):hover {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+
 @media screen and (max-width: 646px) {
     .toolBox {
         display: flex;
         flex-direction: column;
+        gap: 1rem;
     }
     .actions {
         display: flex;
@@ -12,84 +132,18 @@
         width: 100%;
     }
 }
+
 @media screen and (max-width: 446px) {
     .toolBox table tr {
         display: flex;
         flex-direction: column;
-        gap: 1em;
+        gap: 0.75rem;
         margin-bottom: 15px;
-    }
-    .toolBoxSection {
-        background-color: red;
     }
     .toolBox table tbody tr:first-child td {
         display: none;
     }
-}
-.title {
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    justify-content: flex-start;
-}
-.toolBoxSection {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    width: 100%;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 12px;    
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-}
-table {
-    width: 100%;
-}
-.toolBox {
-    display: flex;
-    justify-content: space-between;
-}
-.toolBox table tr:first-child td {
-    text-transform: uppercase;
-    font-weight: bolder;
-}
-.toolBox table tr td {
-    color: rgb(122, 132, 153);
-}
-.toolBox table tr td select {
-    background-color: rgb(240, 242, 245);
-    padding: 10px;
-    border-radius: 12px;
-    border: 1.5px solid #e2e6ed;
-    width: fit-content;
-    width: 100%;
-    font-weight: bold;
-}
-.actions {
-    align-self: flex-end;
-    display: flex;
-    gap: 0.5em;
-}
-.actions button {
-    color: #fff;
-    font-weight: bold;
-    border-style: none;
-    border-radius: 10px;
-    padding: 10px;
-}
-.actions button:first-child {
-    background-color: #3cb371;
-}
-.actions button:nth-child(2) {
-    background-color: #f0f2f5;
-    color: #7a8499;
-}
-.actions button:first-child:hover , .actions button:nth-child(2):hover {
-    cursor: pointer;
-}
-.actions button:nth-child(1):hover {
-    background-color: #369a63;
-}
-.actions button:nth-child(2):hover {
-    background-color: #d3d5d8;
+    .toolBox table tr td {
+        padding: 4px 0;
+    }
 }

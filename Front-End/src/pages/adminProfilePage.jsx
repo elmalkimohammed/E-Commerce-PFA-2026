@@ -2,13 +2,12 @@ import { useState, useRef } from 'react';
 import { jwtDecode } from "jwt-decode";
 import { useEffect } from "react";
 import { styles } from '../styles/styles';
-import {  stats, mockComments } from '../services/mockData';
 import Avatar from '../components/common/Avatar';
 import InputField from '../components/common/InputField';
 import SelectField from '../components/common/SelectField';
 import SectionCard from '../components/common/SectionCard';
 import Toast from '../components/common/Toast';
-import CommentsPage from '../components/comments/CommentsPage';
+import CommentsPage from './CommentPage';
 import TopNav from "../Components/navbarComponent/TopNav";
 import { userAPI } from '../services/servicesAPI';
 import axios from 'axios';
@@ -155,6 +154,10 @@ const SavePublicInfo = async () => {
     showToast(err.message, "error");
   }
 };       
+const logout = () => {
+    localStorage.removeItem("generatedJWT_Token");
+    window.location.href = "/";
+  }
 
   const sexeOptions = [
     { value: "Female", label: "female" },
@@ -248,6 +251,7 @@ const SavePublicInfo = async () => {
           <div style={styles.userInfo}>
             <div style={styles.userName}>{user.firstName} {user.lastName}</div>
             <div style={styles.userEmail}>{priv.email}</div>
+            <button style={styles.logoutButton} onClick={logout}> Logout</button>
           </div>
         </aside>
 

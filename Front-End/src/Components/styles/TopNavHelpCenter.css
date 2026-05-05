@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap');
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --gray-light: #f5f5f5;
+  --gray-mid: #e8e8e8;
+  --gray-text: #767677;
+  --accent: #e31837;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+}
+
+/* ── ADMIN NAV ── */
+.adminNav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-mid);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  height: 64px;
+  font-family: var(--font-body);
+  gap: 0;
+}
+
+/* ── BRAND (optional slot — add a .brand element if needed) ── */
+.adminNav .brand {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  color: var(--black);
+  margin-right: 24px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.adminNav .brand span { color: var(--accent); }
+
+/* ── NAV LINKS ── */
+.adminNav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  height: 64px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.adminNav a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.adminNav a.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ── PROFILE ICON — pushed to the right ── */
+.adminNav a.bi-person {
+  margin-left: auto;
+  font-size: 20px;
+  padding: 0 8px;
+  border-bottom: none;
+  color: var(--black);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.adminNav a.bi-person:hover {
+  color: var(--accent);
+  border-bottom-color: transparent;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .adminNav {
+    padding: 0 16px;
+    overflow-x: auto;
+    gap: 0;
+  }
+  .adminNav a {
+    padding: 0 12px;
+    font-size: 12px;
+  }
+}

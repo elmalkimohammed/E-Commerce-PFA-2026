@@ -27,7 +27,7 @@ function RegisterForm( { onSwitch } ) {
                 <h1>Créer un compte</h1>
                 <p>Rejoignez TechStore aujourd'hui</p>
             </div>
-            <span style={{ color: "#2b6cb0", cursor: "pointer" }} onClick={ () => onSwitch("login") }>← Retour à la connexion</span>
+            <span className="backLink" onClick={ () => onSwitch("login") }>← Retour à la connexion</span>
             <form method="post" onSubmit={regsiterSubmit}>
                 <div className="newemailSection">
                     <label htmlFor="newEmail">Email</label>

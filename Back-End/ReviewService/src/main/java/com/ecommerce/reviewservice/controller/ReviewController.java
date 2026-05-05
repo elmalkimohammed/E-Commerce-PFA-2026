@@ -76,4 +76,9 @@ public class ReviewController {
         }
         service.delete(id);
     }
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Review>> getByUserId(@PathVariable UUID userId) {
+        return ResponseEntity.ok(service.GetByUserId(userId));
+    }
+
 }

@@ -1,4 +1,29 @@
 services:
+  #___Nginx Reverse Proxy___
+  nginx:
+    build:
+      context: ./Front-End
+      dockerfile: Dockerfile
+    container_name: nginx-gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - AuthServiceAPI
+      - ProductServiceAPI
+      - CartServiceAPI
+      - UserProfileServiceAPI
+      - SubscriptionServiceAPI
+      - orderservice.api
+      - review-service.api
+      - repportservice-api
+      - AdminLogsServiceAPI
+      - notification-service
+    restart: unless-stopped
+    networks:
+      - ecommerce-network
+
   #___Infrastructure___
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
@@ -180,6 +205,26 @@ services:
       - ./Back-End/RepportsService/initial/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - ecommerce-network
+  mysql:
+    image: mysql:8.0
+    container_name: notification-db
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: notificationdb
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3014:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./Back-End/notificationservice/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - ecommerce-network
   #___Micro-Services___
   AuthServiceAPI:
     build: 
@@ -187,9 +232,8 @@ services:
       dockerfile: dockerfile
     image: authservice-api:latest
     container_name: authservice-api 
-    ports:
-      - "5001:5181"
-      #- "5002:7214"
+    expose:
+      - "5181"
     depends_on:
       AuthServiceDB:
         condition: service_healthy
@@ -208,8 +252,8 @@ services:
       dockerfile: dockerfile
     image: productservice-api:latest
     container_name: productservice-api
-    ports:
-      - "5002:5252"
+    expose:
+      - "5252"
     depends_on:
       ProductServiceDB:
         condition: service_healthy
@@ -228,8 +272,8 @@ services:
       dockerfile: Dockerfile
     image: cartservice-api:latest
     container_name: cartservice-api
-    ports:
-      - "5003:5279"
+    expose:
+      - "5279"
     depends_on:
       CartServiceDB:
         condition: service_healthy
@@ -248,8 +292,8 @@ services:
       dockerfile: Dockerfile
     image: userprofileservice-api:latest
     container_name: userprofileservice-api
-    ports:
-      - "5004:5353"
+    expose:
+      - "5353"
     depends_on:
       UserProfileDB:
         condition: service_healthy
@@ -268,8 +312,8 @@ services:
       dockerfile: dockerfile
     image: subscriptionservice-api:latest
     container_name: subscriptionservice-api
-    ports:
-      - "5005:5353"
+    expose:
+      - "5354"
     depends_on:
       SubscriptionServiceDB:
         condition: service_healthy
@@ -277,7 +321,7 @@ services:
         condition: service_started
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
-        - ASPNETCORE_URLS=http://+:5353
+        - ASPNETCORE_URLS=http://+:5354
         - ConnectionStrings__DefaultConnection=Server=SubscriptionServiceDB;Port=3306;Database=SubscriptionDb;User=root;Password=admin;
         - Kafka__BootstrapServers=kafka:29092
     networks:
@@ -286,8 +330,8 @@ services:
     build:
       context: ./Back-End/OrderService
       dockerfile: dockerfile
-    ports:
-      - "5006:5038"
+    expose:
+      - "5038"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5038
@@ -305,8 +349,8 @@ services:
       context: ./Back-End/ReviewService
       dockerfile: Dockerfile
     container_name: review-service
-    ports:
-      - "5007:5252"
+    expose:
+      - "5252"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://ReviwServiceDB:5432/reviewdb
       SPRING_DATASOURCE_USERNAME: postgres
@@ -324,10 +368,8 @@ services:
       dockerfile: Dockerfile
     image: adminlogsservice-api:latest
     container_name: adminlogsservice-api
-    ports:
-      - "5009:5026"
-    volumes:
-        - ./Back-End/AdminLogsService/AuditLogs:/app/AuditLogs  # Add this line
+    expose:
+      - "5026"
     depends_on:
       kafka:
         condition: service_started
@@ -335,6 +377,8 @@ services:
         - ASPNETCORE_ENVIRONMENT=Development
         - ASPNETCORE_URLS=http://+:5026  
         - Kafka__BootstrapServers=kafka:29092
+    volumes:
+      - ./Back-End/AdminLogsService/AuditLogs:/app/AuditLogs
     networks:
       - ecommerce-network
   repportservice-api:
@@ -343,8 +387,8 @@ services:
       dockerfile: Dockerfile
     image: repportservice-api:latest
     container_name: repportservice-api
-    ports:
-      - "5008:8081"
+    expose:
+      - "8081"
     depends_on:
       RepportServiceDB:
         condition: service_healthy
@@ -356,6 +400,29 @@ services:
       SERVER_PORT: 8081
     volumes:
       - ./logs/repport:/app/logs
+    networks:
+      - ecommerce-network
+  notification-service:
+    build:
+      context: ./Back-End/notificationservice
+      dockerfile: Dockerfile
+    container_name: notification-service
+    expose:
+      - "8086"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/notificationdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: mysql
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092          # ← ajout
+      SPRING_KAFKA_CONSUMER_GROUP_ID: notification-service-group  # ← ajout
+      SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET: earliest    # ← ajout
+    depends_on:
+      mysql:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    restart: on-failure
     networks:
       - ecommerce-network
 
@@ -375,6 +442,8 @@ volumes:
   postgres_data:
     driver: local
   RepportServiceDB-data:
+    driver: local
+  mysql_data:
     driver: local
 networks:
   ecommerce-network:

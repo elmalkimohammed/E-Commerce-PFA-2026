@@ -72,4 +72,8 @@ public class ReviewService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    public List<Review> GetByUserId(UUID userid) {
+        return repository.findByUserId(userid);
+    }
 }

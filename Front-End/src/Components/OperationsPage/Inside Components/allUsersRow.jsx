@@ -2,14 +2,14 @@ import { useState } from "react";
 import axios from "axios";
 
 function AllUsersRow({ userId, Email, FirstName, LastName, Phone, Address, Sex, DateOfBirth, ProfileImage, Password, onRefresh }) {
-    
+
     const [isEditing, setIsEditing] = useState(false);
     const [editData, setEditData] = useState({});
     const [loading, setLoading] = useState(false);
-    
+
     const shortPassword = Password ? Password.substring(0, 15) + '...' : '';
     const token = localStorage.getItem("generatedJWT_Token");
-    
+
     const config = {
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -41,11 +41,11 @@ function AllUsersRow({ userId, Email, FirstName, LastName, Phone, Address, Sex, 
 
     const saveEdit = async () => {
         setLoading(true);
-        
+
         try {
             // Update Private Info (PUT request)
             await axios.put(
-                "http://localhost:5004/api/UserProfile/admin/updatePrivateInfo",
+                "http://localhost/api/UserProfile/admin/updatePrivateInfo",
                 {
                     email: editData.email,
                     password: editData.password || null,
@@ -56,7 +56,7 @@ function AllUsersRow({ userId, Email, FirstName, LastName, Phone, Address, Sex, 
 
             // Update Public Info (PATCH request)
             await axios.patch(
-                "http://localhost:5004/api/UserProfile/admin/updatePublicInfo",
+                "http://localhost/api/UserProfile/admin/updatePublicInfo",
                 {
                     firstName: editData.firstName,
                     lastName: editData.lastName,
@@ -83,9 +83,9 @@ function AllUsersRow({ userId, Email, FirstName, LastName, Phone, Address, Sex, 
 
     const deleteUser = async () => {
         if (!window.confirm("Delete this user?")) return;
-        
+
         try {
-            await axios.delete(`http://localhost:5001/api/auth/deleteUser/${userId}`, config);
+            await axios.delete(`http://localhost/api/auth/deleteUser/${userId}`, config);
             alert("User deleted!");
             onRefresh();
         } catch (error) {

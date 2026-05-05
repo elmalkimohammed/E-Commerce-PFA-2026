@@ -1,16 +1,39 @@
-/* Endpoint Of The Cart Micro-Service API */
-const cartAPI  = "http://localhost:5003/api/cart"
-/* Endpoint Of The Authentication Micro-Service API */
-const authAPI = "http://localhost:5001/api/auth"
-/* Endpoint Of The Authentication Micro-Service API */
-const prodAPI = "http://localhost:5002/TechStore/ProductService"
-/* Exporting The Constants To Be Accessible Through The Entire Project */
-const userAPI = "http://localhost:5004/api/UserProfile"
+/* ═══════════════════════════════════════════════════════════════════════════
+   API Endpoints — Centralisés via Nginx Reverse Proxy (port 80)
+   Tous les appels passent par http://localhost qui route vers le bon service
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-const orderAPI = "http://localhost:5006/api/orders"
-const repportAPI = "http://localhost:5008/repport"
+/* Endpoint Of The Authentication Micro-Service API */
+const authAPI = "http://localhost/api/auth"
+
+/* Endpoint Of The Product Micro-Service API */
+const prodAPI = "http://localhost/TechStore/ProductService"
+
+/* Endpoint Of The Cart Micro-Service API */
+const cartAPI = "http://localhost/api/cart"
+
+/* Endpoint Of The User Profile Micro-Service API */
+const userAPI = "http://localhost/api/UserProfile"
+
+/* Endpoint Of The Subscription Micro-Service API */
+const subsAPI = "http://localhost/api/Subscription"
+
+/* Endpoint Of The Order Micro-Service API */
+const orderAPI = "http://localhost/api/orders"
+
+/* Endpoint Of The Repport Micro-Service API */
+const repportAPI = "http://localhost/repport"
+
+/* Endpoint of the review Micro-Service API */
+const reviewAPI = "http://localhost/api/reviews"
+
+/* Endpoint of the notification Micro-Service API */
+const notiAPI = "http://localhost/api/Notifications"
 
 const subsAPI = "http://localhost:5005/api/Subscription"
 const reviewAPI = "http://localhost:5007/api/reviews"
+const adminLogsAPI = "http://localhost/api/Audit"
 
-export { cartAPI , authAPI , prodAPI , userAPI , orderAPI , subsAPI , repportAPI , reviewAPI };  ;
+/* Endpoint of the Admin Logs Micro-Service API */
+
+export { cartAPI, authAPI, prodAPI, userAPI, orderAPI, subsAPI, repportAPI, reviewAPI, notiAPI, adminLogsAPI };

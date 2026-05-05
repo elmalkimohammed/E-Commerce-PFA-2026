@@ -1,8 +1,8 @@
 import "../styles/RepportSideBar.css";
 
 const navItems = [
-    { key: "reclamations", label: "Réclamations", icon: "bi bi-list" },
     { key: "reclamationsCreees", label: "Réclamations Créées", icon: "bi bi-clock" },
+    { key: "reclamations", label: "Réclamations", icon: "bi bi-list" },
     { key: "logs", label: "Logs", icon: "bi bi-file-earmark-text" },
 ];
 

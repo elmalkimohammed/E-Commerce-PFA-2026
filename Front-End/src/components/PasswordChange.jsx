@@ -26,7 +26,7 @@ function PasswordChange( { onSwitch } ) {
                 <h1>Réinitialiser le mot de passe</h1>
                 <p>Entrez votre email pour avoir l'autorisation de changer votre mot de pass</p>
             </div>
-            <span style={{ color: "#2b6cb0", cursor: "pointer" }} onClick={ () => onSwitch("login") }>← Retour à la connexion</span>
+            <span className="backLink" onClick={ () => onSwitch("login") }>← Retour à la connexion</span>
             <form onSubmit={ verifyEmail } method="get">
                 <div className="knownemailSection">
                     <label htmlFor="knownEmail">Email</label>

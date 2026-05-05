@@ -1,22 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap');
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --gray-light: #f5f5f5;
+  --gray-mid: #e8e8e8;
+  --gray-text: #767677;
+  --accent: #e31837;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ── PAGE SHELL ── */
 .repport-parent {
-    min-height: 100vh;
-    background: #f0f2f5;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--gray-light);
+  font-family: var(--font-body);
 }
 
-.repport-container {
-    display: flex;
-    flex: 1;
-    gap: 24px;
-    padding: 24px;
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 100%;
-    box-sizing: border-box;
-}
-
+/* ── MAIN CONTENT ── */
 .repport-main {
-    flex: 1;
-    min-width: 0;
+  flex: 1;
+  padding: 28px 32px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .repport-main {
+    padding: 24px 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .repport-main {
+    padding: 16px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .repport-main {
+    padding: 12px 8px;
+  }
 }
