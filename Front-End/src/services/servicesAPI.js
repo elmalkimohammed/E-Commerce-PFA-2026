@@ -33,6 +33,8 @@ const notiAPI = "http://localhost/api/notifications"
 /* Endpoint of the Admin Logs Micro-Service API */
 const adminLogsAPI = "http://localhost/api/Audit"
 
+const adminInventoryAPI = "http://localhost/api/inventory";  // ← Nouvel endpoint
+
 export { 
   cartAPI, 
   authAPI, 
@@ -43,5 +45,6 @@ export {
   repportAPI, 
   reviewAPI, 
   notiAPI, 
-  adminLogsAPI 
+  adminLogsAPI,
+  adminInventoryAPI  
 };
