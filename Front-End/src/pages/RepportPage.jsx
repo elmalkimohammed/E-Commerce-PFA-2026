@@ -24,11 +24,11 @@ function RepportPage() {
     }, []);
 
     const fetchMyRepports = () => {
-        fetch(repportAPI)
+        fetch(`${repportAPI}`)
             .then(res => res.json())
             .then(data => {
-                const mine = data.filter(r => r.UserID === userID);
-                setMyRepports(mine);
+                const arr = Array.isArray(data) ? data : [];
+                setMyRepports(arr.filter(r => r.UserID === userID));
             })
             .catch(err => console.error(err));
     };

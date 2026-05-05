@@ -22,7 +22,7 @@ const subsAPI = "http://localhost/api/Subscription"
 const orderAPI = "http://localhost/api/orders"
 
 /* Endpoint Of The Repport Micro-Service API */
-const repportAPI = "http://localhost/repport"
+const repportAPI = "http://localhost/api/repport"
 
 /* Endpoint of the review Micro-Service API */
 const reviewAPI = "http://localhost/api/reviews"

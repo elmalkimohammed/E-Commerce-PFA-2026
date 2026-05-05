@@ -24,6 +24,10 @@ public class PostDtoRequest {
         return UserID;
     }
 
+    public void setUserID(UUID userID) {
+        UserID = userID;
+    }
+
     public String getSourceEmail() {
         return SourceEmail;
     }

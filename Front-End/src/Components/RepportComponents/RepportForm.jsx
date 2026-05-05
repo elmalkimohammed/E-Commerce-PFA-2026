@@ -9,7 +9,7 @@ function RepportForm({ userID, onSubmitSuccess, onError }) {
     const jwtToken = localStorage.getItem("generatedJWT_Token");
 
     useEffect(() => {
-        fetch(userAPI, {
+        fetch(`${userAPI}/`, {
             headers: { Authorization: `Bearer ${jwtToken}` }
         })
             .then(res => {
@@ -28,7 +28,7 @@ function RepportForm({ userID, onSubmitSuccess, onError }) {
         e.preventDefault();
         setLoading(true);
         try {
-            const res = await fetch(repportAPI, {
+            const res = await fetch(`${repportAPI}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...form, UserID: userID })

@@ -9,7 +9,7 @@ function RecentRepports() {
     useEffect(() => {
         fetch(`${repportAPI}/recent`)
             .then(res => res.json())
-            .then(data => setRepports(data))
+            .then(data => setRepports(Array.isArray(data) ? data : []))
             .catch(err => console.error(err));
     }, []);
 

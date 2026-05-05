@@ -8,9 +8,9 @@ function AllRepports() {
     const [viewing, setViewing] = useState(null);
 
     const fetchAll = () => {
-        fetch(repportAPI)
+        fetch(`${repportAPI}`)
             .then(res => res.json())
-            .then(data => setRepports(data))
+            .then(data => setRepports(Array.isArray(data) ? data : []))
             .catch(err => console.error(err));
     };
 
