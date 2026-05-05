@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { adminInventoryAPI } from "../../services/servicesAPI";
 
 function LogsInventoryPage() {
   const [logType, setLogType] = useState("product"); // "product", "order", "cart", "review"
@@ -16,7 +17,9 @@ function LogsInventoryPage() {
     
     try {
       const token = localStorage.getItem("generatedJWT_Token");
-      const baseUrl = "http://localhost:5009"; // Your AdminLogsService port
+      
+      // Utilisation de l'endpoint centralisé (sans port spécifique)
+      const baseUrl = adminInventoryAPI; // "http://localhost/api/inventory"
       
       let endpoint = "";
       
@@ -24,63 +27,65 @@ function LogsInventoryPage() {
         case "product":
           switch(productLogSubType) {
             case "created":
-              endpoint = `${baseUrl}/api/inventory/products/created/logs`;
+              endpoint = `${baseUrl}/products/created/logs`;
               break;
             case "updated":
-              endpoint = `${baseUrl}/api/inventory/products/updated/logs`;
+              endpoint = `${baseUrl}/products/updated/logs`;
               break;
             case "deleted":
-              endpoint = `${baseUrl}/api/inventory/products/deleted/logs`;
+              endpoint = `${baseUrl}/products/deleted/logs`;
               break;
             default:
-              endpoint = `${baseUrl}/api/inventory/products/created/logs`;
+              endpoint = `${baseUrl}/products/created/logs`;
           }
           break;
         case "order":
           switch(orderLogSubType) {
             case "created":
-              endpoint = `${baseUrl}/api/inventory/orders/created/logs`;
+              endpoint = `${baseUrl}/orders/created/logs`;
               break;
             case "updated":
-              endpoint = `${baseUrl}/api/inventory/orders/updated/logs`;
+              endpoint = `${baseUrl}/orders/updated/logs`;
               break;
             case "cancelled":
-              endpoint = `${baseUrl}/api/inventory/orders/cancelled/logs`;
+              endpoint = `${baseUrl}/orders/cancelled/logs`;
               break;
             default:
-              endpoint = `${baseUrl}/api/inventory/orders/created/logs`;
+              endpoint = `${baseUrl}/orders/created/logs`;
           }
           break;
         case "cart":
           switch(cartLogSubType) {
             case "updated":
-              endpoint = `${baseUrl}/api/inventory/carts/updated/logs`;
+              endpoint = `${baseUrl}/carts/updated/logs`;
               break;
             case "deleted":
-              endpoint = `${baseUrl}/api/inventory/carts/deleted/logs`;
+              endpoint = `${baseUrl}/carts/deleted/logs`;
               break;
             default:
-              endpoint = `${baseUrl}/api/inventory/carts/updated/logs`;
+              endpoint = `${baseUrl}/carts/updated/logs`;
           }
           break;
         case "review":
           switch(reviewLogSubType) {
             case "created":
-              endpoint = `${baseUrl}/api/inventory/reviews/created/logs`;
+              endpoint = `${baseUrl}/reviews/created/logs`;
               break;
             case "updated":
-              endpoint = `${baseUrl}/api/inventory/reviews/updated/logs`;
+              endpoint = `${baseUrl}/reviews/updated/logs`;
               break;
             case "deleted":
-              endpoint = `${baseUrl}/api/inventory/reviews/deleted/logs`;
+              endpoint = `${baseUrl}/reviews/deleted/logs`;
               break;
             default:
-              endpoint = `${baseUrl}/api/inventory/reviews/created/logs`;
+              endpoint = `${baseUrl}/reviews/created/logs`;
           }
           break;
         default:
-          endpoint = `${baseUrl}/api/inventory/products/created/logs`;
+          endpoint = `${baseUrl}/products/created/logs`;
       }
+      
+      console.log("Fetching logs from:", endpoint); // Pour debug
       
       const response = await fetch(endpoint, {
         headers: {
@@ -184,6 +189,7 @@ function LogsInventoryPage() {
               key={btn.id}
               className={`product-sub-tab ${productLogSubType === btn.id ? "active" : ""}`}
               onClick={() => setProductLogSubType(btn.id)}
+              style={{ backgroundColor: productLogSubType === btn.id ? btn.color : "#eee" }}
             >
               {btn.label}
             </button>
@@ -199,6 +205,7 @@ function LogsInventoryPage() {
               key={btn.id}
               className={`order-sub-tab ${orderLogSubType === btn.id ? "active" : ""}`}
               onClick={() => setOrderLogSubType(btn.id)}
+              style={{ backgroundColor: orderLogSubType === btn.id ? btn.color : "#eee" }}
             >
               {btn.label}
             </button>
@@ -214,6 +221,7 @@ function LogsInventoryPage() {
               key={btn.id}
               className={`cart-sub-tab ${cartLogSubType === btn.id ? "active" : ""}`}
               onClick={() => setCartLogSubType(btn.id)}
+              style={{ backgroundColor: cartLogSubType === btn.id ? btn.color : "#eee" }}
             >
               {btn.label}
             </button>
@@ -229,6 +237,7 @@ function LogsInventoryPage() {
               key={btn.id}
               className={`review-sub-tab ${reviewLogSubType === btn.id ? "active" : ""}`}
               onClick={() => setReviewLogSubType(btn.id)}
+              style={{ backgroundColor: reviewLogSubType === btn.id ? btn.color : "#eee" }}
             >
               {btn.label}
             </button>
@@ -244,7 +253,12 @@ function LogsInventoryPage() {
           </button>
         </div>
         
-        {loading && <div className="logs-loading">Loading logs...</div>}
+        {loading && (
+          <div className="logs-loading">
+            <div className="spinner"></div>
+            Loading logs...
+          </div>
+        )}
         
         {error && !loading && (
           <div className="logs-error">
@@ -259,6 +273,128 @@ function LogsInventoryPage() {
           </pre>
         )}
       </div>
+
+      <style jsx>{`
+        .logs-page {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 20px;
+          font-family: 'Courier New', monospace;
+        }
+        .logs-tabs {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 20px;
+          flex-wrap: wrap;
+        }
+        .logs-tab {
+          padding: 12px 24px;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 16px;
+          font-weight: bold;
+          transition: all 0.3s;
+          background: #f0f0f0;
+        }
+        .logs-tab.active {
+          background: #4a90e2;
+          color: white;
+          transform: scale(1.05);
+        }
+        .product-sub-tabs, .order-sub-tabs, .cart-sub-tabs, .review-sub-tabs {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 20px;
+          flex-wrap: wrap;
+        }
+        .product-sub-tab, .order-sub-tab, .cart-sub-tab, .review-sub-tab {
+          padding: 8px 16px;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: bold;
+          transition: all 0.3s;
+          color: white;
+        }
+        .logs-container {
+          background: #1e1e1e;
+          border-radius: 8px;
+          padding: 20px;
+          margin-top: 20px;
+        }
+        .logs-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+          padding-bottom: 10px;
+          border-bottom: 2px solid #444;
+        }
+        .logs-header h3 {
+          margin: 0;
+          color: #4a90e2;
+          font-size: 18px;
+        }
+        .logs-refresh-btn {
+          padding: 8px 16px;
+          background: #4a90e2;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+        }
+        .logs-refresh-btn:hover {
+          background: #357abd;
+        }
+        .logs-loading {
+          color: #4a90e2;
+          text-align: center;
+          padding: 40px;
+          font-size: 16px;
+        }
+        .logs-error {
+          color: #f44336;
+          text-align: center;
+          padding: 40px;
+        }
+        .logs-error button {
+          margin-left: 10px;
+          padding: 5px 10px;
+          background: #f44336;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .logs-content {
+          background: #2d2d2d;
+          color: #d4d4d4;
+          padding: 15px;
+          border-radius: 6px;
+          overflow-x: auto;
+          font-size: 13px;
+          line-height: 1.5;
+          margin: 0;
+          white-space: pre-wrap;
+          word-wrap: break-word;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .spinner {
+          border: 4px solid #f3f3f3;
+          border-top: 4px solid #4a90e2;
+          border-radius: 50%;
+          width: 30px;
+          height: 30px;
+          animation: spin 1s linear infinite;
+          margin: 0 auto 10px;
+        }
+      `}</style>
     </div>
   );
 }
