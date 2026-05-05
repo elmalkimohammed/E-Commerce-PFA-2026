@@ -8,53 +8,51 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
 @Service
-public class RepportService implements IRepportService{
+public class RepportService implements IRepportService {
     private final IRepportLogger repportLogger;
     private final RepportRepo repo;
-    public RepportService(RepportRepo repo , IRepportLogger repportLogger ) {
+
+    public RepportService(RepportRepo repo, IRepportLogger repportLogger) {
         this.repportLogger = repportLogger;
         this.repo = repo;
     }
+
     @Override
     public Repport findByIdDB(UUID id) {
-
         return repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Repport not found"));
     }
 
     @Override
     public List<Repport> findAllDB() {
-        List<Repport> repports = repo.findAll();
-        return repports;
+        return repo.findAll();
     }
 
     @Override
     public void saveDB(Repport rep) {
-        Repport save =repo.save(rep);
-        repportLogger.log(save);
-
+        Repport saved = repo.save(rep);
+        repportLogger.log(saved);
     }
 
     @Override
     public void deleteDB(UUID id) {
         repo.deleteById(id);
-
     }
 
     @Override
     public void updateDB(Repport rep) {
         Repport exist = repo.findById(rep.getRepportId()).orElse(null);
-        if(exist == null){
+        if (exist == null) {
             throw new RuntimeException("Repport not found");
         }
         exist.setSourceEmail(rep.getSourceEmail());
         exist.setTitle(rep.getTitle());
         exist.setDescription(rep.getDescription());
         repo.save(exist);
-
-
     }
+
     @Override
     public List<Repport> FindRecent() {
         LocalDateTime since = LocalDateTime.now().minusDays(1);

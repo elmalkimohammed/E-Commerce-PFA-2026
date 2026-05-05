@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import Analytics from "../components/SellerPortal/Analytics";
-import ProductTable from "../components/SellerPortal/ProductTable";
-import AddProductForm from "../components/SellerPortal/AddProductForm";
-import EditProductModal from "../components/SellerPortal/EditProductModal";
+import Analytics from "../Components/SellerPortal/Analytics";
+import ProductTable from "../Components/SellerPortal/ProductTable";
+import AddProductForm from "../Components/SellerPortal/AddProductForm";
+import EditProductModal from "../Components/SellerPortal/EditProductModal";
 import TopNav from "../Components/navbarComponent/TopNav";
 
-import "./styles/SellerPortal.css";
+import "./Styles/SellerPortal.css";
 
 // API Base URL - update this with your actual API URL
 const API_BASE_URL = "http://localhost/TechStore/ProductService";

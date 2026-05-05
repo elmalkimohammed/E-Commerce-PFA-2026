@@ -1,10 +1,10 @@
-import LoginForm from "../components/LoginForm";
-import RegisterForm from "../components/RegisterForm";
-import PasswordChange from "../components/PasswordChange";
-import NewPassword from "../components/NewPassword"
+import LoginForm from "../Components/LoginForm";
+import RegisterForm from "../Components/RegisterForm";
+import PasswordChange from "../Components/PasswordChange";
+import NewPassword from "../Components/NewPassword"
 import TopNav from "../Components/navbarComponent/TopNav";
 
-import "./styles/AuthPage.css"
+import "./Styles/AuthPage.css"
 
 import { useState } from "react";
 
@@ -24,3 +24,4 @@ function AuthPage() {
 }
 
 export default AuthPage
+

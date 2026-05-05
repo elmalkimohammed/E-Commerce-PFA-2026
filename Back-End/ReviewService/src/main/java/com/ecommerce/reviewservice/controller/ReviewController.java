@@ -1,6 +1,7 @@
 package com.ecommerce.reviewservice.controller;
 
 import com.ecommerce.reviewservice.dto.*;
+import org.springframework.http.ResponseEntity;
 import com.ecommerce.reviewservice.entity.Review;
 import com.ecommerce.reviewservice.service.ReviewService;
 import com.ecommerce.reviewservice.service.ReviewEventService;

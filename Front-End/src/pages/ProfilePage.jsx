@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { jwtDecode } from "jwt-decode";
 import { styles } from '../styles/styles';
-import Avatar from '../components/common/Avatar';
-import InputField from '../components/common/InputField';
-import SelectField from '../components/common/SelectField';
-import SectionCard from '../components/common/SectionCard';
-import Toast from '../components/common/Toast';
+import Avatar from '../Components/common/Avatar';
+import InputField from '../Components/common/InputField';
+import SelectField from '../Components/common/SelectField';
+import SectionCard from '../Components/common/SectionCard';
+import Toast from '../Components/common/Toast';
 import CommentsPage from './CommentPage';
 import TopNav from "../Components/navbarComponent/TopNav";
 import { userAPI, reviewAPI, prodAPI } from '../services/servicesAPI';
@@ -413,3 +413,4 @@ const ProfilePage = () => {
   );
 };
 export default ProfilePage;
+

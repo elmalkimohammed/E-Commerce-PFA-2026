@@ -35,7 +35,7 @@ public class OrderService1 : IOrderService
         var created = await _repository.CreateAsync(order);
 
         // ─── Kafka : notifier la confirmation de commande ───
-        await _kafkaProducer.ProduceAsync(
+        await _kafkaProducer.AsyncPublish(
             "order-confirmed",
             $"{created.UserId}::{created.OrderId}"
         );
@@ -64,7 +64,7 @@ public class OrderService1 : IOrderService
         var created = await _repository.CreateAsync(order);
 
         // ─── Kafka : notifier la confirmation de commande ───
-        await _kafkaProducer.ProduceAsync(
+        await _kafkaProducer.AsyncPublish(
             "order-confirmed",
             $"{created.UserId}::{created.OrderId}"
         );
@@ -114,7 +114,7 @@ public class OrderService1 : IOrderService
         // ─── Kafka : notifier l'annulation de commande ───
         if (result)
         {
-            await _kafkaProducer.ProduceAsync(
+            await _kafkaProducer.AsyncPublish(
                 "order-cancelled",
                 $"{userId}::{orderId}"
             );

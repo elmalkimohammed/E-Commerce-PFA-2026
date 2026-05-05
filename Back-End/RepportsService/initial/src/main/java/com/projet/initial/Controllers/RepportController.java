@@ -10,8 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,53 +21,49 @@ import java.util.UUID;
 public class RepportController {
     private final IRepportService repportService;
 
-    public RepportController(IRepportService repo ) {
+    public RepportController(IRepportService repo) {
         this.repportService = repo;
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<GetDtoResponse> Get(@PathVariable UUID id)
-    {
 
+    @GetMapping("/{id}")
+    public ResponseEntity<GetDtoResponse> Get(@PathVariable UUID id) {
         Repport exist = repportService.findByIdDB(id);
         GetDtoResponse getDtoResponse = RepportMapper.ModelToGet(exist);
-        return new  ResponseEntity<>(getDtoResponse, HttpStatus.OK);
-
+        return new ResponseEntity<>(getDtoResponse, HttpStatus.OK);
     }
+
     @GetMapping
-    public ResponseEntity<List<GetDtoResponse>> GetAll()
-    {
+    public ResponseEntity<List<GetDtoResponse>> GetAll() {
         List<Repport> repports = repportService.findAllDB();
 
         List<GetDtoResponse> response = repports.stream()
                 .map(RepportMapper::ModelToGet)
                 .toList();
-        ;
         return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
+
     @PostMapping
-    public ResponseEntity Insert(@RequestBody PostDtoRequest dto)
-    {
+    public ResponseEntity<Void> Insert(@RequestBody PostDtoRequest dto) {
         Repport repport = RepportMapper.PostToModel(dto);
         repportService.saveDB(repport);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @PutMapping
-    public ResponseEntity Update(@RequestBody PutDtoRequest dto)
-    {
+    public ResponseEntity<Void> Update(@RequestBody PutDtoRequest dto) {
         Repport repport = RepportMapper.PutToDto(dto);
         repportService.updateDB(repport);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity Delete(@PathVariable UUID id)
-    {
+    public ResponseEntity<Void> Delete(@PathVariable UUID id) {
         repportService.deleteDB(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @GetMapping("/recent")
-    public ResponseEntity<List<GetDtoResponse>> GetRecent()
-    {
+    public ResponseEntity<List<GetDtoResponse>> GetRecent() {
         List<Repport> repports = repportService.FindRecent();
 
         List<GetDtoResponse> response = repports.stream()
@@ -75,14 +72,11 @@ public class RepportController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     @GetMapping("/logs")
     public ResponseEntity<String> GetLogs() {
         try {
-            String content = new String(
-                    java.nio.file.Files.readAllBytes(
-                            java.nio.file.Paths.get("/app/logs/repport.log")
-                    )
-            );
+            String content = Files.readString(Paths.get("/app/logs/repport.log"));
             return new ResponseEntity<>(content, HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>("Log file not found", HttpStatus.NOT_FOUND);

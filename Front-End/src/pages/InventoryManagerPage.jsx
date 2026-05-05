@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TopNavInventory from "../Components/navbarComponent/TopNavInventory";
-import InventorySideBar from "../Components/InventoryPage/InventorySideBar";
-import InventoryPage from "../Components/InventoryPage/InventoryPage";
-import CreateInventoryPage from "../Components/InventoryPage/CreateInventoryPage";
-import LogsInventoryPage from "../Components/InventoryPage/LogsInventoryPage";
+import InventorySideBar from "../Components/inventoryPage/InventorySideBar";
+import InventoryPage from "../Components/inventoryPage/InventoryPage";
+import CreateInventoryPage from "../Components/inventoryPage/CreateInventoryPage";
+import LogsInventoryPage from "../Components/inventoryPage/LogsInventoryPage";
 import "./Styles/InventoryManager.css";
 
 function InventoryManagerPage() {

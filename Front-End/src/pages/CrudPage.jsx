@@ -71,3 +71,4 @@ function CrudPage() {
 }
 
 export default CrudPage
+

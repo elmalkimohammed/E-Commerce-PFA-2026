@@ -5,6 +5,7 @@ import com.ecommerce.reviewservice.entity.Review;
 import com.ecommerce.reviewservice.mapper.ReviewMapper;
 import com.ecommerce.reviewservice.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
