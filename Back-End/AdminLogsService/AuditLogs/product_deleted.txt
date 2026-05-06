@@ -12,3 +12,4 @@
 [2026-05-05 03:26:15] PRODUCT DELETED - ProductId: 5, Name: Ã‰couteurs sans fil, Price: 95000, Stock: 12, Category: Electronique, UserId: 2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e, DELETEDBy: admin@admin.com
 [2026-05-05 03:26:19] PRODUCT DELETED - ProductId: 6, Name: sac de test, Price: 45000, Stock: 7, Category: Accessoires, UserId: 3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f, DELETEDBy: admin@admin.com
 [2026-05-05 03:43:42] PRODUCT DELETED - ProductId: 2, Name: Samsung Galaxy S24, Price: 1200, Stock: 45, Category: Electronics, UserId: 2f5fe934-2839-43b0-8fbe-b16e6bd0273e, DELETEDBy: admin@admin.com
+[2026-05-06 17:46:32] PRODUCT DELETED - ProductId: 2, Name: Casque Bluetooth, Price: 85000, Stock: 5, Category: Electronique, UserId: 9c8b5f2e-1d1a-4b67-9bcb-4f0a2e9e2c1d, DELETEDBy: mesmesamin42@gmail.com

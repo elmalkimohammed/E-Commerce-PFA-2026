@@ -1,1 +1,2 @@
 [2026-05-03 17:50:17] DELETED - UserId: eb0f2ae7-9e31-4ed9-b78e-49226d464480, Email: UNKNOWN, DeletedBy: user
+[2026-05-06 17:47:08] DELETED - UserId: fed29bba-9122-40f0-9178-1a2e5301cc1e, Email: test@gmail.com, DeletedBy: user

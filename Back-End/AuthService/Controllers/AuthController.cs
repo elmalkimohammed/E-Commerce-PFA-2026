@@ -1,4 +1,4 @@
-﻿using AuthService.DTOs;
+using AuthService.DTOs;
 using AuthService.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -166,6 +166,32 @@ namespace AuthService.Controllers
             {
                 return BadRequest(e.Message); // 400 Status Code
             }
+        }
+
+        // Token validation for Nginx auth_request
+        [HttpGet("validate")]
+        [AllowAnonymous] // Allow guests to proceed, but identify users if token is present
+        public IActionResult ValidateToken()
+        {
+            // If the user is authenticated (valid JWT provided), extract and return claims
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value 
+                             ?? User.FindFirst("sub")?.Value;
+                var userEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value 
+                             ?? User.FindFirst("email")?.Value;
+                var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+
+                if (!string.IsNullOrEmpty(userId)) Response.Headers.Append("X-User-Id", userId);
+                if (!string.IsNullOrEmpty(userEmail)) Response.Headers.Append("X-User-Email", userEmail);
+                if (!string.IsNullOrEmpty(userRole)) Response.Headers.Append("X-User-Role", userRole);
+                
+                return Ok(); // 200 OK with headers
+            }
+
+            // For non-authenticated users, we still return 200 OK so Nginx allows the request to reach backends
+            // The backends will simply see no X-User headers and treat the request as anonymous
+            return Ok(); 
         }
     }
 }
