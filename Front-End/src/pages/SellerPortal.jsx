@@ -8,7 +8,7 @@ import TopNav from "../Components/navbarComponent/TopNav";
 import "./Styles/SellerPortal.css";
 
 // API Base URL - update this with your actual API URL
-const API_BASE_URL = "http://localhost/TechStore/ProductService";
+const API_BASE_URL = "http://localhost/TechStore/ProductService/";
 
 // Helper function to get token from localStorage/sessionStorage
 const getToken = () => {
