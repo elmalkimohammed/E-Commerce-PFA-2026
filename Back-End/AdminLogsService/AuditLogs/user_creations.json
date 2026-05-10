@@ -232,5 +232,61 @@
       "audit_created_at": "2026-05-05T18:55:13.1888786Z",
       "audit_version": "1.0"
     }
+  },
+  {
+    "UserId": "aec1d908-96d1-45d3-8fe8-954ff5ea72c2",
+    "Email": "test@test.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-07T14:30:32.9457331Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "b0c05a94-2734-48d9-9e85-d78334e75686",
+    "Email": "admin@admin.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-07T14:32:30.6349751Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "231c7b6e-71e6-4741-ae64-3c50d0bbd6b1",
+    "Email": "admin@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-08T01:04:18.7586731Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "0f1c9ef5-0615-4330-86e9-c18ca5325b98",
+    "Email": "test@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-09T16:45:37.8299489Z",
+      "audit_version": "1.0"
+    }
   }
 ]

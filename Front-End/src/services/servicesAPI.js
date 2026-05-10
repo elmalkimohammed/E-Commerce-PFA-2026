@@ -7,10 +7,10 @@
 const authAPI = "http://localhost/api/auth"
 
 /* Endpoint Of The Product Micro-Service API */
-const prodAPI = "http://localhost/TechStore/ProductService"
+const prodAPI = "http://localhost/TechStore/ProductService/"
 
 /* Endpoint Of The Cart Micro-Service API */
-const cartAPI = "http://localhost/api/cart"
+const cartAPI = "http://localhost/api/cart/"
 
 /* Endpoint Of The User Profile Micro-Service API */
 const userAPI = "http://localhost/api/UserProfile"
@@ -33,7 +33,7 @@ const notiAPI = "http://localhost/api/notifications"
 /* Endpoint of the Admin Logs Micro-Service API */
 const adminLogsAPI = "http://localhost/api/Audit"
 
-const adminInventoryAPI = "http://localhost/api/inventory";  // ← Nouvel endpoint
+const adminInventoryAPI = "http://localhost/api/inventory";  
 
 export { 
   cartAPI, 
