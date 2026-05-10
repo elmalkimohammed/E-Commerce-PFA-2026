@@ -14,6 +14,45 @@ import axios from "axios"
 import "../../pages/Styles/TopNavStyle.css";
 import logo from "../../assets/AutoNova_Logo.png"
 
+
+// ───────── JWT DECODE ─────────
+const decodeJWT = (token) => {
+  try {
+    const base64Url = token.split('.')[1]
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+    const jsonPayload = decodeURIComponent(
+      atob(base64).split('').map(c =>
+        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+      ).join('')
+    )
+    return JSON.parse(jsonPayload)
+  } catch (error) {
+    console.error('Error decoding JWT:', error)
+    return null
+  }
+}
+
+// ───────── CHECK SUBSCRIPTION ─────────
+const checkSubscription = async (userId, token) => {
+  try {
+    const res = await fetch(`http://localhost:5005/api/subscription/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    if (res.status === 404) return false
+
+    if (!res.ok) throw new Error("Error checking subscription")
+
+    const data = await res.json()
+    return data
+  } catch (err) {
+    console.error(err)
+    return false
+  }
+}
+
 function TopNav() {
   const [menuOpen, setMenuOpen]     = useState(false);
   const [categories, setCategories] = useState([]);
@@ -60,7 +99,7 @@ const lastFiveNotifications = notification.slice(0, 5);
 
 
   const navigate   = useNavigate();
-
+  const [isSubscribed, setIsSubscribed] = useState(false)
   // Charger les produits une seule fois
   useEffect(() => {
     fetch(prodAPI)
@@ -68,6 +107,27 @@ const lastFiveNotifications = notification.slice(0, 5);
       .then(setProducts)
       .catch(console.error);
   }, []);
+
+  useEffect(() => {
+  const token = localStorage.getItem("generatedJWT_Token")
+
+  if (!token) return
+
+  const decoded = decodeJWT(token)
+  if (!decoded?.sub) return
+
+  checkSubscription(decoded.sub, token).then((res) => {
+    if (res) {
+      setIsSubscribed(true)
+      localStorage.setItem("isSubscribed", "true")
+      localStorage.setItem("subscriptionData", JSON.stringify(res))
+    } else {
+      setIsSubscribed(false)
+      localStorage.removeItem("isSubscribed")
+      localStorage.removeItem("subscriptionData")
+    }
+  })
+}, [])
 
   // Fermer le dropdown si clic en dehors
   useEffect(() => {
@@ -164,7 +224,14 @@ const lastFiveNotifications = notification.slice(0, 5);
           <p><a href="/CategoryPage" onClick={() => setMenuOpen(false)}>Filtrage</a></p>
           <p><a href="/repport"             onClick={() => setMenuOpen(false)}>Contact</a></p>
           {localStorage.getItem("generatedJWT_Token") && (
-            <p><a href="/SellerPortal" onClick={() => setMenuOpen(false)}>Vendres</a></p>
+            <p>
+              <a
+                href={isSubscribed ? "/SellerPortal" : "/subscription"}
+                onClick={() => setMenuOpen(false)}
+              >
+                {isSubscribed ? "Vendres" : "Devenir vendeur"}
+              </a>
+            </p>
           )}
         </div>
 

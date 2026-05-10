@@ -1,0 +1,219 @@
+/* ── Page wrapper: centered ───────────────────────────────── */
+.sub-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 48px 16px 80px;
+  background: #f4f6fb;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+.sub-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.sub-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 8px;
+}
+.sub-header p {
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+/* ── Error banner ─────────────────────────────────────────── */
+.sub-error {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  border-radius: 10px;
+  padding: 12px 20px;
+  margin-bottom: 24px;
+  max-width: 700px;
+  width: 100%;
+  text-align: center;
+}
+
+/* ── Loading ──────────────────────────────────────────────── */
+.sub-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 0;
+  color: #6b7280;
+}
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Plans grid: centered ─────────────────────────────────── */
+.plans-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  max-width: 1000px;
+  width: 100%;
+  margin-bottom: 32px;
+}
+
+/* ── Plan card ────────────────────────────────────────────── */
+.plan-card {
+  background: #fff;
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 32px 28px;
+  width: 280px;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.plan-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 8px 24px rgba(59,130,246,0.12);
+  transform: translateY(-4px);
+}
+.plan-card.selected {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+}
+.plan-card.popular {
+  border-color: #10b981;
+}
+.plan-card.popular.selected {
+  border-color: #10b981;
+  box-shadow: 0 0 0 4px rgba(16,185,129,0.15);
+}
+
+.popular-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #10b981;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.plan-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.plan-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  margin-bottom: 24px;
+}
+.currency { font-size: 1.1rem; color: #6b7280; }
+.price { font-size: 2.4rem; font-weight: 800; color: #1a1a2e; }
+.period { font-size: 0.95rem; color: #6b7280; margin-left: 4px; }
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.plan-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #374151;
+}
+.plan-features li i {
+  color: #10b981;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* ── CTA button ───────────────────────────────────────────── */
+.subscription-action {
+  display: flex;
+  justify-content: center;
+}
+.subscribe-btn {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 48px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.subscribe-btn:hover:not(.disabled) {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+.subscribe-btn.disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* ── Payment section ──────────────────────────────────────── */
+.payment-section {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.payment-section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  text-align: center;
+}
+.payment-summary {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px 24px;
+  width: 100%;
+  text-align: center;
+}
+.payment-summary h3 {
+  font-size: 1rem;
+  color: #374151;
+  margin-bottom: 6px;
+}
+.total-amount {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+.back-btn {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 8px 0;
+}
+.back-btn:hover { text-decoration: underline; }

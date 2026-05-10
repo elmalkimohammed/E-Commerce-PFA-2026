@@ -11,6 +11,9 @@ import CartPage from "./pages/CartPage.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import ProductDetail from './pages/ProductDetail';
 import PaymentPage from "./pages/PaymentPage.jsx";
+import SubscriptionPage from "./pages/SubscriptionPage";
+import SubscriptionStatus from "./pages/SubscriptionStatus";
+import ProtectedSellerRoute from "./Components/ProtectedSellerRoute";
 import RepportPage from "./pages/RepportPage.jsx";
 import Notification from "./pages/NotificationPage.jsx";
 import NotificationDetail from "./pages/NotificationDetailPage.jsx";
@@ -40,21 +43,18 @@ function App() {
           <Route path="/" element={<Acceuil />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/Authentication" element={<AuthPage/>} />
-          <Route path="/SellerPortal" element={ <SellerPortal/> }/>
+          <Route 
+            path="/SellerPortal" 
+            element={
+              <ProtectedSellerRoute>
+                <SellerPortal />
+              </ProtectedSellerRoute>
+            } 
+          />
           <Route path="/ProfilePage" element={ <ProfilePage/> }/>
           <Route path="/CartPage" element={ <CartPage/> }/>
-          <Route path="/CategoryPage" element={ <CategoryPage/> }/>
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/paymentForm" element={<PaymentPage/>}/>
-          <Route path="/repport" element={<RepportPage/>}/>
-          <Route path="/notification" element={<Notification/>}/>
-          <Route path="/notificationDetail" element={<NotificationDetail/>}/>
-          <Route path="/adminProfilePage" element={<AdminProfilePage/>}/>
-          <Route path="/adminMonitoring" element={<MonitoringPage/>}/>
-          <Route path="/adminCrudPage" element={<CrudPage/>}/>
-          <Route path="/adminRepport" element={<AdminRepportPage/>}/>
-          <Route path="/inventoryManager" element={<InventoryManagerPage/>}/>
-          <Route path="/inventoryProfile" element={<InventoryProfilePage/>}/>
         </Routes>
       </BrowserRouter>
     </Provider>
