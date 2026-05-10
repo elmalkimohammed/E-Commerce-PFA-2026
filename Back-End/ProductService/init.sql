@@ -33,11 +33,4 @@ CREATE TABLE `productsImage` (
   CONSTRAINT `FK_PNYG` FOREIGN KEY (`Product_Id`) REFERENCES `product` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Insert data into productsImage table
-INSERT INTO `productsImage` (`Id_image`, `Product_Id`, `image`, `Mimetype`, `Filename`) VALUES
-(4, 1, X'696D6167655F746573745F31', 'image/jpeg', 'produit1.jpg'),
-(5, 2, X'696D6167655F746573745F32', 'image/png', 'produit2.png'),
-(7, 4, X'89504E470D0A1A0A0000000D49484452', 'image/png', 'sac_de_voyage.png'),
-(8, 5, X'89504E470D0A1A0A0000000D49484452', 'image/png', 'ecouteurs_sans_fil.png'),
-(9, 6, X'89504E470D0A1A0A0000000D49484452', 'image/png', 'sac_de_voyage.png'),
-(10, 3, X'89504E470D0A1A0A0000000D49484452', 'image/png', 'sac_de_voyage.png');
+-- No seed image data — upload real images via the seller portal UI.

@@ -7,5 +7,7 @@ namespace AuthService.Repository
         public Task<User> GetThroughEmail(String email);
         public Task CreateUser(User user);
         public Task UpdateForgottenPassword(Guid userId, String newPassword);
+        public Task<User> VerifyUserId(Guid userId);
+        public Task DeleteUser(Guid userId);
     }
 }

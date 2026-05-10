@@ -6,9 +6,6 @@
   },
   "servers": [
     {
-      "url": "https://localhost:7240"
-    },
-    {
       "url": "http://localhost:5008"
     }
   ],
@@ -18,26 +15,6 @@
         "tags": [
           "UserProfile"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetFullInfoRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetFullInfoRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetFullInfoRequest"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -104,19 +81,22 @@
           }
         }
       }
+    },
+    "/api/UserProfile/fetchALLFullUsrsInfos": {
+      "get": {
+        "tags": [
+          "UserProfile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "GetFullInfoRequest": {
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "string",
-            "format": "uuid"
-          }
-        }
-      },
       "PutPrivateInfoDtoRequest": {
         "type": "object",
         "properties": {

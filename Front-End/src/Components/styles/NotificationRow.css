@@ -1,0 +1,57 @@
+.notification-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.notification-row:hover {
+  cursor: pointer;
+}
+
+/* search */
+.search-bar {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+/* item layout */
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* buttons */
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.view-btn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.danger {
+  background: #e74c3c;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+.empty {
+  text-align: center;
+  color: gray;
+}

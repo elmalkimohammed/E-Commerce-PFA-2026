@@ -1,0 +1,1 @@
+[2026-05-07 15:29:40] PRODUCT CREATED - ProductId: 7, Name: oui, Price: 10, Stock: 10, Category: oui, UserId: aec1d908-96d1-45d3-8fe8-954ff5ea72c2

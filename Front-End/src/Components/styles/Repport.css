@@ -1,0 +1,423 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap');
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --gray-light: #f5f5f5;
+  --gray-mid: #e8e8e8;
+  --gray-text: #767677;
+  --accent: #e31837;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+}
+
+/* ── CARD WRAPPER ── */
+.repport-card {
+  background: var(--white);
+  border: 1px solid var(--gray-mid);
+  overflow: hidden;
+  font-family: var(--font-body);
+  width: 100%;
+}
+
+/* ── CARD HEADER ── */
+.repport-card .card-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--gray-mid);
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.repport-card .card-header h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--black);
+}
+
+.repport-card .card-header p {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-text);
+}
+
+/* ── TABLE ── */
+.repport-card .table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.repport-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  min-width: 480px;
+}
+
+.repport-card thead tr {
+  background: var(--gray-light);
+}
+
+.repport-card thead th {
+  padding: 10px 20px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray-text);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--gray-mid);
+}
+
+.repport-card tbody tr {
+  border-top: 1px solid var(--gray-mid);
+  transition: background 0.1s ease;
+}
+
+.repport-card tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.repport-card tbody tr.clickable-row {
+  cursor: pointer;
+}
+
+.repport-card tbody tr.clickable-row:hover {
+  background: var(--gray-light);
+}
+
+.repport-card tbody td {
+  padding: 13px 20px;
+  font-size: 14px;
+  color: #333;
+  font-family: var(--font-body);
+}
+
+.repport-card td.title-cell {
+  font-weight: 600;
+  color: var(--black);
+}
+
+.repport-card td.desc-cell {
+  color: var(--gray-text);
+}
+
+.repport-card td.date-cell {
+  font-size: 12px;
+  color: var(--gray-text);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.repport-card td.actions-cell {
+  white-space: nowrap;
+}
+
+.repport-card .empty-row td {
+  padding: 64px 24px;
+  text-align: center;
+  color: var(--gray-text);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* ── ACTION BUTTONS ── */
+.btn-edit {
+  padding: 5px 12px;
+  border-radius: 2px;
+  border: 1px solid var(--gray-mid);
+  background: var(--white);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-right: 6px;
+  color: var(--black);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-edit:hover {
+  background: var(--gray-light);
+  border-color: var(--black);
+}
+
+.btn-delete {
+  padding: 5px 12px;
+  border-radius: 2px;
+  border: 1px solid #f5c6c6;
+  background: #fff5f5;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-delete:hover {
+  background: #ffe4e4;
+  border-color: var(--accent);
+}
+
+/* ── MODAL SHARED ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal-box {
+  background: var(--white);
+  padding: 32px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+  box-sizing: border-box;
+  font-family: var(--font-body);
+  border-top: 3px solid var(--black);
+}
+
+.modal-box h3 {
+  margin: 0 0 24px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--black);
+}
+
+/* ── EDIT MODAL FIELDS ── */
+.modal-field {
+  margin-bottom: 16px;
+}
+
+.modal-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-text);
+  margin-bottom: 6px;
+}
+
+.modal-field input,
+.modal-field textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--gray-mid);
+  font-size: 14px;
+  font-family: var(--font-body);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  color: var(--black);
+  background: var(--white);
+  border-radius: 2px;
+}
+
+.modal-field input:focus,
+.modal-field textarea:focus {
+  border-color: var(--black);
+}
+
+.modal-field textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-cancel {
+  padding: 9px 18px;
+  border-radius: 2px;
+  border: 1px solid var(--gray-mid);
+  background: var(--white);
+  color: var(--black);
+  font-weight: 600;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-cancel:hover {
+  background: var(--gray-light);
+}
+
+.btn-save {
+  padding: 9px 18px;
+  border-radius: 2px;
+  border: none;
+  background: var(--black);
+  color: var(--white);
+  font-weight: 700;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-save:hover {
+  background: var(--accent);
+}
+
+/* ── DETAIL MODAL ── */
+.detail-box {
+  max-width: 520px;
+  border-top-color: var(--accent);
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.detail-header h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--black);
+}
+
+.detail-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--gray-text);
+  line-height: 1;
+  padding: 4px;
+  transition: color 0.15s;
+}
+
+.detail-close:hover {
+  color: var(--black);
+}
+
+.detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--gray-mid);
+}
+
+.detail-field:last-of-type {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gray-text);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: var(--font-body);
+}
+
+.detail-value {
+  font-size: 15px;
+  color: var(--black);
+  font-weight: 500;
+  font-family: var(--font-body);
+}
+
+.detail-desc {
+  font-weight: 400;
+  color: #444;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* ── LOGS ── */
+.logs-body {
+  padding: 24px;
+}
+
+.logs-loading {
+  color: var(--gray-text);
+  font-size: 13px;
+  font-family: var(--font-body);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.logs-pre {
+  background: var(--black);
+  color: #aaa;
+  padding: 20px;
+  font-size: 13px;
+  line-height: 1.75;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  font-family: "Courier New", monospace;
+  border-left: 3px solid var(--accent);
+}
+
+/* ── RESPONSIVE TABLE PADDING ── */
+@media (max-width: 768px) {
+  .repport-card thead th,
+  .repport-card tbody td {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  .repport-card .card-header {
+    padding: 16px;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    padding: 4px 8px;
+    font-size: 11px;
+    margin-right: 4px;
+  }
+
+  .modal-box {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .repport-card thead th,
+  .repport-card tbody td {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+}

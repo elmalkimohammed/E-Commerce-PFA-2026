@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap');
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --gray-light: #f5f5f5;
+  --gray-mid: #e8e8e8;
+  --gray-text: #767677;
+  --accent: #e31837;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+}
+
+/* ── SIDEBAR WRAPPER ── */
+.repport-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--white);
+  border-right: 1px solid var(--gray-mid);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  font-family: var(--font-body);
+  min-height: calc(100vh - 64px);
+}
+
+/* ── SECTION LABEL ── */
+.sidebar-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-text);
+  padding: 0 20px 12px;
+  margin: 0;
+  font-family: var(--font-body);
+}
+
+/* ── NAV BUTTONS ── */
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 20px;
+  background: none;
+  border: none;
+  border-left: 3px solid transparent;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--black);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  position: relative;
+}
+
+/* icon spacing — Bootstrap Icons sit before the label */
+.sidebar-btn::before {
+  font-size: 15px;
+  flex-shrink: 0;
+  color: var(--gray-text);
+  transition: color 0.15s;
+}
+
+.sidebar-btn:hover {
+  background: var(--gray-light);
+  color: var(--black);
+}
+.sidebar-btn:hover::before {
+  color: var(--black);
+}
+
+/* ── ACTIVE STATE ── */
+.sidebar-btn.active {
+  background: var(--gray-light);
+  border-left-color: var(--accent);
+  color: var(--accent);
+}
+.sidebar-btn.active::before {
+  color: var(--accent);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .repport-sidebar {
+    width: 100%;
+    min-height: unset;
+    flex-direction: row;
+    border-right: none;
+    border-bottom: 1px solid var(--gray-mid);
+    padding: 0;
+    overflow-x: auto;
+  }
+  .sidebar-label { display: none; }
+  .sidebar-btn {
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    padding: 14px 16px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .sidebar-btn.active {
+    border-left-color: transparent;
+    border-bottom-color: var(--accent);
+    background: none;
+  }
+}

@@ -1,4 +1,5 @@
-﻿using TicketProductApi.Model;
+﻿using Microsoft.VisualBasic;
+using TicketProductApi.Model;
 
 namespace TicketProductApi.Repo
 {
@@ -7,7 +8,7 @@ namespace TicketProductApi.Repo
         public List<ProductAndImage> Get_fiveProducts();
         public List<ProductAndImage> GetAllProducts();
          public ProductAndImage GetProductById(int id);
-        public void AddProduct(Product product);
+        public int AddProduct(Product product);
          public void AddImage(ProductImage image);
         public void UpdateProductAndImage(ProductAndImage product);
         public void UpdateProduct(Product product);
@@ -15,6 +16,7 @@ namespace TicketProductApi.Repo
         public List<ProductAndImage> GetProductsByUserId(Guid userId);
         public void DeleteProduct(int id); 
         public void DeleteImage(int id);
+        public List<String> GetCategories();
 
     }
 }

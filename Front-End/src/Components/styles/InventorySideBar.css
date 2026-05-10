@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap');
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --gray-light: #f5f5f5;
+  --gray-text: #767677;
+  --accent: #e31837;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+}
+
+.inventory-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+.sidebar-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--accent);
+  display: inline-block;
+}
+
+.sidebar-table-btn {
+  display: block;
+  width: 100%;
+  padding: 12px 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--gray-text);
+  text-align: left;
+  transition: all 0.2s;
+  border-left: 2px solid transparent;
+  padding-left: 16px;
+}
+
+.sidebar-table-btn:hover {
+  color: var(--black);
+  border-left-color: var(--gray-text);
+}
+
+.sidebar-table-btn.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .inventory-sidebar {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+  
+  .sidebar-table-btn {
+    display: inline-block;
+    width: auto;
+    margin-right: 24px;
+    padding: 8px 0;
+  }
+}

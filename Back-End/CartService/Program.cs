@@ -1,66 +1,66 @@
-using CartService.Repository;
 using CartService.Services;
+using CartService.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using static Mysqlx.Expect.Open.Types.Condition.Types;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ========== JWT Authentication ==========
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var secretKey = jwtSettings["SecretKey"] ?? "x7K#mP9$qL2@nR5&wJ8*vB3^hF6!uD4%";
+var key = Encoding.UTF8.GetBytes(secretKey);
 
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
-// Configure The CORS Policy To Accept Our React App (Cross-Origin)
-builder.Services.AddCors(options =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        options.AddPolicy("AllowReact", policy => policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod());
-    }
-);
-
-// Dependency Injection For The Cart Repository And The Product Client
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer
-(options =>
-    {
-        var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-        var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
-
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidateAudience = true,
-            ValidateIssuerSigningKey = true,
             ValidateLifetime = true,
-            ValidIssuer = jwtSettings["Issuer"],
-            ValidAudience = jwtSettings["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(secretKey)
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"] ?? "AuthService",
+            ValidAudience = jwtSettings["Audience"] ?? "EcommerceUsers",
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ClockSkew = TimeSpan.Zero
         };
-    }
-);
+    });
+
+// ========== Services ==========
 builder.Services.AddScoped<ICartRepository, CartRepository>();
-builder.Services.AddHttpClient<IProductClient, ProductClient>();
 builder.Services.AddScoped<ICartService, CartService.Services.CartService>();
+
+// FIX: Use AddHttpClient instead of AddScoped
+builder.Services.AddHttpClient<IProductClient, ProductClient>();
+
+builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
+builder.Services.AddScoped<CartEventService>();  
+
+// ========== Controllers & CORS ==========
+builder.Services.AddControllers();
+builder.Services.AddOpenApi();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReact", policy =>
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+    );
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
-
-// Activate The CORS Policy
 app.UseCors("AllowReact");
-
-// Authentication Middleware
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

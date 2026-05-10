@@ -1,0 +1,2 @@
+[2026-05-07 14:37:10] PRODUCT UPDATED - ProductId: 1, Name: T-shirt blanc, Price: 15000, Stock: 20, Category: Vetements, UserId: 550e8400-e29b-41d4-a716-446655440000, UPDATEDBy: admin@admin.com
+[2026-05-07 15:30:13] PRODUCT UPDATED - ProductId: 2, Name: Casque Bluetooth, Price: 85000, Stock: 5, Category: sport, UserId: 9c8b5f2e-1d1a-4b67-9bcb-4f0a2e9e2c1d, UPDATEDBy: admin@admin.com

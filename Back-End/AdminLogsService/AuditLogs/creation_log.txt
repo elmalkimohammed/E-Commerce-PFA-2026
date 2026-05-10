@@ -1,0 +1,16 @@
+[2026-05-03 15:17:14] CREATED - UserId: f15d9ede-ec2f-4f02-a67c-27a81b36df5d, Email: elmalki@gmail.com, Role: Customer
+[2026-05-03 17:50:16] CREATED - UserId: 554bd160-ba96-4f98-886a-d094118649a7, Email: mohammedelmalki24@gmail.com, Role: Customer
+[2026-05-03 17:50:16] CREATED - UserId: 1e511ab9-357d-4be0-9069-114ead0ce5d6, Email: mohammedelmalki2417@gmail.com, Role: Customer
+[2026-05-03 17:50:16] CREATED - UserId: bb011ee5-512d-4bcf-80c2-c01ff0aaef72, Email: mohammedelmalki24176@gmail.com, Role: Customer
+[2026-05-03 18:33:39] CREATED - UserId: d7ba91f3-21f0-470e-8002-c7214a03c8fb, Email: jamal@gmail.com, Role: Customer
+[2026-05-04 16:42:52] CREATED - UserId: 3b819ac5-c087-4d3c-a5ba-a80565cf1083, Email: aminebouchadad04@gmail.com, Role: Customer
+[2026-05-04 17:32:52] CREATED - UserId: 1ddc8e94-4afb-432c-bfcb-969b54c537ae, Email: aminebouchadad@gmail.com, Role: Customer
+[2026-05-04 17:37:09] CREATED - UserId: 2179b1ad-e8cf-4e91-a909-d5145bf92770, Email: admin@gmail.com, Role: Customer
+[2026-05-05 15:01:04] CREATED - UserId: 4e412540-a593-4578-b4a1-7b322bbe953e, Email: aminebouchadad04@gmail.com, Role: Customer
+[2026-05-05 16:30:37] CREATED - UserId: 20e550fc-1ecd-457f-a873-1cd64f862f2d, Email: aminebouchadad04@gmail.com, Role: Customer
+[2026-05-05 18:13:25] CREATED - UserId: 600089b6-8864-4a3f-877c-0a7fad1f627b, Email: aminebouchadad04@gmail.com, Role: Customer
+[2026-05-05 18:55:13] CREATED - UserId: f64102a6-1b61-403d-aab0-427b95ad1f02, Email: admin@admin.com, Role: Customer
+[2026-05-07 14:30:32] CREATED - UserId: aec1d908-96d1-45d3-8fe8-954ff5ea72c2, Email: test@test.com, Role: Customer
+[2026-05-07 14:32:30] CREATED - UserId: b0c05a94-2734-48d9-9e85-d78334e75686, Email: admin@admin.com, Role: Customer
+[2026-05-08 01:04:18] CREATED - UserId: 231c7b6e-71e6-4741-ae64-3c50d0bbd6b1, Email: admin@gmail.com, Role: Customer
+[2026-05-09 16:45:37] CREATED - UserId: 0f1c9ef5-0615-4330-86e9-c18ca5325b98, Email: test@gmail.com, Role: Customer

@@ -1,7 +1,6 @@
-@UserProfileService_HostAddress = http://localhost:5008
-@AuthService_HostAddress = http://localhost:5001/api/auth
-
-
+@UserProfileService_HostAddress = http://localhost:5004
+@AuthService = http://localhost:5001/api/auth
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiOWRhZDgzMi02NTEzLTQ2ODctOGU5ZS1mYmI5MTcxMTk2NzciLCJlbWFpbCI6ImVsbWFsa2kxMjNAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQ3VzdG9tZXIiLCJqdGkiOiJhNWRjZmUxNS1jM2Y3LTRiM2QtODE1Yy0zOWNlYzM1Zjc3NTgiLCJleHAiOjE3NzcyMjE4MzcsImlzcyI6IkF1dGhTZXJ2aWNlIiwiYXVkIjoiRWNvbW1lcmNlVXNlcnMifQ.uzF7fN-AevR9hN_sy1fSqE0mXQvqN1rrtyPqv6zIhhw
 
 
 ###
@@ -9,8 +8,13 @@ POST {{AuthService_HostAddress}}/login
 Content-Type: application/json
 
 {
-  "email": "c@gmail.com",
+  "email": "elmalki123@gmail.com",
   "password": "123"
 }
 ###
 GET https://www.google.com
+
+###
+GET {{UserProfileService_HostAddress}}/api/UserProfile/fetchALLFullUsrsInfos
+Authorization: Bearer {{token}}
+Accept: application/json

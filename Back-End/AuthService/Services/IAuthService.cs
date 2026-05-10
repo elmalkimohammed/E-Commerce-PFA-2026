@@ -8,5 +8,8 @@ namespace AuthService.Services
         Task<String> LoginProcess(LoginRequest request);
         Task<String> VerifyEmailExistence(EmailVerificationRequest request);
         Task UpdateOldPassword(PasswordChangeRequest request);
+        Task<bool> UserId_Existance( Guid request );
+        Task<bool> UserDeletion( Guid request );
+        Task FullyCreateUser(FullNewUser request);
     }
 }

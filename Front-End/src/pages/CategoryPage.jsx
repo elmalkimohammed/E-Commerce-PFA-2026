@@ -1,35 +1,71 @@
 import TopNav from "../Components/navbarComponent/TopNav"
 import HeaderTitle from "../Components/CategoryPage/HeaderTitle"
-import ToolBoxFiltering from "../Components/CategoryPage/toolBoxFiltering"
+import ToolBoxFiltering from "../Components/CategoryPage/ToolBoxFiltering"
 import TipsSection from "../Components/CategoryPage/TipsSection"
-import ProductsSection from "../Components/CategoryPage/productsSections"
+import ProductsSection from "../Components/CategoryPage/ProductsSections"
 import "./Styles/categoryPage.css"
+import { prodAPI } from "../services/servicesAPI"
 
-import { useState } from "react"
+import { useState , useEffect } from "react"
 
 function CategoryPage() {
 
-    const mockData = [
-        { name: "Wireless Noise-Cancelling Headphones", category: "Electronics", price: 79.99 },
-        { name: "Running Shoes Pro X", category: "Sports", price: 59.99 },
-        { name: "Smart Coffee Maker", category: "Home & Garden", price: 49.99 },
-        { name: "The Art of Clean Code", category: "Books", price: 24.99 },
-        { name: "Mechanical Keyboard TKL", category: "Electronics", price: 129.99 }
-    ]
+    const [products, setProducts] = useState([])
+    const [buttonState , setButtonState ] = useState(false)
+    const [selectedCateg , setSelectedCateg ] = useState("All")
+    const [selectedPrice , setSelectedPrice ] = useState("0")
 
-    const [ buttonState , setButtonState ] = useState(false)
-    const [ selectedCateg , setSelectedCateg ] = useState("")
-    const [ selectedPrice , setSelectedPrice ] = useState("")
-    const [ filteredProducts , setFilteredProducts ] = useState([])
+    useEffect(() => {
+
+    fetch(`${prodAPI}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log("API DATA:", data)
+            setProducts(data)
+        })
+        .catch(err => console.error(err))
+
+    }, [])
+
+    useEffect( () => {
+        const handleNavCategory = () => {
+            const savedCategory = localStorage.getItem("selectedCategory")
+            if ( savedCategory && savedCategory.length > 1 ) {
+                localStorage.removeItem("selectedCategory")
+                setSelectedCateg(savedCategory)
+                setButtonState(true)
+            }
+        }
+        window.addEventListener("categoryChanged", handleNavCategory)
+        return () => {
+            window.removeEventListener("categoryChanged", handleNavCategory)
+        }
+    }, [] )
 
     return(
         <>
             <TopNav/>
+
             <div className="filterContainer">
+
                 <HeaderTitle/>
-                <ToolBoxFiltering buttonState={ setButtonState } setCategory={ setSelectedCateg } setPrice={ setSelectedPrice }/>
-                { !buttonState && <TipsSection/> }
-                { buttonState && <ProductsSection buttonState={ setButtonState } productsList={ mockData } desiredCategory={ selectedCateg } desiredPrice={ selectedPrice }/> }
+
+                <ToolBoxFiltering
+                    buttonState={setButtonState}
+                    setCategory={setSelectedCateg}
+                    setPrice={setSelectedPrice}
+                />
+
+                {!buttonState && <TipsSection/>}
+
+                {buttonState &&
+                    <ProductsSection
+                        productsList={products}
+                        desiredCategory={selectedCateg}
+                        desiredPrice={selectedPrice}
+                    />
+                }
+
             </div>
         </>
     )

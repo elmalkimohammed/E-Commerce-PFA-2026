@@ -1,0 +1,22 @@
+.detail-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.detail-card h2 {
+  margin-bottom: 10px;
+}
+
+.detail-description {
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.detail-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #777;
+}

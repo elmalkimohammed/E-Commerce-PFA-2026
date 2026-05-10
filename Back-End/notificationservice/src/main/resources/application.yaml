@@ -1,0 +1,45 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: notificationservice
+
+  # MySQL Database Configuration
+  datasource:
+    url: jdbc:mysql://NotificationServiceDB:3306/NotificationDb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: admin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA / Hibernate Configuration
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+       
+
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: kafka:29092
+    consumer:
+      group-id: notification-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+# Kafka Topics Constants
+kafka:
+  topics:
+    user-registered: user-registered
+    order-confirmed: order-confirmed
+    order-cancelled: order-cancelled
+    order-delivered: order-delivered
+    profile-confidential-updated: profile-confidential-updated
+    profile-public-updated: profile-public-updated

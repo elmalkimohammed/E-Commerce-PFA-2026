@@ -3,6 +3,7 @@ using AuthService.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace AuthService.Controllers
 {
@@ -102,6 +103,64 @@ namespace AuthService.Controllers
             {
                 await this._authService.UpdateOldPassword(request);
                 return Ok(); // 200 Status Code
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message); // 400 Status Code
+            }
+        }
+
+        // Checking The Existance Of The UserId
+        [HttpGet("verify-userId/{userId}")]
+        public async Task<IActionResult> UserIdVerification(Guid userId)
+        {
+            // Validating The Incoming Request
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // 400 Status Code
+            }
+
+            // Processing If The Given Id Is Truly On Our Database
+            try
+            {
+                var exists = await this._authService.UserId_Existance(userId);
+                if (!exists) return NotFound(new { message = "UserId Not Found!" }); // 404 Status Code
+                return Ok(); // 200 Status Code
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message); // 400 Status Code
+            }
+        }
+
+        [HttpDelete("deleteUser/{userId}")]
+        public async Task<IActionResult> UserDeletion(Guid userId)
+        {
+            try
+            {
+                await this._authService.UserDeletion(userId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Unable to delete user {userId}");
+            }
+        }
+
+        [HttpPost("adminCreateUser")]
+        public async Task<IActionResult> UserCreationAdminSide(FullNewUser user)
+        {
+            // Validating the incoming request
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // 400 Status Code
+            }
+
+            // Handling The registration process and catching any exceptions that may occur
+            try
+            {
+                await this._authService.FullyCreateUser(user);
+                return Created(); // 201 Status Code
             }
             catch (Exception e)
             {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
 import "../../pages/Styles/productHolder.css";
+import { prodAPI } from "../../services/servicesAPI";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -11,7 +12,7 @@ function ProductHolder() {
   const [error, setError] = useState(null);
 
   // Base URL for your microservice
-  const API_BASE_URL = "http://localhost:5002/TechStore/ProductService/Latest";
+  const API_BASE_URL = `${prodAPI}/latest`;
 
   useEffect(() => {
     fetchProducts();

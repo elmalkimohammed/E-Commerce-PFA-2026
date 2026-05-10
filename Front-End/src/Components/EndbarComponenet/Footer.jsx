@@ -4,6 +4,7 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="footer-inner">
+
         <div className="footer-col">
           <h3 className="footer-brand">TechStore</h3>
           <p className="footer-muted">Votre boutique de technologie de confiance depuis 2020</p>
@@ -12,7 +13,7 @@ function Footer() {
         <div className="footer-col">
           <h4>Liens rapides</h4>
           <ul>
-            <li>Catègories</li>
+            <li>Catégories</li>
             <li>À propos</li>
             <li>Contact</li>
           </ul>
@@ -35,15 +36,14 @@ function Footer() {
             <button>S'inscrire</button>
           </div>
         </div>
+
       </div>
 
       <div className="footer-bottom">
-        © 2024 TechStore. Tous droits réservés.
+        © 2026 TechStore. Tous droits réservés.
       </div>
     </footer>
   );
 }
 
 export default Footer;
-
-

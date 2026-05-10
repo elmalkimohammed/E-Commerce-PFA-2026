@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "dgSpecHash": "OQqRCufMNpk=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\pc\\OneDrive\\Bureau\\PFA\\E-Commerce-PFA-2026\\Back-End\\AdminLogsService\\AdminLogsService.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\pc\\.nuget\\packages\\confluent.kafka\\2.14.0\\confluent.kafka.2.14.0.nupkg.sha512",
+    "C:\\Users\\pc\\.nuget\\packages\\elasticsearch.net\\7.17.5\\elasticsearch.net.7.17.5.nupkg.sha512",
+    "C:\\Users\\pc\\.nuget\\packages\\librdkafka.redist\\2.14.0\\librdkafka.redist.2.14.0.nupkg.sha512",
+    "C:\\Users\\pc\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.1\\microsoft.aspnetcore.openapi.10.0.1.nupkg.sha512",
+    "C:\\Users\\pc\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512",
+    "C:\\Users\\pc\\.nuget\\packages\\mysqlconnector\\2.5.0\\mysqlconnector.2.5.0.nupkg.sha512",
+    "C:\\Users\\pc\\.nuget\\packages\\serilog\\4.3.1\\serilog.4.3.1.nupkg.sha512",
+    "C:\\Users\\pc\\.nuget\\packages\\serilog.formatting.compact\\3.0.0\\serilog.formatting.compact.3.0.0.nupkg.sha512",
+    "C:\\Users\\pc\\.nuget\\packages\\serilog.formatting.elasticsearch\\10.0.0\\serilog.formatting.elasticsearch.10.0.0.nupkg.sha512",
+    "C:\\Users\\pc\\.nuget\\packages\\serilog.sinks.elasticsearch\\10.0.0\\serilog.sinks.elasticsearch.10.0.0.nupkg.sha512",
+    "C:\\Users\\pc\\.nuget\\packages\\serilog.sinks.file\\5.0.0\\serilog.sinks.file.5.0.0.nupkg.sha512",
+    "C:\\Users\\pc\\.nuget\\packages\\serilog.sinks.periodicbatching\\4.0.0\\serilog.sinks.periodicbatching.4.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

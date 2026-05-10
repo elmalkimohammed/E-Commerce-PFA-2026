@@ -1,0 +1,38 @@
+
+@hostAddress = http://localhost:5005/
+@AuthService = http://localhost:5001/api/auth
+###
+POST {{AuthService}}/register
+Content-Type: application/json
+{
+  "email": "mohammed@gmail.com",
+  "password": "stargazer896",
+  "confirmPassword": "stargazer896"
+}
+###
+GET {{AuthService}}/verify-userId/d9da38af-25e0-4561-b1a4-5a1413747268
+Accept: application/json
+###
+GET {{hostAddress}}api/Subscription/plans
+Accept: application/json
+###
+
+POST http://localhost:5005/api/subscription/register
+Content-Type: application/json
+Accept: application/json
+
+{
+  "userId": "d9da38af-25e0-4561-b1a4-5a1413747268",
+  "planId": 1
+}
+####
+DELETE {{hostAddress}}api/subscription/cancel/1
+Accept: application/json
+
+###
+GET {{hostAddress}}api/Subscription/d9da38af-25e0-4561-b1a4-5a1413747268
+Accept: application/json
+
+###
+GET {{hostAddress}}api/Subscription/getAllSubbedUsers
+Accept: application/json

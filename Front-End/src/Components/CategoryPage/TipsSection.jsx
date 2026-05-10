@@ -13,8 +13,8 @@ function TipsSection() {
                 style={{ padding: "20px", 
                     fontSize: "30px", 
                     borderRadius: "12px",  
-                    color: "#3cb371", 
-                    backgroundColor: "rgba(60,179,113,0.12)",
+                    color: "#dc2626", 
+                    backgroundColor: "#000",
                     alignSelf: "center"
                 }}
                 />

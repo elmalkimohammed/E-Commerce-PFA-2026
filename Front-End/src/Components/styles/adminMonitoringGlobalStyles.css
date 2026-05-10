@@ -1,0 +1,83 @@
+.MonitoringGlobalStyles {
+    width: 100%;
+    max-width: 1100px;
+    margin: 40px auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    font-weight: 400;
+    text-align: left;
+    background-color: #ffffff;
+    border: 1px solid #e8e8e8;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.MonitoringGlobalStyles thead tr:first-child {
+    background: #0a0a0a;
+    color: #ffffff;
+}
+
+.MonitoringGlobalStyles thead th {
+    padding: 14px 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.MonitoringGlobalStyles tbody td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    color: #333;
+}
+
+.MonitoringGlobalStyles tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.MonitoringGlobalStyles tbody tr:hover {
+    background-color: #fafafa;
+}
+
+/* Apply truncation to all cells EXCEPT the last one (Actions) */
+.MonitoringGlobalStyles tbody td:not(:last-child) {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Actions column */
+.MonitoringGlobalStyles tbody td:last-child {
+    min-width: 160px;
+    white-space: nowrap;
+}
+
+.acionsBtn {
+    padding: 6px 16px;
+    margin: 0 4px;
+    border: 1px solid #0a0a0a;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: 0.2s;
+    background-color: transparent;
+    color: #0a0a0a;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.acionsBtn:hover {
+    background-color: #0a0a0a;
+    color: white;
+}
+.tableWrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}

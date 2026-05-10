@@ -1,4 +1,29 @@
 services:
+  #___Nginx Reverse Proxy___
+  nginx:
+    build:
+      context: ./Front-End
+      dockerfile: Dockerfile
+    container_name: nginx-gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - AuthServiceAPI
+      - ProductServiceAPI
+      - CartServiceAPI
+      - UserProfileServiceAPI
+      - SubscriptionServiceAPI
+      - orderservice.api
+      - review-service.api
+      - repportservice-api
+      - AdminLogsServiceAPI
+      - notification-service
+    restart: unless-stopped
+    networks:
+      - ecommerce-network
+
   #___Infrastructure___
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
@@ -109,7 +134,97 @@ services:
       - ./Back-End/UserProfileService/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - ecommerce-network
-
+  SubscriptionServiceDB:
+    image: mysql:8.0
+    ports:
+      - "3310:3306"
+    environment:
+      MYSQL_DATABASE: SubscriptionDb
+      MYSQL_ROOT_PASSWORD: admin
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - SubscriptionServiceDB-data:/var/lib/mysql
+    networks:
+      - ecommerce-network
+  OrderServiceDB:
+    image: mysql:8.0
+    ports:
+      - "3311:3306"
+    environment:
+      MYSQL_DATABASE: OrderServiceDb
+      MYSQL_ROOT_PASSWORD: admin
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-padmin"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+    volumes:
+      - OrderServiceDB-data:/var/lib/mysql
+    networks:
+      - ecommerce-network
+  ReviwServiceDB:
+    image: postgres:15-alpine
+    container_name: review-postgres
+    environment:
+      POSTGRES_DB: reviewdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "3312:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:  
+      test: ["CMD-SHELL", "pg_isready -U postgres -d reviewdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - ecommerce-network
+  RepportServiceDB:
+    image: mysql:8.0
+    ports:
+      - "3313:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: ReportServiceDB
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - RepportServiceDB-data:/var/lib/mysql
+      - ./Back-End/RepportsService/initial/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ecommerce-network
+  mysql:
+    image: mysql:8.0
+    container_name: notification-db
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: notificationdb
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3014:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./Back-End/notificationservice/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - ecommerce-network
   #___Micro-Services___
   AuthServiceAPI:
     build: 
@@ -117,9 +232,8 @@ services:
       dockerfile: dockerfile
     image: authservice-api:latest
     container_name: authservice-api 
-    ports:
-      - "5001:5181"
-      #- "5002:7214"
+    expose:
+      - "5181"
     depends_on:
       AuthServiceDB:
         condition: service_healthy
@@ -138,8 +252,8 @@ services:
       dockerfile: dockerfile
     image: productservice-api:latest
     container_name: productservice-api
-    ports:
-      - "5002:5252"
+    expose:
+      - "5252"
     depends_on:
       ProductServiceDB:
         condition: service_healthy
@@ -155,11 +269,11 @@ services:
   CartServiceAPI:
     build:
       context: ./Back-End/CartService
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     image: cartservice-api:latest
     container_name: cartservice-api
-    ports:
-      - "5003:5279"
+    expose:
+      - "5279"
     depends_on:
       CartServiceDB:
         condition: service_healthy
@@ -178,8 +292,8 @@ services:
       dockerfile: Dockerfile
     image: userprofileservice-api:latest
     container_name: userprofileservice-api
-    ports:
-      - "5004:5353"
+    expose:
+      - "5353"
     depends_on:
       UserProfileDB:
         condition: service_healthy
@@ -192,6 +306,126 @@ services:
         - Kafka__BootstrapServers=kafka:29092
     networks:
       - ecommerce-network
+  SubscriptionServiceAPI:
+    build:
+      context: ./Back-End/SubscriptionService
+      dockerfile: dockerfile
+    image: subscriptionservice-api:latest
+    container_name: subscriptionservice-api
+    expose:
+      - "5354"
+    depends_on:
+      SubscriptionServiceDB:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=http://+:5354
+        - ConnectionStrings__DefaultConnection=Server=SubscriptionServiceDB;Port=3306;Database=SubscriptionDb;User=root;Password=admin;
+        - Kafka__BootstrapServers=kafka:29092
+    networks:
+      - ecommerce-network
+  orderservice.api:
+    build:
+      context: ./Back-End/OrderService
+      dockerfile: dockerfile
+    expose:
+      - "5038"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5038
+      - ConnectionStrings__DefaultConnection=Server=OrderServiceDB;Port=3306;Database=OrderServiceDb;User=root;Password=admin;
+      - Kafka__BootstrapServers=kafka:29092
+    depends_on:
+      OrderServiceDB:
+        condition: service_healthy
+    networks:
+      - ecommerce-network
+  
+  
+  review-service.api:
+    build: 
+      context: ./Back-End/ReviewService
+      dockerfile: Dockerfile
+    container_name: review-service
+    expose:
+      - "5253"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://ReviwServiceDB:5432/reviewdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 5253
+    depends_on:
+      ReviwServiceDB:
+        condition: service_healthy
+    networks:
+      - ecommerce-network
+  AdminLogsServiceAPI:
+    build:
+      context: ./Back-End/AdminLogsService
+      dockerfile: Dockerfile
+    image: adminlogsservice-api:latest
+    container_name: adminlogsservice-api
+    expose:
+      - "5026"
+    depends_on:
+      kafka:
+        condition: service_started
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=http://+:5026  
+        - Kafka__BootstrapServers=kafka:29092
+    volumes:
+      - ./Back-End/AdminLogsService/AuditLogs:/app/AuditLogs
+    networks:
+      - ecommerce-network
+  repportservice-api:
+    build:
+      context: ./Back-End/RepportsService/initial
+      dockerfile: Dockerfile
+    image: repportservice-api:latest
+    container_name: repportservice-api
+    expose:
+      - "8081"
+    depends_on:
+      RepportServiceDB:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://RepportServiceDB:3306/ReportServiceDB
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8081
+    volumes:
+      - ./logs/repport:/app/logs
+    networks:
+      - ecommerce-network
+  notification-service:
+    build:
+      context: ./Back-End/notificationservice
+      dockerfile: Dockerfile
+    container_name: notification-service
+    expose:
+      - "8086"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/notificationdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: mysql
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092          # ← ajout
+      SPRING_KAFKA_CONSUMER_GROUP_ID: notification-service-group  # ← ajout
+      SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET: earliest    # ← ajout
+    depends_on:
+      mysql:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    restart: on-failure
+    networks:
+      - ecommerce-network
+
 volumes:
   AuthServiceDB-data: 
     driver: local
@@ -200,6 +434,16 @@ volumes:
   CartServiceDB-data:
     driver: local
   UserProfileDB-data:
+    driver: local
+  SubscriptionServiceDB-data:
+    driver: local
+  OrderServiceDB-data:
+    driver: local
+  postgres_data:
+    driver: local
+  RepportServiceDB-data:
+    driver: local
+  mysql_data:
     driver: local
 networks:
   ecommerce-network:
