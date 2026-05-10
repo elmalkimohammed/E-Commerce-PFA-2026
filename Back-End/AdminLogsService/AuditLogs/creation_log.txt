@@ -14,5 +14,12 @@
 [2026-05-06 17:45:43] CREATED - UserId: 13ec29b6-2737-4bf4-886e-81f936eab079, Email: mesmesamin42@gmail.com, Role: HelpCenter
 [2026-05-06 21:07:35] CREATED - UserId: dd3669ea-3af0-4458-bc9a-bbef04ce0051, Email: teste10@gmail.com, Role: Customer
 [2026-05-09 20:18:02] CREATED - UserId: 635280f2-2512-4897-a4d7-ded9cb8a838f, Email: aminebouchadad04@gmail.com, Role: Customer
+<<<<<<< HEAD
 [2026-05-10 15:34:38] CREATED - UserId: 4a69c5c3-58e3-4778-96d6-898580165220, Email: help@gmail.com, Role: Customer
 [2026-05-10 15:40:12] CREATED - UserId: 9a75e288-3e7d-42a1-9e84-1a4e3fc6573b, Email: help2@gmail.com, Role: HelpCenter
+=======
+[2026-05-07 14:30:32] CREATED - UserId: aec1d908-96d1-45d3-8fe8-954ff5ea72c2, Email: test@test.com, Role: Customer
+[2026-05-07 14:32:30] CREATED - UserId: b0c05a94-2734-48d9-9e85-d78334e75686, Email: admin@admin.com, Role: Customer
+[2026-05-08 01:04:18] CREATED - UserId: 231c7b6e-71e6-4741-ae64-3c50d0bbd6b1, Email: admin@gmail.com, Role: Customer
+[2026-05-09 16:45:37] CREATED - UserId: 0f1c9ef5-0615-4330-86e9-c18ca5325b98, Email: test@gmail.com, Role: Customer
+>>>>>>> d5f1c1580edb041d2d4f2eee5bb21f230653ddcf

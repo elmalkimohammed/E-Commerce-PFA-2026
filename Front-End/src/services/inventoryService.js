@@ -1,5 +1,6 @@
 import axios from "axios";
 import { cartAPI, orderAPI, prodAPI, reviewAPI } from "./servicesAPI";
+console.log(localStorage.getItem("generatedJWT_Token"));
 
 function getAuthHeaders() {
   
@@ -52,6 +53,40 @@ export async function getAllCarts() {
     throw err;
   }
 }
+export function addToCart(payload) {
+  return axios.post(`${cartAPI}addToCart`, payload, {
+    headers: getAuthHeaders(),
+  });
+}
+export function getUserCart() {
+  return axios.get(`${cartAPI}getCart`, {
+    headers: getAuthHeaders(),
+  });
+}
+export function updateCartStock(payload) {
+  return axios.put(`${cartAPI}updateStock`, payload, {
+    headers: getAuthHeaders(),
+  });
+}
+
+export function deleteCartItem(productId) {
+  return axios.delete(
+    `${cartAPI}deleteItem/${productId}`,
+    {
+      headers: getAuthHeaders(),
+    }
+  );
+}
+
+export function clearCart() {
+  return axios.post(
+    `${cartAPI}clearCart`,
+    {},
+    {
+      headers: getAuthHeaders(),
+    }
+  );
+}
 
 // ---------------- REVIEWS ----------------
 export async function getAllReviews() {
@@ -68,19 +103,19 @@ export async function getAllReviews() {
 
 // ---------------- PRODUCT CRUD ----------------
 export function createProduct(payload) {
-  return axios.post(prodAPI, payload, {
+  return axios.post(`${prodAPI}`, payload, {
     headers: getAuthHeaders(),
   });
 }
 
 export function updateProduct(payload) {
-  return axios.put(prodAPI, payload, {
+  return axios.put(`${prodAPI}`, payload, {
     headers: getAuthHeaders(),
   });
 }
 
 export function deleteProduct(productId) {
-  return axios.delete(`${prodAPI}/${productId}`, {
+  return axios.delete(`${prodAPI}${productId}`, {
     headers: getAuthHeaders(),
   });
 }

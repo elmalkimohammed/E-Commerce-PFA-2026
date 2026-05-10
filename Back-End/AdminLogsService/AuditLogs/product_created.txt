@@ -1,3 +1,4 @@
 [2026-05-03 16:46:20] PRODUCT CREATED - ProductId: 33, Name: headphones, Price: 250, Stock: 1000, Category: Electronics, UserId: 2f5fe934-2839-43b0-8fbe-b16e6bd0273e
 [2026-05-05 03:22:29] PRODUCT CREATED - ProductId: 7, Name: oui, Price: 1, Stock: 1, Category: oui, UserId: 59f65bea-af87-4b7a-b21a-ed431bb6a594
 [2026-05-09 20:30:29] PRODUCT CREATED - ProductId: 7, Name: dsif, Price: 1, Stock: 12, Category: Clothing, UserId: 635280f2-2512-4897-a4d7-ded9cb8a838f
+[2026-05-07 15:29:40] PRODUCT CREATED - ProductId: 7, Name: oui, Price: 10, Stock: 10, Category: oui, UserId: aec1d908-96d1-45d3-8fe8-954ff5ea72c2

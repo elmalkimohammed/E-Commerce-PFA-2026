@@ -27,7 +27,7 @@ function TopNavInventory({ activePage, onPageChange }) {
           </button>
         </div>
         
-        <a href="/adminProfilePage" className="bi bi-person profile-icon"></a>
+        <a href="/inventoryProfile" className="bi bi-person profile-icon"></a>
       </nav>
     </div>
   );

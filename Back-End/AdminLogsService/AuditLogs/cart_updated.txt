@@ -1,1 +1,4 @@
-[2026-05-04 23:15:29] CART UPDATED - CartId: 8395f6a5-5595-40f8-aa42-f79b78caf276, UserId: 59f65bea-af87-4b7a-b21a-ed431bb6a594, ItemsCount: 1, TotalAmount: 0, PerformedBy: test2@gmail.com
+[2026-05-07 14:31:12] CART UPDATED - CartId: 74e02c0d-df91-4b57-92af-427fe5072136, UserId: aec1d908-96d1-45d3-8fe8-954ff5ea72c2, ItemsCount: 1, TotalAmount: 0, PerformedBy: test@test.com
+[2026-05-07 15:26:04] CART UPDATED - CartId: 74e02c0d-df91-4b57-92af-427fe5072136, UserId: aec1d908-96d1-45d3-8fe8-954ff5ea72c2, ItemsCount: 2, TotalAmount: 0, PerformedBy: test@test.com
+[2026-05-07 16:02:00] CART UPDATED - CartId: 74e02c0d-df91-4b57-92af-427fe5072136, UserId: aec1d908-96d1-45d3-8fe8-954ff5ea72c2, ItemsCount: 3, TotalAmount: 0, PerformedBy: test@test.com
+[2026-05-09 16:46:18] CART UPDATED - CartId: b0ad48b8-3d19-4e3c-9560-09ef07cb2b67, UserId: 0f1c9ef5-0615-4330-86e9-c18ca5325b98, ItemsCount: 1, TotalAmount: 0, PerformedBy: test@gmail.com

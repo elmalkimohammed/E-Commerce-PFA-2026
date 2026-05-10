@@ -34,7 +34,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact", policy =>
-        policy.WithOrigins("http://localhost:5173")
+            policy.WithOrigins("http://localhost", "http://localhost:5173", "http://localhost:80")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials()
@@ -46,7 +46,8 @@ builder.Services.AddScoped<IAuditInventory, AuditInventory>();
 builder.Services.AddHostedService<KafkaAuditConsumer>();
 
 var app = builder.Build();
-
+var auditLogsPath = Path.Combine(app.Environment.ContentRootPath, "AuditLogs");
+Directory.CreateDirectory(auditLogsPath); 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
