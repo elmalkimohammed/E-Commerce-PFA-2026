@@ -290,5 +290,33 @@
       "audit_created_at": "2026-05-09T20:18:02.6251686Z",
       "audit_version": "1.0"
     }
+  },
+  {
+    "UserId": "4a69c5c3-58e3-4778-96d6-898580165220",
+    "Email": "help@gmail.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-10T15:34:38.5864757Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "9a75e288-3e7d-42a1-9e84-1a4e3fc6573b",
+    "Email": "help2@gmail.com",
+    "Role": "HelpCenter",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-10T15:40:12.5957696Z",
+      "audit_version": "1.0"
+    }
   }
 ]
