@@ -4,15 +4,15 @@ export default function Analytics({ data }) {
   const stats = [
     { 
       label: "Total Revenue", 
-      value: data?.totalRevenue || "$12,430", 
-      change: "+8.2%", 
+      value: data?.totalRevenue || "0", 
+       
       icon: DollarSign, 
       up: true 
     },
     { 
       label: "Orders", 
       value: data?.totalOrders || "284", 
-      change: "+12.5%", 
+      
       icon: ShoppingBag, 
       up: true 
     },
@@ -21,13 +21,6 @@ export default function Analytics({ data }) {
       value: data?.productsListed || "36", 
       change: "+" + (data?.productsListed || "3"), 
       icon: Package, 
-      up: true 
-    },
-    { 
-      label: "Avg. Order Value", 
-      value: data?.avgOrderValue || "$43.7", 
-      change: "+2.3%", 
-      icon: TrendingUp, 
       up: true 
     },
   ];
@@ -46,9 +39,7 @@ export default function Analytics({ data }) {
               <div className="stat-info">
                 <span className="stat-label">{stat.label}</span>
                 <span className="stat-value">{stat.value}</span>
-                <span className={`stat-change ${stat.up ? "up" : "down"}`}>
-                  {stat.change} this month
-                </span>
+                
               </div>
             </div>
           );

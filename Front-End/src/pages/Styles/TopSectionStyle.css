@@ -1,51 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500&display=swap');
 
-.top-section-wrapper {
-  width: 100%;
-  position: relative;
+.top-section-wrapper { width: 100%; position: relative; }
+.top-section-swiper  { width: 100%; height: 520px; }
+
+/* ── SLIDE ── */
+.top-section { width: 100%; height: 100%; position: relative; overflow: hidden; }
+
+.top-section-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  -webkit-mask-image: linear-gradient(90deg,rgba(0,0,0,1) 0%,rgba(0,0,0,0.75) 50%,rgba(0,0,0,0.25) 100%);
+  mask-image:         linear-gradient(90deg,rgba(0,0,0,1) 0%,rgba(0,0,0,0.75) 50%,rgba(0,0,0,0.25) 100%);
 }
 
-.top-section-swiper {
-  width: 100%;
-  height: 520px;
+.top-section-content {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; justify-content: center;
+  height: 100%; padding: 80px 64px 100px;
 }
 
-.top-section {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 80px 64px;
-  position: relative;
-  overflow: hidden;
-}
-
-/* diagonal decorative line */
-.top-section::before {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 45%;
-  background: rgba(255,255,255,0.04);
-  clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
-}
-
-/* geometric accent */
-.top-section::after {
-  content: '';
-  position: absolute;
-  right: 80px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 180px;
-  height: 180px;
-  border: 2px solid rgba(255,255,255,0.12);
-  border-radius: 50%;
-}
-
+/* ── TEXT ── */
 .top-section-promo {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900;
@@ -56,79 +29,152 @@
   letter-spacing: -0.01em;
   margin: 0 0 16px;
   max-width: 560px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.6);
   animation: slideUp 0.6s ease both;
 }
 
 .top-section-desc {
   font-family: 'Barlow', sans-serif;
-  font-size: 15px;
-  font-weight: 300;
-  color: rgba(255,255,255,0.72);
-  margin: 0 0 36px;
-  max-width: 440px;
-  line-height: 1.6;
+  font-size: 15px; font-weight: 300;
+  color: rgba(255,255,255,0.82);
+  margin: 0 0 36px; max-width: 440px; line-height: 1.6;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.5);
   animation: slideUp 0.6s 0.1s ease both;
 }
 
-.top-section button {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: #fff;
-  color: #000;
+.top-section-content button {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #fff; color: #000;
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 14px 32px;
-  border: none;
-  cursor: pointer;
-  width: fit-content;
-  transition: background 0.2s, color 0.2s;
+  font-size: 14px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 14px 32px; border: none; cursor: pointer;
+  width: fit-content; transition: background 0.2s, color 0.2s;
   animation: slideUp 0.6s 0.2s ease both;
 }
-.top-section button::after { content: ' →'; }
-.top-section button:hover {
-  background: #e31837;
-  color: #fff;
+.top-section-content button::after { content: ' →'; }
+.top-section-content button:hover  { background: #e31837; color: #fff; }
+
+/* ── ROAD ── */
+.car-road {
+  position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 62px;
+  overflow: hidden; z-index: 10;
+  background-image:
+    repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(255,255,255,0.015) 3px, rgba(255,255,255,0.015) 4px),
+    linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.42) 100%);
 }
 
-/* Swiper overrides */
+.road-dashes {
+  position: absolute; top: 50%; left: 0; width: 100%; height: 2px;
+  transform: translateY(-50%);
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,0.35) 0px, rgba(255,255,255,0.35) 28px, transparent 28px, transparent 52px);
+  animation: dashScroll 0.6s linear infinite;
+}
+@keyframes dashScroll {
+  from { background-position: 0 0; }
+  to   { background-position: 52px 0; }
+}
+
+/* ── CAR ── */
+.car-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: -240px;         /* JS overrides this */
+  width: 230px;
+  height: 72px;
+  z-index: 11;
+  will-change: left;
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.7));
+  animation: carBounce 0.22s ease-in-out infinite alternate;
+}
+@keyframes carBounce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-1.5px); }
+}
+
+/* ── SMOKE ── */
+.smoke-wrapper {
+  position: absolute;
+  bottom: 36px;          /* above road surface */
+  left: 0;               /* JS sets exact px */
+  width: 90px;
+  height: 65px;
+  z-index: 14;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* puff animations */
+.puff1 { animation: puffRise 1.1s 0s    ease-out infinite; }
+.puff2 { animation: puffRise 1.1s 0.18s ease-out infinite; }
+.puff3 { animation: puffRise 1.1s 0.36s ease-out infinite; }
+.puff4 { animation: puffRise 1.1s 0.54s ease-out infinite; }
+@keyframes puffRise {
+  0%   { transform: translateY(0)    scale(1);   opacity: 0.85; }
+  100% { transform: translateY(-22px) scale(1.5); opacity: 0; }
+}
+
+/* ── MECHANIC ── */
+.mechanic-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;               /* JS sets exact px */
+  width: 50px;
+  height: 80px;
+  z-index: 13;
+  opacity: 0;
+  will-change: left, opacity;
+  /* face LEFT — mechanic walks toward car on the right side of screen */
+  transform: scaleX(-1);
+}
+
+/* ── SPARKS ── */
+.sp1 { animation: sparkPop 0.18s 0s    ease-in-out infinite alternate; }
+.sp2 { animation: sparkPop 0.22s 0.04s ease-in-out infinite alternate; }
+.sp3 { animation: sparkPop 0.16s 0.08s ease-in-out infinite alternate; }
+.sp4 { animation: sparkPop 0.25s 0.02s ease-in-out infinite alternate; }
+.sl1 { animation: sparkFade 0.20s 0s    ease-in-out infinite alternate; }
+.sl2 { animation: sparkFade 0.24s 0.06s ease-in-out infinite alternate; }
+.sl3 { animation: sparkFade 0.18s 0.1s  ease-in-out infinite alternate; }
+
+@keyframes sparkPop {
+  from { opacity: 1; transform: translate(0,0)       scale(1); }
+  to   { opacity: 0; transform: translate(-3px,-5px) scale(0.3); }
+}
+@keyframes sparkFade {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* ── SWIPER OVERRIDES ── */
+.top-section-swiper .swiper-pagination        { bottom: 72px; }
 .top-section-swiper .swiper-pagination-bullet {
-  background: rgba(255,255,255,0.5);
-  opacity: 1;
-  width: 24px;
-  height: 3px;
-  border-radius: 0;
+  background: rgba(255,255,255,0.5); opacity: 1;
+  width: 24px; height: 3px; border-radius: 0;
   transition: background 0.3s, width 0.3s;
 }
-.top-section-swiper .swiper-pagination-bullet-active {
-  background: #fff;
-  width: 40px;
-}
+.top-section-swiper .swiper-pagination-bullet-active { background: #fff; width: 40px; }
 .top-section-swiper .swiper-button-next,
 .top-section-swiper .swiper-button-prev {
-  color: rgba(255,255,255,0.7);
-  transition: color 0.2s;
+  color: rgba(255,255,255,0.7); bottom: 72px; top: auto; transition: color 0.2s;
 }
 .top-section-swiper .swiper-button-next::after,
-.top-section-swiper .swiper-button-prev::after {
-  font-size: 18px;
-  font-weight: 900;
-}
+.top-section-swiper .swiper-button-prev::after { font-size: 18px; font-weight: 900; }
 .top-section-swiper .swiper-button-next:hover,
-.top-section-swiper .swiper-button-prev:hover {
-  color: #fff;
-}
+.top-section-swiper .swiper-button-prev:hover  { color: #fff; }
 
+/* ── ANIMATIONS ── */
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .top-section-swiper { height: 380px; }
-  .top-section { padding: 48px 28px; }
-  .top-section::after { display: none; }
+  .top-section-swiper  { height: 440px; }
+  .top-section-content { padding: 48px 28px 80px; }
+  .car-wrapper         { width: 180px; height: 56px; }
+  .mechanic-wrapper    { width: 40px;  height: 62px; }
 }

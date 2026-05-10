@@ -4,11 +4,13 @@ import ProductTable from "../Components/SellerPortal/ProductTable";
 import AddProductForm from "../Components/SellerPortal/AddProductForm";
 import EditProductModal from "../Components/SellerPortal/EditProductModal";
 import TopNav from "../Components/navbarComponent/TopNav";
+import { prodAPI } from "../services/servicesAPI";
+import { orderAPI } from "../services/servicesAPI";
 
 import "./Styles/SellerPortal.css";
 
 // API Base URL - update this with your actual API URL
-const API_BASE_URL = "http://localhost/TechStore/ProductService";
+const API_BASE_URL = prodAPI;//"http://localhost/TechStore/ProductService/";
 
 // Helper function to get token from localStorage/sessionStorage
 const getToken = () => {
@@ -131,15 +133,27 @@ export default function SellerPortal() {
     }
   };
 
-  const calculateAnalytics = () => {
-    const totalRevenue = products.reduce((sum, product) => 
+  const calculateAnalytics = async () => {
+    const totalRevenue = products.reduce((sum, product) =>
       sum + (parseFloat(product.price) * product.stock), 0
     );
-    
+
     const productsListed = products.length;
-    // Mock orders data - in real app, fetch from orders API
-    const totalOrders = Math.floor(Math.random() * 100) + 50;
-    const avgOrderValue = productsListed > 0 ? totalRevenue / totalOrders : 0;
+
+    let totalOrders = 0;
+    try {
+      const res = await fetch(`${orderAPI}/user/${getUserIdFromToken()}`, {
+        headers: getAuthHeaders()
+      });
+      if (res.ok) {
+        const orders = await res.json();
+        totalOrders = Array.isArray(orders) ? orders.length : 0;
+      }
+    } catch (err) {
+      console.error('Error fetching orders for analytics:', err);
+    }
+
+    const avgOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
 
     setAnalyticsData({
       totalRevenue: `$${totalRevenue.toFixed(2)}`,
