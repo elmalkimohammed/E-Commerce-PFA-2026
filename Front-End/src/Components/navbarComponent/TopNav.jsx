@@ -35,7 +35,7 @@ const decodeJWT = (token) => {
 // ───────── CHECK SUBSCRIPTION ─────────
 const checkSubscription = async (userId, token) => {
   try {
-    const res = await fetch(`http://localhost:5005/api/subscription/${userId}`, {
+    const res = await fetch(`http://localhost/api/Subscription/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

@@ -4,7 +4,7 @@ import SubscriptionPaymentForm from "../Components/Payment Form/SubscriptionPaym
 import TopNav from "../Components/navbarComponent/TopNav"
 import "./Styles/SubscriptionPage.css"
 
-const API_BASE = "http://localhost:5005/api"
+const API_BASE = "http://localhost/api/Subscription"
 
 // ── Same JWT decoder as PaymentForm ──────────────────────────────────────────
 const decodeJWT = (token) => {
@@ -61,7 +61,7 @@ function SubscriptionPage() {
     useEffect(() => {
         const fetchPlans = async () => {
             try {
-                const res = await fetch(`${API_BASE}/subscription/plans`)
+                const res = await fetch(`${API_BASE}/plans`)
                 if (!res.ok) throw new Error("Failed to load plans")
                 const data = await res.json()
                 setPlans(data)
@@ -115,7 +115,7 @@ function SubscriptionPage() {
 
             console.log("Sending subscription request:", JSON.stringify(requestBody, null, 2))
 
-            const response = await fetch(`${API_BASE}/subscription/register`, {
+            const response = await fetch(`${API_BASE}/register`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -146,7 +146,7 @@ function SubscriptionPage() {
             // subscriptionPlan already saved in handleSubscribe
 
             setSuccess(true)
-            setTimeout(() => navigate("/subscription/status"), 2000)
+            setTimeout(() => navigate("/SellerPortal"), 2000)
 
         } catch (err) {
             console.error("Subscription error:", err)

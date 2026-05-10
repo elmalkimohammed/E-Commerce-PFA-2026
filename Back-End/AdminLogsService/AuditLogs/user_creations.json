@@ -288,5 +288,33 @@
       "audit_created_at": "2026-05-09T16:45:37.8299489Z",
       "audit_version": "1.0"
     }
+  },
+  {
+    "UserId": "f19facfb-a130-47e8-bd38-49534c580121",
+    "Email": "ouss@gamil.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-10T19:04:37.8610045Z",
+      "audit_version": "1.0"
+    }
+  },
+  {
+    "UserId": "72315da3-e830-45ab-8bc4-7ac9216778a2",
+    "Email": "test@test.com",
+    "Role": "Customer",
+    "CreatedAt": "0001-01-01T00:00:00",
+    "Status": "Active",
+    "DeletedAt": null,
+    "DeletedBy": null,
+    "Metadata": {
+      "service": "AuthService",
+      "audit_created_at": "2026-05-10T19:18:58.7540906Z",
+      "audit_version": "1.0"
+    }
   }
 ]

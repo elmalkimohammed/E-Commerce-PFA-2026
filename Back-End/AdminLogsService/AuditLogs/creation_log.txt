@@ -14,3 +14,5 @@
 [2026-05-07 14:32:30] CREATED - UserId: b0c05a94-2734-48d9-9e85-d78334e75686, Email: admin@admin.com, Role: Customer
 [2026-05-08 01:04:18] CREATED - UserId: 231c7b6e-71e6-4741-ae64-3c50d0bbd6b1, Email: admin@gmail.com, Role: Customer
 [2026-05-09 16:45:37] CREATED - UserId: 0f1c9ef5-0615-4330-86e9-c18ca5325b98, Email: test@gmail.com, Role: Customer
+[2026-05-10 19:04:37] CREATED - UserId: f19facfb-a130-47e8-bd38-49534c580121, Email: ouss@gamil.com, Role: Customer
+[2026-05-10 19:18:58] CREATED - UserId: 72315da3-e830-45ab-8bc4-7ac9216778a2, Email: test@test.com, Role: Customer

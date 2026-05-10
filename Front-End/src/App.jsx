@@ -55,6 +55,13 @@ function App() {
           <Route path="/CartPage" element={ <CartPage/> }/>
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/paymentForm" element={<PaymentPage/>}/>
+          {/* Subscription routes - lowercase and status */}
+          <Route path="/subscription" element={<SubscriptionPage/>}/>
+          <Route path="/subscription/status" element={<SubscriptionStatus/>}/>
+          {/* Legacy/alternative paths for compatibility */}
+          <Route path="/SubscriptionPage" element={<SubscriptionPage/>}/>
+          <Route path="/SubscriptionStatus" element={<SubscriptionStatus/>}/>
+          <Route path="/RepportPage" element={<RepportPage/>}/>
         </Routes>
       </BrowserRouter>
     </Provider>
