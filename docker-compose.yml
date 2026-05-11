@@ -95,7 +95,17 @@ services:
       start_period: 30s
     volumes:
       - ProductServiceDB-data:/var/lib/mysql
-      - ./Back-End/ProductService/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./Back-End/ProductService/init.sql:/docker-entrypoint-initdb.d/00_init.sql
+      - "./Back-End/ProductService/Data Insertions/filters_huiles.sql:/docker-entrypoint-initdb.d/01_filters_huiles.sql"
+      - "./Back-End/ProductService/Data Insertions/freinage.sql:/docker-entrypoint-initdb.d/02_freinage.sql"
+      - "./Back-End/ProductService/Data Insertions/moteur.sql:/docker-entrypoint-initdb.d/03_moteur.sql"
+      - "./Back-End/ProductService/Data Insertions/suspension.sql:/docker-entrypoint-initdb.d/04_suspension.sql"
+      - "./Back-End/ProductService/Data Insertions/electricite_eclairage.sql:/docker-entrypoint-initdb.d/05_electricite_eclairage.sql"
+      - "./Back-End/ProductService/Data Insertions/transmission.sql:/docker-entrypoint-initdb.d/06_transmission.sql"
+      - "./Back-End/ProductService/Data Insertions/refroidissement.sql:/docker-entrypoint-initdb.d/07_refroidissement.sql"
+      - "./Back-End/ProductService/Data Insertions/carrosserie_exterieur.sql:/docker-entrypoint-initdb.d/08_carrosserie_exterieur.sql"
+      - "./Back-End/ProductService/Data Insertions/pneumatique.sql:/docker-entrypoint-initdb.d/09_pneumatique.sql"
+      - "./Back-End/ProductService/Data Insertions/climatisation.sql:/docker-entrypoint-initdb.d/10_climatisation.sql"
     networks:
       - ecommerce-network
   CartServiceDB:

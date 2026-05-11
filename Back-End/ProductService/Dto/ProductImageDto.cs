@@ -6,5 +6,6 @@ namespace TicketProductApi.Dto
         public byte[] Image { get; set; } = Array.Empty<byte>();
         public string Mimetype { get; set; } = null!;
         public string Filename { get; set; } = null!;
+        public string? ImageUrl { get; set; }
     }
 }

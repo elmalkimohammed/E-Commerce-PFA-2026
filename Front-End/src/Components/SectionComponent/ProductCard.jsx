@@ -17,9 +17,12 @@ function ProductCard({ product }) {
   } = product;
 
   const firstImage = images[0];
-  const imageUrl = firstImage?.image && firstImage?.mimetype && !imageError
-    ? `data:${firstImage.mimetype};base64,${firstImage.image}`
-    : null;
+  // Prefer URL-based image, fall back to base64 blob
+  const imageUrl = imageError ? null
+    : firstImage?.imageUrl ? firstImage.imageUrl
+    : (firstImage?.image && firstImage?.mimetype)
+      ? `data:${firstImage.mimetype};base64,${firstImage.image}`
+      : null;
 
   const hasDiscount = attributes && attributes['discount'];
   const oldPrice = hasDiscount ? price * 1.2 : null;

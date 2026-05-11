@@ -226,10 +226,10 @@ const ProductDetail = () => {
         {/* LEFT — Gallery */}
         <div className="product-gallery">
           <div className="main-image-container">
-            {images.length > 0 && images[activeImg]?.image && images[activeImg]?.mimetype && !imgError ? (
+            {images.length > 0 && !imgError && (images[activeImg]?.imageUrl || (images[activeImg]?.image && images[activeImg]?.mimetype)) ? (
               <img
                 key={activeImg}
-                src={`data:${images[activeImg].mimetype};base64,${images[activeImg].image}`}
+                src={images[activeImg]?.imageUrl || `data:${images[activeImg].mimetype};base64,${images[activeImg].image}`}
                 alt={product.name}
                 className="main-image"
                 onError={() => setImgError(true)}
@@ -249,9 +249,9 @@ const ProductDetail = () => {
                   className={`thumbnail-btn ${activeImg === index ? "active" : ""}`}
                   onClick={() => { setActiveImg(index); setImgError(false) }}
                 >
-                  {img.image && img.mimetype ? (
+                  {(img.imageUrl || (img.image && img.mimetype)) ? (
                     <img
-                      src={`data:${img.mimetype};base64,${img.image}`}
+                      src={img.imageUrl || `data:${img.mimetype};base64,${img.image}`}
                       alt={`${product.name} view ${index + 1}`}
                     />
                   ) : (

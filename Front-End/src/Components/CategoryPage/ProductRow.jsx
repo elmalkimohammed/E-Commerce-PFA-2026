@@ -2,14 +2,16 @@ import { useState } from "react"
 import "../styles/productRow.css"
 import { useNavigate } from "react-router-dom"
 
-function ProductRow({ prodId , prodName , prodCateg , prodPrice , prodImage , prodMime }) {
+function ProductRow({ prodId , prodName , prodCateg , prodPrice , prodImage , prodMime , prodImageUrl }) {
 
     const navigate = useNavigate()
     const [imageError, setImageError] = useState(false)
 
-    const imgSrc = prodImage && prodMime && !imageError
-        ? `data:${prodMime};base64,${prodImage}`
-        : null
+    const imgSrc = imageError ? null
+        : prodImageUrl ? prodImageUrl
+        : (prodImage && prodMime)
+            ? `data:${prodMime};base64,${prodImage}`
+            : null
 
     const goToDetails = () => {
         navigate(`/product/${prodId}`)

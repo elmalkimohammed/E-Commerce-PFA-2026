@@ -22,7 +22,8 @@ namespace TicketProductApi.Mapper
                     Id_Image = img.Id_Image,
                     Image    = img.Image,
                     Mimetype = img.Mimetype,
-                    Filename = img.Filename
+                    Filename = img.Filename,
+                    ImageUrl = img.ImageUrl
                 }).ToList()
             };
         }

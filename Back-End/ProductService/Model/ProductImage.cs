@@ -1,4 +1,4 @@
-﻿namespace TicketProductApi.Model
+namespace TicketProductApi.Model
 {
     public class ProductImage
     {
@@ -8,6 +8,7 @@
         public byte[] Image { get; set; } = Array.Empty<byte>();   // longblob
         public string Mimetype { get; set; } = null!;
         public string Filename { get; set; } = null!;
+        public string? ImageUrl { get; set; }  // URL-based image
 
     }
 }

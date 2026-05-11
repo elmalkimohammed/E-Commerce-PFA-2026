@@ -34,7 +34,7 @@ namespace TicketProductApi.Repo
         private static ProductImage? ReadImageRow(MySqlDataReader rd)
         {
             if (rd.IsDBNull(rd.GetOrdinal("Id_Image"))) return null;
-            return new ProductImage
+            var img = new ProductImage
             {
                 Id_Image   = rd.GetInt32("Id_Image"),
                 Product_Id = rd.GetInt32("Product_Id"),
@@ -42,6 +42,15 @@ namespace TicketProductApi.Repo
                 Mimetype   = rd.GetString("Mimetype"),
                 Filename   = rd.GetString("Filename")
             };
+            // Read image_url if the column exists
+            try
+            {
+                var ordinal = rd.GetOrdinal("image_url");
+                if (!rd.IsDBNull(ordinal))
+                    img.ImageUrl = rd.GetString(ordinal);
+            }
+            catch { /* column may not exist in older schemas */ }
+            return img;
         }
 
         public List<ProductAndImage> GetAllProducts()
@@ -72,7 +81,7 @@ namespace TicketProductApi.Repo
             using MySqlConnection coon = new MySqlConnection(connection);
             coon.Open();
             string sql = @"SELECT p.*, pi.*
-                           FROM (SELECT * FROM product ORDER BY Id DESC LIMIT 10) AS p
+                           FROM (SELECT * FROM product ORDER BY Id DESC LIMIT 60) AS p
                            LEFT JOIN productsImage pi ON pi.Product_Id = p.Id
                            ORDER BY p.Id DESC;";
             MySqlCommand cmd = new MySqlCommand(sql, coon);
